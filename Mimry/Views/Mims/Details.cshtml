@@ -1,0 +1,74 @@
+﻿@model Mimry.Models.Mim
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Mim</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MimSeq.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MimSeq.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Creator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Creator)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CaptionTop)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CaptionTop)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CaptionBottom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CaptionBottom)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MimID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

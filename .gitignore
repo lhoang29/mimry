@@ -1,0 +1,5 @@
+Mimry/bin/*
+Mimry/obj/*
+packages/*
+*.suo
+*.csproj.user
