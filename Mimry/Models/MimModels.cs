@@ -14,10 +14,17 @@ namespace Mimry.Models
         public string Title { get; set; }
         public DateTime CreatedDate { get; set; }
         public string Creator { get; set; }
+        
+        [Required]
+        [Display(Name = "Meme Image")]
         public byte[] Image { get; set; }
+        
         public string CaptionTop { get; set; }
         public string CaptionBottom { get; set; }
+
+        [Required]
         public int MimSeqID { get; set; }
+        
         public virtual MimSeq MimSeq { get; set; }
     }
     public class MimSeq

@@ -25,14 +25,6 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CreatedDate, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedDate)
-                @Html.ValidationMessageFor(model => model.CreatedDate)
-            </div>
-        </div>
-
-        <div class="form-group">
             @Html.LabelFor(model => model.Creator, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Creator)
@@ -43,7 +35,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Image, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Image)
+                <input type="text" name="imageUrl" />
                 @Html.ValidationMessageFor(model => model.Image)
             </div>
         </div>

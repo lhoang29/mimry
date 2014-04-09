@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Mimry.Models.Mim>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Mimries";
 }
 
-<h2>Index</h2>
+<h2>Mimries</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -50,7 +50,7 @@
             @Html.DisplayFor(modelItem => item.Creator)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Image)
+            <img src="/Mims/Mimage/@item.MimID" style="max-width:100px; max-height:100px;" />
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CaptionTop)

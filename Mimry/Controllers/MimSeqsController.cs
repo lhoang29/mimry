@@ -46,8 +46,9 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="MimSeqID,Title,CreatedDate")] MimSeq mimseq)
+        public ActionResult Create([Bind(Include="MimSeqID,Title")] MimSeq mimseq)
         {
+            mimseq.CreatedDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.MimSeqs.Add(mimseq);

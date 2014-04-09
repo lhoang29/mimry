@@ -36,6 +36,20 @@ namespace Mimry.Controllers
             return View(mim);
         }
 
+        public ActionResult Mimage(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Mim mim = db.Mims.Find(id);
+            if (mim == null)
+            {
+                return HttpNotFound();
+            }
+            return base.File(mim.Image, "Image/jpeg");
+        }
+
         // GET: /Mims/Create
         public ActionResult Create()
         {
@@ -48,8 +62,42 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="MimID,Title,CreatedDate,Creator,Image,CaptionTop,CaptionBottom,MimSeqID")] Mim mim)
+        public ActionResult Create([Bind(Include = "MimID,Title,Creator,CaptionTop,CaptionBottom,MimSeqID")] Mim mim, string imageUrl)
         {
+            mim.CreatedDate = DateTime.Now;
+
+            byte[] imageData = null;
+            string imageLoadError = String.Empty;
+            try
+            {
+                using (WebClient wc = new WebClient())
+                {
+                    imageData = wc.DownloadData(imageUrl);
+                }
+                if (imageData == null)
+                {
+                    imageLoadError = "Invalid image URL";
+                }
+                else
+                {
+                    mim.Image = imageData;
+                }
+            }
+            catch (Exception ex)
+            {
+                imageLoadError = ex.ToString();
+            }
+
+            if (ModelState["Image"].Errors != null)
+            {
+                ModelState["Image"].Errors.Clear();
+            }
+
+            if (!String.IsNullOrEmpty(imageLoadError))
+            {
+                ModelState.AddModelError("Image", imageLoadError);
+            }
+
             if (ModelState.IsValid)
             {
                 db.Mims.Add(mim);
