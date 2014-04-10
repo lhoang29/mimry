@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -36,7 +38,7 @@ namespace Mimry.Controllers
             return View(mim);
         }
 
-        public ActionResult Mimage(int? id)
+        public ActionResult Mimage(int? id, bool caption = false)
         {
             if (id == null)
             {
@@ -47,7 +49,9 @@ namespace Mimry.Controllers
             {
                 return HttpNotFound();
             }
-            return base.File(mim.Image, "Image/jpeg");
+
+            byte[] imageData = caption ? MimsController.GenerateMeme(mim) : mim.Image;
+            return base.File(imageData, "Image/jpeg");
         }
 
         // GET: /Mims/Create
@@ -180,6 +184,33 @@ namespace Mimry.Controllers
             if (!String.IsNullOrEmpty(imageLoadError))
             {
                 ModelState.AddModelError("Image", imageLoadError);
+            }
+        }
+        private static byte[] GenerateMeme(Mim mim)
+        {
+            using (var bmp = new Bitmap(new MemoryStream(mim.Image)))
+            {
+                using (var g = Graphics.FromImage(bmp))
+                {
+                    g.DrawString(
+                        mim.CaptionTop,
+                        new Font("Tahoma", 30),
+                        Brushes.White,
+                        new RectangleF(0, 0, bmp.Width, bmp.Height / 4),
+                        new StringFormat() { Alignment = StringAlignment.Center }
+                    );
+
+                    g.DrawString(
+                        mim.CaptionBottom,
+                        new Font("Tahoma", 30),
+                        Brushes.White,
+                        new RectangleF(0, bmp.Height - bmp.Height / 4, bmp.Width, bmp.Height / 4),
+                        new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far }
+                    );
+                }
+                MemoryStream ms = new MemoryStream();
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                return ms.ToArray();
             }
         }
     }
