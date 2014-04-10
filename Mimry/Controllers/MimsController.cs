@@ -66,37 +66,7 @@ namespace Mimry.Controllers
         {
             mim.CreatedDate = DateTime.Now;
 
-            byte[] imageData = null;
-            string imageLoadError = String.Empty;
-            try
-            {
-                using (WebClient wc = new WebClient())
-                {
-                    imageData = wc.DownloadData(imageUrl);
-                }
-                if (imageData == null)
-                {
-                    imageLoadError = "Invalid image URL";
-                }
-                else
-                {
-                    mim.Image = imageData;
-                }
-            }
-            catch (Exception ex)
-            {
-                imageLoadError = ex.ToString();
-            }
-
-            if (ModelState["Image"].Errors != null)
-            {
-                ModelState["Image"].Errors.Clear();
-            }
-
-            if (!String.IsNullOrEmpty(imageLoadError))
-            {
-                ModelState.AddModelError("Image", imageLoadError);
-            }
+            this.ValidateAddImage(mim, imageUrl);
 
             if (ModelState.IsValid)
             {
@@ -130,8 +100,9 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="MimID,Title,CreatedDate,Creator,Image,CaptionTop,CaptionBottom,MimSeqID")] Mim mim)
+        public ActionResult Edit([Bind(Include="MimID,Title,CreatedDate,Creator,Image,CaptionTop,CaptionBottom,MimSeqID")] Mim mim, string imageUrl)
         {
+            this.ValidateAddImage(mim, imageUrl);
             if (ModelState.IsValid)
             {
                 db.Entry(mim).State = EntityState.Modified;
@@ -175,6 +146,41 @@ namespace Mimry.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void ValidateAddImage(Mim mim, string imageUrl)
+        {
+            byte[] imageData = null;
+            string imageLoadError = String.Empty;
+            try
+            {
+                using (WebClient wc = new WebClient())
+                {
+                    imageData = wc.DownloadData(imageUrl);
+                }
+                if (imageData == null)
+                {
+                    imageLoadError = "Invalid image URL";
+                }
+                else
+                {
+                    mim.Image = imageData;
+                }
+            }
+            catch (Exception ex)
+            {
+                imageLoadError = ex.ToString();
+            }
+
+            if (ModelState["Image"].Errors != null)
+            {
+                ModelState["Image"].Errors.Clear();
+            }
+
+            if (!String.IsNullOrEmpty(imageLoadError))
+            {
+                ModelState.AddModelError("Image", imageLoadError);
+            }
         }
     }
 }
