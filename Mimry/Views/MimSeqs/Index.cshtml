@@ -1,15 +1,29 @@
 ﻿@model IEnumerable<Mimry.Models.MimSeq>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Mimries";
 }
 
-<h2>Index</h2>
+<h2>Mimries</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
 <table class="table">
+    @foreach (var item in Model)
+    {
+        @:<tr>
+        var sortedMims = item.Mims.OrderBy(m => m.CreatedDate);
+        foreach (var mim in sortedMims)
+        {
+            @:<td><img src="/Mims/Mimage/@mim.MimID?caption=true" style="max-width:300px; max-height:300px;" /></td>
+        }
+        @:</tr>
+    }
+</table>
+
+@*<table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Title)
@@ -36,4 +50,4 @@
     </tr>
 }
 
-</table>
+</table>*@
