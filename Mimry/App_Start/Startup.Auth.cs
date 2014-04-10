@@ -28,9 +28,9 @@ namespace Mimry
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "237100423148787",
+               appSecret: "6148d5054077ae892edac6628cf33a1f");
 
             app.UseGoogleAuthentication();
         }

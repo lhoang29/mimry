@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Mimry.Models;
 
 namespace Mimry.Controllers
@@ -66,9 +67,10 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MimID,Title,Creator,CaptionTop,CaptionBottom,MimSeqID")] Mim mim, string imageUrl)
+        public ActionResult Create([Bind(Include = "MimID,Title,CaptionTop,CaptionBottom,MimSeqID")] Mim mim, string imageUrl)
         {
             mim.CreatedDate = DateTime.Now;
+            mim.Creator = User.Identity.GetUserId();
 
             this.ValidateAddImage(mim, imageUrl);
 
