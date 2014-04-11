@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Mimry.Models;
+using Mimry.Helpers;
 
 namespace Mimry.Controllers
 {
@@ -154,40 +155,6 @@ namespace Mimry.Controllers
             base.Dispose(disposing);
         }
 
-        private void ValidateAddImage(Mim mim, string imageUrl)
-        {
-            byte[] imageData = null;
-            string imageLoadError = String.Empty;
-            try
-            {
-                using (WebClient wc = new WebClient())
-                {
-                    imageData = wc.DownloadData(imageUrl);
-                }
-                if (imageData == null)
-                {
-                    imageLoadError = "Invalid image URL";
-                }
-                else
-                {
-                    mim.Image = imageData;
-                }
-            }
-            catch (Exception ex)
-            {
-                imageLoadError = ex.ToString();
-            }
-
-            if (ModelState["Image"].Errors != null)
-            {
-                ModelState["Image"].Errors.Clear();
-            }
-
-            if (!String.IsNullOrEmpty(imageLoadError))
-            {
-                ModelState.AddModelError("Image", imageLoadError);
-            }
-        }
         private static byte[] GenerateMeme(Mim mim)
         {
             using (var bmp = new Bitmap(new MemoryStream(mim.Image)))

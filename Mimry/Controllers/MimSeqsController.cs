@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Mimry.Models;
+using Mimry.Helpers;
 
 namespace Mimry.Controllers
 {
@@ -46,12 +48,21 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="MimSeqID,Title")] MimSeq mimseq)
+        public ActionResult Create([Bind(Include = "MimID,Title,CaptionTop,CaptionBottom")] Mim mim, string imageUrl, string mimryTitle)
         {
+            MimSeq mimseq = new MimSeq();
+            mimseq.Title = mimryTitle;
             mimseq.CreatedDate = DateTime.Now;
+
+            mim.CreatedDate = DateTime.Now;
+            mim.Creator = User.Identity.GetUserId();
+            mim.MimSeq = mimseq;
+            this.ValidateAddImage(mim, imageUrl);
+
             if (ModelState.IsValid)
             {
                 db.MimSeqs.Add(mimseq);
+                db.Mims.Add(mim);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
