@@ -157,25 +157,39 @@ namespace Mimry.Controllers
 
         private static byte[] GenerateMeme(Mim mim)
         {
+            if (mim == null)
+            {
+                return null;
+            }
+            if (String.IsNullOrWhiteSpace(mim.CaptionTop) && String.IsNullOrWhiteSpace(mim.CaptionBottom))
+            {
+                return mim.Image;
+            }
             using (var bmp = new Bitmap(new MemoryStream(mim.Image)))
             {
                 using (var g = Graphics.FromImage(bmp))
                 {
-                    g.DrawString(
-                        mim.CaptionTop,
-                        new Font("Tahoma", 30),
-                        Brushes.White,
-                        new RectangleF(0, 0, bmp.Width, bmp.Height / 4),
-                        new StringFormat() { Alignment = StringAlignment.Center }
-                    );
+                    if (!String.IsNullOrWhiteSpace(mim.CaptionTop))
+                    {
+                        g.DrawString(
+                            mim.CaptionTop,
+                            new Font("Tahoma", 30),
+                            Brushes.White,
+                            new RectangleF(0, 0, bmp.Width, bmp.Height / 4),
+                            new StringFormat() { Alignment = StringAlignment.Center }
+                        );
+                    }
 
-                    g.DrawString(
-                        mim.CaptionBottom,
-                        new Font("Tahoma", 30),
-                        Brushes.White,
-                        new RectangleF(0, bmp.Height - bmp.Height / 4, bmp.Width, bmp.Height / 4),
-                        new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far }
-                    );
+                    if (!String.IsNullOrWhiteSpace(mim.CaptionBottom))
+                    {
+                        g.DrawString(
+                            mim.CaptionBottom,
+                            new Font("Tahoma", 30),
+                            Brushes.White,
+                            new RectangleF(0, bmp.Height - bmp.Height / 4, bmp.Width, bmp.Height / 4),
+                            new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far }
+                        );
+                    }
                 }
                 MemoryStream ms = new MemoryStream();
                 bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);

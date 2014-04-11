@@ -85,7 +85,8 @@ namespace Mimry.Controllers
             {
                 return HttpNotFound();
             }
-            return View(mimseq);
+            ViewBag.MimSeqID = mimseq.MimSeqID;
+            return View();
         }
 
         // POST: /MimSeqs/Edit/5
@@ -93,15 +94,21 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="MimSeqID,Title,CreatedDate")] MimSeq mimseq)
+        public ActionResult Edit([Bind(Include = "MimID,Title,CaptionTop,CaptionBottom")] Mim mim, string imageUrl, int mimseqID)
         {
+            mim.CreatedDate = DateTime.Now;
+            mim.Creator = User.Identity.GetUserId();
+            mim.MimSeqID = mimseqID;
+            this.ValidateAddImage(mim, imageUrl);
+
             if (ModelState.IsValid)
             {
-                db.Entry(mimseq).State = EntityState.Modified;
+                db.Mims.Add(mim);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(mimseq);
+            ViewBag.MimSeqID = mimseqID;
+            return View();
         }
 
         // GET: /MimSeqs/Delete/5

@@ -11,6 +11,7 @@ namespace Mimry.Models
     {
         [Key]
         public int MimID { get; set; }
+        [Display(Name="Mim Title")]
         public string Title { get; set; }
         public DateTime CreatedDate { get; set; }
         public string Creator { get; set; }

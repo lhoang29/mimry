@@ -19,6 +19,9 @@
         {
             @:<td><img src="/Mims/Mimage/@mim.MimID?caption=true" style="max-width:300px; max-height:300px;" /></td>
         }
+        <td>
+            @Html.ActionLink("Continue this Mimry", "Edit", new { id = item.MimSeqID })
+        </td>
         @:</tr>
     }
 </table>

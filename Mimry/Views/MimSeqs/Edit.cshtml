@@ -1,4 +1,4 @@
-﻿@model Mimry.Models.MimSeq
+﻿@model Mimry.Models.Mim
 
 @{
     ViewBag.Title = "Edit";
@@ -15,8 +15,7 @@
         <h4>MimSeq</h4>
         <hr />
         @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.MimSeqID)
-
+        <input name="mimseqID" hidden="hidden" value="@ViewBag.MimSeqID" />
         <div class="form-group">
             @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -26,10 +25,26 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CreatedDate, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Image, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedDate)
-                @Html.ValidationMessageFor(model => model.CreatedDate)
+                <input type="text" name="imageUrl" />
+                @Html.ValidationMessageFor(model => model.Image)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CaptionTop, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CaptionTop)
+                @Html.ValidationMessageFor(model => model.CaptionTop)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CaptionBottom, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CaptionBottom)
+                @Html.ValidationMessageFor(model => model.CaptionBottom)
             </div>
         </div>
 
