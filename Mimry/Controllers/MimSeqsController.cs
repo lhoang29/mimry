@@ -12,17 +12,20 @@ using Mimry.Helpers;
 
 namespace Mimry.Controllers
 {
+    [Authorize]
     public class MimSeqsController : Controller
     {
         private MimDBContext db = new MimDBContext();
 
         // GET: /MimSeqs/
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View(db.MimSeqs.ToList());
         }
 
         // GET: /MimSeqs/Details/5
+        [AllowAnonymous]
         public ActionResult Details(int? id)
         {
             if (id == null)
