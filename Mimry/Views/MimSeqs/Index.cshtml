@@ -17,7 +17,7 @@
         var sortedMims = item.Mims.OrderBy(m => m.CreatedDate);
         foreach (var mim in sortedMims)
         {
-            @:<td><img src="/Mims/Mimage/@mim.MimID?caption=true" style="max-width:300px; max-height:300px;" /></td>
+            @:<td><a href="/Mims/Details/@mim.MimID"><img src="/Mims/Mimage/@mim.MimID?caption=true" style="max-width:300px; max-height:300px;" /></a></td>
         }
         <td>
             @Html.ActionLink("Continue this Mimry", "Edit", new { id = item.MimSeqID })

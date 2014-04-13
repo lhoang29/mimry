@@ -1,4 +1,5 @@
-﻿@model Mimry.Models.Mim
+﻿@using Microsoft.AspNet.Identity;
+@model Mimry.Models.Mim
 
 @{
     ViewBag.Title = "Details";
@@ -69,6 +70,16 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.MimID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (User.Identity.IsAuthenticated && User.Identity.GetUserId().Equals(Model.Creator, StringComparison.OrdinalIgnoreCase))
+    {
+        if (Model.CreatedDate >= Model.MimSeq.Mims.Max(m => m.CreatedDate))
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.MimID }); @:|
+        }
+        else
+	    {
+            <label>This Mim can no longer be modified as its mimry has developed.</label>
+	    }
+    }
+    @Html.ActionLink("Back to List", "Index", "MimSeqs")
 </p>

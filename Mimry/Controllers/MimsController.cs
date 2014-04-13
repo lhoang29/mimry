@@ -14,11 +14,13 @@ using Mimry.Helpers;
 
 namespace Mimry.Controllers
 {
+    [Authorize]
     public class MimsController : Controller
     {
         private MimDBContext db = new MimDBContext();
 
         // GET: /Mims/
+        [AllowAnonymous]
         public ActionResult Index()
         {
             var mims = db.Mims.Include(m => m.MimSeq);
@@ -26,6 +28,7 @@ namespace Mimry.Controllers
         }
 
         // GET: /Mims/Details/5
+        [AllowAnonymous]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -40,6 +43,7 @@ namespace Mimry.Controllers
             return View(mim);
         }
 
+        [AllowAnonymous]
         public ActionResult Mimage(int? id, bool caption = false)
         {
             if (id == null)
@@ -97,6 +101,15 @@ namespace Mimry.Controllers
             if (mim == null)
             {
                 return HttpNotFound();
+            }
+            if (!User.Identity.IsAuthenticated || !User.Identity.GetUserId().Equals(mim.Creator, StringComparison.OrdinalIgnoreCase))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (mim.CreatedDate < mim.MimSeq.Mims.Max(m => m.CreatedDate))
+            {
+                return RedirectToAction("Details", id);
             }
             ViewBag.MimSeqID = new SelectList(db.MimSeqs, "MimSeqID", "Title", mim.MimSeqID);
             return View(mim);
