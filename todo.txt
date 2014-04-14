@@ -1,0 +1,6 @@
+- Put display strings all into one place
+- Fix Mim edit view
+- Add validation for Mim title
+- Create thumbnails for images in order to load faster
+- Update Mim image edit/create error message
+- Modify logic to redirect to home page after log in

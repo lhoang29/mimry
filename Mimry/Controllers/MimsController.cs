@@ -120,7 +120,7 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="MimID,Title,CreatedDate,Creator,Image,CaptionTop,CaptionBottom,MimSeqID")] Mim mim, string imageUrl)
+        public ActionResult Edit([Bind(Include="MimID,Title,CreatedDate,Creator,CaptionTop,CaptionBottom,MimSeqID")] Mim mim, string imageUrl)
         {
             this.ValidateAddImage(mim, imageUrl);
             if (ModelState.IsValid)
