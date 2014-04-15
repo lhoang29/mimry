@@ -19,7 +19,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Mimry Title</label>
             <div class="col-md-10">
-                <input type="text" name="mimryTitle" />
+                <input type="text" name="mimryTitle" value="@ViewBag.mimryTitle" />
                 @Html.ValidationMessageFor(model => model.Title)
             </div>
         </div>

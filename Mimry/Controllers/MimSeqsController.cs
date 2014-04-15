@@ -70,7 +70,8 @@ namespace Mimry.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(mimseq);
+            ViewBag.mimryTitle = mimryTitle;
+            return View(mim);
         }
 
         // GET: /MimSeqs/Edit/5

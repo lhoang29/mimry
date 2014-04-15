@@ -18,7 +18,7 @@ namespace Mimry.Helpers
                 }
                 if (imageData == null)
                 {
-                    imageLoadError = "Invalid image URL";
+                    imageLoadError = "Invalid URL, Mimry was unable to grab the image at the specified address, please double check";
                 }
                 else
                 {
@@ -27,7 +27,7 @@ namespace Mimry.Helpers
             }
             catch (Exception ex)
             {
-                imageLoadError = ex.ToString();
+                imageLoadError = "Invalid URL, Mimry was unable to grab the image at the specified address, please double check";
             }
 
             if (c.ModelState["Image"].Errors != null)
