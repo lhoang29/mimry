@@ -120,16 +120,35 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="MimID,Title,CreatedDate,Creator,CaptionTop,CaptionBottom,MimSeqID")] Mim mim, string imageUrl)
+        public ActionResult Edit([Bind(Include="MimID,Title,CaptionTop,CaptionBottom")] Mim mim, string imageUrl)
         {
-            this.ValidateAddImage(mim, imageUrl);
+            Mim currentMim = db.Mims.Find(mim.MimID);
+            if (currentMim == null)
+            {
+                return HttpNotFound();
+            }
+            if (!String.IsNullOrWhiteSpace(imageUrl))
+            {
+                this.ValidateAddImage(mim, imageUrl);
+                currentMim.Image = mim.Image;
+            }
+            else
+            {
+                // Empty means to leave value unchanged
+                if (ModelState["Image"].Errors != null)
+                {
+                    ModelState["Image"].Errors.Clear();
+                }
+            }
             if (ModelState.IsValid)
             {
-                db.Entry(mim).State = EntityState.Modified;
+                currentMim.Title = mim.Title;
+                currentMim.CaptionTop = mim.CaptionTop;
+                currentMim.CaptionBottom = mim.CaptionBottom;
+                db.Entry(currentMim).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.MimSeqID = new SelectList(db.MimSeqs, "MimSeqID", "Title", mim.MimSeqID);
             return View(mim);
         }
 
