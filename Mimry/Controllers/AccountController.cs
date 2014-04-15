@@ -83,7 +83,7 @@ namespace Mimry.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "MimSeqs");
                 }
                 else
                 {
@@ -290,7 +290,7 @@ namespace Mimry.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "MimSeqs");
         }
 
         //
@@ -372,7 +372,7 @@ namespace Mimry.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "MimSeqs");
             }
         }
 
