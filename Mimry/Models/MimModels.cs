@@ -13,14 +13,27 @@ namespace Mimry.Models
         public int MimID { get; set; }
         [Display(Name="Mim Title")]
         public string Title { get; set; }
+
+        [Required]
+        [Display(Name = "Created")]
         public DateTime CreatedDate { get; set; }
+
+        [Required]
+        [Display(Name = "Last Modified")]
+        public DateTime LastModifiedDate { get; set; }
+
+        [Required]
+        [Display(Name = "Created By")]
         public string Creator { get; set; }
         
         [Required]
         [Display(Name = "Meme Image")]
         public byte[] Image { get; set; }
-        
+
+        [Display(Name = "Top Caption")]
         public string CaptionTop { get; set; }
+
+        [Display(Name = "Bottom Caption")]
         public string CaptionBottom { get; set; }
 
         [Required]
