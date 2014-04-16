@@ -224,6 +224,7 @@
     <Content Include="Views\MimSeqs\Details.cshtml" />
     <Content Include="Views\MimSeqs\Edit.cshtml" />
     <Content Include="Views\MimSeqs\Index.cshtml" />
+    <Content Include="TestData\mims.bin" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
