@@ -40,6 +40,19 @@ namespace Mimry.Models
         public int MimSeqID { get; set; }
         
         public virtual MimSeq MimSeq { get; set; }
+
+        public string GetCreatorName(ApplicationDbContext db)
+        { 
+            ApplicationUser user = db.Users.Find(this.Creator);
+            if (user != null)
+            {
+                return user.UserName;
+            }
+            else
+            {
+                return this.Creator;
+            }
+        }
     }
     public class MimSeq
     {

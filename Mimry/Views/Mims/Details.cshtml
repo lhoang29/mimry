@@ -40,7 +40,10 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Creator)
+            @{
+                string creatorName = Model.GetCreatorName(ViewBag.UserDB);
+                @Html.DisplayFor(model => creatorName)
+            }
         </dd>
 
         <dt>

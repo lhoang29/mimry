@@ -47,7 +47,11 @@
             @Html.DisplayFor(modelItem => item.CreatedDate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Creator)
+            @{
+                string creatorName = item.GetCreatorName(ViewBag.UserDB);
+                @Html.DisplayFor(modelItem => creatorName)
+            }
+            
         </td>
         <td>
             <img src="/Mims/Mimage/@item.MimID" style="max-width:100px; max-height:100px;" />

@@ -18,11 +18,13 @@ namespace Mimry.Controllers
     public class MimsController : Controller
     {
         private MimDBContext db = new MimDBContext();
+        private ApplicationDbContext userdb = new ApplicationDbContext();
 
         // GET: /Mims/
         [AllowAnonymous]
         public ActionResult Index()
         {
+            ViewBag.UserDB = userdb;
             var mims = db.Mims.Include(m => m.MimSeq);
             return View(mims.ToList());
         }
@@ -31,6 +33,7 @@ namespace Mimry.Controllers
         [AllowAnonymous]
         public ActionResult Details(int? id)
         {
+            ViewBag.UserDB = userdb;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
