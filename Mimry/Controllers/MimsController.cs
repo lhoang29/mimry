@@ -123,7 +123,7 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="MimID,Title,CaptionTop,CaptionBottom")] Mim mim, string imageUrl)
+        public ActionResult Edit([Bind(Include="MimID,Title,Creator,CaptionTop,CaptionBottom")] Mim mim, string imageUrl)
         {
             Mim currentMim = db.Mims.Find(mim.MimID);
             if (currentMim == null)
@@ -150,7 +150,7 @@ namespace Mimry.Controllers
                 currentMim.CaptionBottom = mim.CaptionBottom;
                 db.Entry(currentMim).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = currentMim.MimID });
             }
             return View(mim);
         }
