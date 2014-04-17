@@ -9,7 +9,7 @@ namespace Mimry.Helpers
 {
     public static class ExtensionHelpers
     {
-        public static void ValidateAddImage(this Controller c, Mimry.Models.Mim mim, string imageUrl)
+        public static void ValidateAddImage(this Controller c, Mimry.Models.Mim mim, string imageUrl, string modelStateProperty)
         {
             byte[] imageData = null;
             string imageLoadError = String.Empty;
@@ -33,14 +33,14 @@ namespace Mimry.Helpers
                 imageLoadError = "Invalid URL, Mimry was unable to grab the image at the specified address, please double check";
             }
 
-            if (c.ModelState["Image"].Errors != null)
+            if (c.ModelState[modelStateProperty].Errors != null)
             {
-                c.ModelState["Image"].Errors.Clear();
+                c.ModelState[modelStateProperty].Errors.Clear();
             }
 
             if (!String.IsNullOrEmpty(imageLoadError))
             {
-                c.ModelState.AddModelError("Image", imageLoadError);
+                c.ModelState.AddModelError(modelStateProperty, imageLoadError);
             }
         }
 
@@ -51,7 +51,7 @@ namespace Mimry.Helpers
             int[] numMimRange = { 3, 20 };
 
             string userPrefix = "user";
-            string userPassword = "123456";
+            string userPassword = "112211";
             string mimryTitlePrefix = "Mimry Title ";
             string captionTopPrefix = "Top caption ";
             string captionBottomPrefix = "Bottom caption ";
@@ -60,7 +60,7 @@ namespace Mimry.Helpers
 
             // Get list of mim images
             List<Tuple<string, byte[]>> imageData = new List<Tuple<string, byte[]>>();
-            using (System.IO.BinaryReader br = new System.IO.BinaryReader(System.IO.File.OpenRead(@"D:\Git\Websites\Mimry\Mimry\TestData\mims.bin")))
+            using (System.IO.BinaryReader br = new System.IO.BinaryReader(System.IO.File.OpenRead(@"C:\Users\lhoang\Documents\Git\Mimry\Mimry\TestData\mims.bin")))
             {
                 try
                 {
@@ -92,7 +92,6 @@ namespace Mimry.Helpers
             for (int i = 0; i < numMimries; i++)
             {
                 MimSeq ms = new MimSeq();
-                ms.CreatedDate = DateTime.Now;
                 ms.Title = mimryTitlePrefix + (i + 1);
                 db.MimSeqs.Add(ms);
 
@@ -101,7 +100,6 @@ namespace Mimry.Helpers
                 {
                     Mim m = new Mim();
                     m.Creator = userList[rand.Next(numUsers)].Id;
-                    m.LastModifiedDate = m.CreatedDate = DateTime.Now;
                     m.CaptionTop = captionTopPrefix + (j + 1);
                     m.CaptionBottom = captionBottomPrefix + (j + 1);
 

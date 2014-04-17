@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 
 namespace Mimry.Models
 {
-    public class Mim
+    public interface IDateCreated
+    {
+        DateTime CreatedDate { get; set; }
+    }
+    public interface IDateModified
+    {
+        DateTime LastModifiedDate { get; set; }
+    }
+    public class Mim : IDateCreated, IDateModified
     {
         [Key]
         public int MimID { get; set; }
@@ -54,7 +61,7 @@ namespace Mimry.Models
             }
         }
     }
-    public class MimSeq
+    public class MimSeq : IDateCreated
     {
         [Key]
         public int MimSeqID { get; set; }
@@ -66,5 +73,30 @@ namespace Mimry.Models
     {
         public DbSet<Mim> Mims { get; set; }
         public DbSet<MimSeq> MimSeqs { get; set; }
+
+        public override int SaveChanges()
+        {
+            foreach (var entity in ChangeTracker.Entries()
+              .Where(p => p.State == EntityState.Added || p.State == EntityState.Modified))
+            {
+                if (entity.State == EntityState.Added)
+                {
+                    if (entity.Entity is IDateCreated)
+                    {
+                        ((IDateCreated)entity.Entity).CreatedDate = DateTime.Now;
+                    }
+                    if (entity.Entity is IDateModified)
+                    {
+                        ((IDateModified)entity.Entity).LastModifiedDate = DateTime.Now;
+                    }
+                }
+                if (entity.State == EntityState.Modified && entity.Entity is IDateModified)
+                {
+                    ((IDateModified)entity.Entity).LastModifiedDate = DateTime.Now;
+                }
+            }
+
+            return base.SaveChanges();
+        }
     }
 }

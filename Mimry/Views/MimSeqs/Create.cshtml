@@ -1,4 +1,4 @@
-﻿@model Mimry.Models.Mim
+﻿@model Mimry.ViewModels.MimryCreate
 
 @{
     ViewBag.Title = "Create";
@@ -17,26 +17,26 @@
         @Html.ValidationSummary(true)
 
         <div class="form-group">
-            <label class="control-label col-md-2">Mimry Title</label>
+            @Html.LabelFor(model => model.MimryTitle, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" name="mimryTitle" value="@ViewBag.mimryTitle" />
-                @Html.ValidationMessageFor(model => model.Title)
+                @Html.EditorFor(model => model.MimryTitle)
+                @Html.ValidationMessageFor(model => model.MimryTitle)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.MimTitle, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Title)
-                @Html.ValidationMessageFor(model => model.Title)
+                @Html.EditorFor(model => model.MimTitle)
+                @Html.ValidationMessageFor(model => model.MimTitle)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Image, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ImageUrl, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" name="imageUrl" />
-                @Html.ValidationMessageFor(model => model.Image)
+                @Html.EditorFor(model => model.ImageUrl)
+                @Html.ValidationMessageFor(model => model.ImageUrl)
             </div>
         </div>
 
@@ -55,14 +55,6 @@
                 @Html.ValidationMessageFor(model => model.CaptionBottom)
             </div>
         </div>
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.MimSeqID, "MimSeqID", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("MimSeqID", String.Empty)
-                @Html.ValidationMessageFor(model => model.MimSeqID)
-            </div>
-        </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

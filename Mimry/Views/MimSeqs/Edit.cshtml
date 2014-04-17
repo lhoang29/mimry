@@ -1,4 +1,4 @@
-﻿@model Mimry.Models.Mim
+﻿@model Mimry.ViewModels.MimryContinue
 
 @{
     ViewBag.Title = "Edit";
@@ -15,7 +15,7 @@
         <h4>MimSeq</h4>
         <hr />
         @Html.ValidationSummary(true)
-        <input name="mimseqID" hidden="hidden" value="@ViewBag.MimSeqID" />
+        @Html.HiddenFor(model => model.MimSeqID)
         <div class="form-group">
             @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -25,10 +25,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Image, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ImageUrl, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" name="imageUrl" />
-                @Html.ValidationMessageFor(model => model.Image)
+                @Html.EditorFor(model => model.ImageUrl)
+                @Html.ValidationMessageFor(model => model.ImageUrl)
             </div>
         </div>
 

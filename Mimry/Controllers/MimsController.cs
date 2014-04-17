@@ -77,10 +77,9 @@ namespace Mimry.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "MimID,Title,CaptionTop,CaptionBottom,MimSeqID")] Mim mim, string imageUrl)
         {
-            mim.CreatedDate = DateTime.Now;
             mim.Creator = User.Identity.GetUserId();
 
-            this.ValidateAddImage(mim, imageUrl);
+            this.ValidateAddImage(mim, imageUrl, "Image");
 
             if (ModelState.IsValid)
             {
@@ -132,7 +131,7 @@ namespace Mimry.Controllers
             }
             if (!String.IsNullOrWhiteSpace(imageUrl))
             {
-                this.ValidateAddImage(mim, imageUrl);
+                this.ValidateAddImage(mim, imageUrl, "Image");
                 currentMim.Image = mim.Image;
             }
             else

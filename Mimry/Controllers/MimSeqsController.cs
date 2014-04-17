@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Mimry.Models;
 using Mimry.Helpers;
+using Mimry.ViewModels;
 
 namespace Mimry.Controllers
 {
@@ -51,26 +52,28 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MimID,Title,CaptionTop,CaptionBottom")] Mim mim, string imageUrl, string mimryTitle)
+        public ActionResult Create([Bind(Include = "MimryTitle,MimTitle,ImageUrl,CaptionTop,CaptionBottom")] MimryCreate mc)
         {
-            MimSeq mimseq = new MimSeq();
-            mimseq.Title = mimryTitle;
-            mimseq.CreatedDate = DateTime.Now;
-
-            mim.CreatedDate = DateTime.Now;
-            mim.Creator = User.Identity.GetUserId();
-            mim.MimSeq = mimseq;
-            this.ValidateAddImage(mim, imageUrl);
+            Mim mim = new Mim();
+            this.ValidateAddImage(mim, mc.ImageUrl, "ImageUrl");
 
             if (ModelState.IsValid)
             {
+                MimSeq mimseq = new MimSeq();
+                mimseq.Title = mc.MimryTitle;
+
+                mim.Creator = User.Identity.GetUserId();
+                mim.Title = mc.MimTitle;
+                mim.CaptionTop = mc.CaptionTop;
+                mim.CaptionBottom = mc.CaptionBottom;
+                mim.MimSeq = mimseq;
+
                 db.MimSeqs.Add(mimseq);
                 db.Mims.Add(mim);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.mimryTitle = mimryTitle;
             return View(mim);
         }
 
@@ -86,8 +89,8 @@ namespace Mimry.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.MimSeqID = mimseq.MimSeqID;
-            return View();
+            MimryContinue mc = new MimryContinue() { MimSeqID = mimseq.MimSeqID };
+            return View(mc);
         }
 
         // POST: /MimSeqs/Edit/5
@@ -95,21 +98,23 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MimID,Title,CaptionTop,CaptionBottom")] Mim mim, string imageUrl, int mimseqID)
+        public ActionResult Edit([Bind(Include = "MimSeqID,Title,ImageUrl,CaptionTop,CaptionBottom")] MimryContinue mc)
         {
-            mim.CreatedDate = DateTime.Now;
-            mim.Creator = User.Identity.GetUserId();
-            mim.MimSeqID = mimseqID;
-            this.ValidateAddImage(mim, imageUrl);
+            Mim mim = new Mim();
+            this.ValidateAddImage(mim, mc.ImageUrl, "ImageUrl");
 
             if (ModelState.IsValid)
             {
+                mim.Creator = User.Identity.GetUserId();
+                mim.MimSeqID = mc.MimSeqID;
+                mim.Title = mc.Title;
+                mim.CaptionTop = mc.CaptionTop;
+                mim.CaptionBottom = mc.CaptionBottom;
                 db.Mims.Add(mim);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.MimSeqID = mimseqID;
-            return View();
+            return View(mc);
         }
 
         // GET: /MimSeqs/Delete/5
