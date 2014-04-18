@@ -74,7 +74,7 @@ namespace Mimry.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(mim);
+            return View(mc);
         }
 
         // GET: /MimSeqs/Edit/5
