@@ -12,6 +12,12 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MimID)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.MimSeq.Title)
         </th>
         <th>
@@ -35,11 +41,23 @@
         <th>
             @Html.DisplayNameFor(model => model.CaptionBottom)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrevMimID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NextMimID)
+        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MimID)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.MimSeq.Title)
         </td>
@@ -67,6 +85,12 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CaptionBottom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrevMimID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NextMimID)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.MimID }) |

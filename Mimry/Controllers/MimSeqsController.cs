@@ -78,7 +78,7 @@ namespace Mimry.Controllers
         }
 
         // GET: /MimSeqs/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(Guid? id)
         {
             if (id == null)
             {

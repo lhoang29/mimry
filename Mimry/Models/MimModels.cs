@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 
@@ -17,7 +18,12 @@ namespace Mimry.Models
     public class Mim : IDateCreated, IDateModified
     {
         [Key]
-        public int MimID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
+        public Guid MimID { get; set; }
+
         [Display(Name="Mim Title")]
         public string Title { get; set; }
 
@@ -35,7 +41,7 @@ namespace Mimry.Models
         
         [Required]
         [Display(Name = "Meme Image")]
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
 
         [Display(Name = "Top Caption")]
         public string CaptionTop { get; set; }
@@ -43,8 +49,12 @@ namespace Mimry.Models
         [Display(Name = "Bottom Caption")]
         public string CaptionBottom { get; set; }
 
+        public int NextMimID { get; set; }
+
+        public int PrevMimID { get; set; }
+
         [Required]
-        public int MimSeqID { get; set; }
+        public Guid MimSeqID { get; set; }
         
         public virtual MimSeq MimSeq { get; set; }
 
@@ -64,7 +74,8 @@ namespace Mimry.Models
     public class MimSeq : IDateCreated
     {
         [Key]
-        public int MimSeqID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid MimSeqID { get; set; }
         public string Title { get; set; }
         public DateTime CreatedDate { get; set; }
         public virtual ICollection<Mim> Mims { get; set; }

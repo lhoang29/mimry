@@ -25,7 +25,7 @@ namespace Mimry.Helpers
                 }
                 else
                 {
-                    mim.Image = imageData;
+                    mim.Image = Convert.ToBase64String(imageData);
                 }
             }
             catch (Exception ex)
@@ -96,6 +96,7 @@ namespace Mimry.Helpers
                 db.MimSeqs.Add(ms);
 
                 int numMims = rand.Next(numMimRange[0], numMimRange[1]);
+                Mim prevMim = null;
                 for (int j = 0; j < numMims; j++)
                 {
                     Mim m = new Mim();
@@ -105,9 +106,16 @@ namespace Mimry.Helpers
 
                     int randImageIdx = rand.Next(imageData.Count);
                     m.Title = imageData[randImageIdx].Item1;
-                    m.Image = imageData[randImageIdx].Item2;
+                    m.Image = Convert.ToBase64String(imageData[randImageIdx].Item2);
                     m.MimSeq = ms;
                     db.Mims.Add(m);
+                    db.SaveChanges();
+                    if (prevMim != null)
+                    {
+                        m.PrevMimID = prevMim.ID;
+                        prevMim.NextMimID = m.ID;
+                    }
+                    prevMim = m;
                 }
             }
             db.SaveChanges();

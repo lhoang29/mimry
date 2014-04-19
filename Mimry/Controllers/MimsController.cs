@@ -31,14 +31,14 @@ namespace Mimry.Controllers
 
         // GET: /Mims/Details/5
         [AllowAnonymous]
-        public ActionResult Details(int? id)
+        public ActionResult Details(Guid? id)
         {
             ViewBag.UserDB = userdb;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Mim mim = db.Mims.Find(id);
+            Mim mim = db.Mims.Single(m => m.MimID == id);
             if (mim == null)
             {
                 return HttpNotFound();
@@ -47,19 +47,19 @@ namespace Mimry.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Mimage(int? id, bool caption = false)
+        public ActionResult Mimage(Guid? id, bool caption = false)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Mim mim = db.Mims.Find(id);
+            Mim mim = db.Mims.Single(m => m.MimID == id);
             if (mim == null)
             {
                 return HttpNotFound();
             }
 
-            byte[] imageData = caption ? MimsController.GenerateMeme(mim) : mim.Image;
+            byte[] imageData = caption ? MimsController.GenerateMeme(mim) : Convert.FromBase64String(mim.Image);
             return base.File(imageData, "Image/jpeg");
         }
 
@@ -93,13 +93,13 @@ namespace Mimry.Controllers
         }
 
         // GET: /Mims/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Mim mim = db.Mims.Find(id);
+            Mim mim = db.Mims.Single(m => m.MimID == id);
             if (mim == null)
             {
                 return HttpNotFound();
@@ -124,7 +124,7 @@ namespace Mimry.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="MimID,Title,Creator,CaptionTop,CaptionBottom")] Mim mim, string imageUrl)
         {
-            Mim currentMim = db.Mims.Find(mim.MimID);
+            Mim currentMim = db.Mims.Single(m => m.MimID == mim.MimID);
             if (currentMim == null)
             {
                 return HttpNotFound();
@@ -197,9 +197,9 @@ namespace Mimry.Controllers
             }
             if (String.IsNullOrWhiteSpace(mim.CaptionTop) && String.IsNullOrWhiteSpace(mim.CaptionBottom))
             {
-                return mim.Image;
+                return Convert.FromBase64String(mim.Image);
             }
-            using (var bmp = new Bitmap(new MemoryStream(mim.Image)))
+            using (var bmp = new Bitmap(new MemoryStream(Convert.FromBase64String(mim.Image))))
             {
                 using (var g = Graphics.FromImage(bmp))
                 {

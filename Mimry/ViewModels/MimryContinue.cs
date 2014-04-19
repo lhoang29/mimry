@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mimry.ViewModels
 {
     public class MimryContinue
     {
         [Required]
-        public int MimSeqID { get; set; }
+        public Guid MimSeqID { get; set; }
 
         [Display(Name = "Mim Title")]
         public string Title { get; set; }
