@@ -110,8 +110,20 @@ namespace Mimry.Controllers
                 mim.Title = mc.Title;
                 mim.CaptionTop = mc.CaptionTop;
                 mim.CaptionBottom = mc.CaptionBottom;
+
+                Mim prevMim = db.Mims.Single(m => m.MimSeqID == mim.MimSeqID && m.NextMimID == 0);
+                if (prevMim == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                mim.PrevMimID = prevMim.ID;
                 db.Mims.Add(mim);
                 db.SaveChanges();
+
+                prevMim.NextMimID = mim.ID;
+                db.Entry(prevMim).State = EntityState.Modified;
+                db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             return View(mc);
