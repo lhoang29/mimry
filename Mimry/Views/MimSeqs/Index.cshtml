@@ -8,18 +8,25 @@
     @foreach (var item in Model)
     {
         <hr class="divider" />
-        <h3>@item.Title</h3>
-        @:<div class="row">
+        <h2>
+            <a class="falink" href="/MimSeqs/Details/@item.MimSeqID" title="Change title">
+                @item.Title
+            </a>
+            <a class="falink" href="#" title="Change title">
+                <i class="fa fa-edit"></i>
+            </a>
+            <a class="falink" href="/MimSeqs/Edit/@item.MimSeqID" title="Add to this Mimry">
+                <i class="fa fa-plus-square"></i>
+            </a>
+        </h2>
+
         var sortedMims = item.Mims.OrderBy(m => m.CreatedDate);
         foreach (var mim in sortedMims)
         {
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" style="text-align: center; padding-top:5px; padding-bottom:5px;">
-                <a href="/Mims/Details/@mim.MimID">
-                    <img src="/Mims/Mimage/@mim.MimID?caption=true" style="width:100%; max-width:500px; max-height:500px;" />
-                </a>
-            </div>
+            <a href="/Mims/Details/@mim.MimID">
+                <img class="img-rounded mim" src="/Mims/Mimage/@mim.MimID?caption=true"/>
+            </a>
         }
-        @:</div>
         <br />
     }
 </div>

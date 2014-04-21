@@ -40,3 +40,16 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+a.falink, a.falink:visited {
+    color:black;
+}
+a.falink:hover, a.falink:active {
+    color:darkgray;
+    text-decoration:none;
+}
+img.mim {
+    max-width:400px; 
+    max-height:400px; 
+    margin:5px;
+}
