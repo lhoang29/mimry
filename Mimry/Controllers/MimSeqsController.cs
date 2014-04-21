@@ -77,8 +77,8 @@ namespace Mimry.Controllers
             return View(mc);
         }
 
-        // GET: /MimSeqs/Edit/5
-        public ActionResult Edit(Guid? id)
+        // GET: /MimSeqs/Add/5
+        public ActionResult Add(Guid? id)
         {
             if (id == null)
             {
@@ -93,12 +93,12 @@ namespace Mimry.Controllers
             return View(mc);
         }
 
-        // POST: /MimSeqs/Edit/5
+        // POST: /MimSeqs/Add/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MimSeqID,Title,ImageUrl,CaptionTop,CaptionBottom")] MimryContinue mc)
+        public ActionResult Add([Bind(Include = "MimSeqID,Title,ImageUrl,CaptionTop,CaptionBottom")] MimryContinue mc)
         {
             Mim mim = new Mim();
             this.ValidateAddImage(mim, mc.ImageUrl, "ImageUrl");

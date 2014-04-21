@@ -224,7 +224,7 @@
     <Content Include="Views\MimSeqs\Create.cshtml" />
     <Content Include="Views\MimSeqs\Delete.cshtml" />
     <Content Include="Views\MimSeqs\Details.cshtml" />
-    <Content Include="Views\MimSeqs\Edit.cshtml" />
+    <Content Include="Views\MimSeqs\Add.cshtml" />
     <Content Include="Views\MimSeqs\Index.cshtml" />
     <Content Include="TestData\mims.bin" />
   </ItemGroup>
