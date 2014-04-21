@@ -1,21 +1,25 @@
 ﻿@model IEnumerable<Mimry.Models.MimSeq>
 
 @{
-    ViewBag.Title = "Mimries";
+    ViewBag.Title = "Mimry";
 }
 
-<table class="table">
+<div class="container-fluid">
     @foreach (var item in Model)
     {
-        @:<tr>
+        <hr class="divider" />
+        <h3>@item.Title</h3>
+        @:<div class="row">
         var sortedMims = item.Mims.OrderBy(m => m.CreatedDate);
         foreach (var mim in sortedMims)
         {
-            @:<td><a href="/Mims/Details/@mim.MimID"><img src="/Mims/Mimage/@mim.MimID?caption=true" style="max-width:300px; max-height:300px;" /></a></td>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" style="text-align: center; padding-top:5px; padding-bottom:5px;">
+                <a href="/Mims/Details/@mim.MimID">
+                    <img src="/Mims/Mimage/@mim.MimID?caption=true" style="width:100%; max-width:500px; max-height:500px;" />
+                </a>
+            </div>
         }
-        <td>
-            @Html.ActionLink("Continue this Mimry", "Edit", new { id = item.MimSeqID })
-        </td>
-        @:</tr>
+        @:</div>
+        <br />
     }
-</table>
+</div>
