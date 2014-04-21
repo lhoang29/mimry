@@ -4,31 +4,18 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
 <div>
-    <h4>MimSeq</h4>
+    @Html.Partial("MimryHeader", Model)
 	<hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-
-    </dl>
+    @{
+        var sortedMims = Model.Mims.OrderBy(m => m.CreatedDate);
+        foreach (var mim in sortedMims)
+        {
+            <div style="text-align:center">
+                <a href="/Mims/Details/@mim.MimID">
+                    <img class="mim-full" src="/Mims/Mimage/@mim.MimID?caption=true" />
+                </a>
+            </div>
+        }
+    }
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.MimSeqID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

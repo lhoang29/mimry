@@ -27,7 +27,7 @@ namespace Mimry.Controllers
 
         // GET: /MimSeqs/Details/5
         [AllowAnonymous]
-        public ActionResult Details(int? id)
+        public ActionResult Details(Guid? id)
         {
             if (id == null)
             {

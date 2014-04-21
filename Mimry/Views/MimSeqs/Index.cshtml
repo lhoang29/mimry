@@ -8,17 +8,7 @@
     @foreach (var item in Model)
     {
         <hr class="divider" />
-        <h2>
-            <a class="falink" href="/MimSeqs/Details/@item.MimSeqID" title="Change title">
-                @item.Title
-            </a>
-            <a class="falink" href="/MimSeqs/Edit/@item.MimSeqID" title="Change title">
-                <i class="fa fa-edit"></i>
-            </a>
-            <a class="falink" href="/MimSeqs/Add/@item.MimSeqID" title="Add to this Mimry">
-                <i class="fa fa-plus-square"></i>
-            </a>
-        </h2>
+        @Html.Partial("MimryHeader", item)
 
         var sortedMims = item.Mims.OrderBy(m => m.CreatedDate);
         foreach (var mim in sortedMims)

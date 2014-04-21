@@ -41,6 +41,10 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
+a.falink {
+    margin:3px;
+}
+
 a.falink, a.falink:visited {
     color:black;
 }
@@ -51,5 +55,10 @@ a.falink:hover, a.falink:active {
 img.mim {
     max-width:400px; 
     max-height:400px; 
+    margin:5px;
+}
+
+img.mim-full {
+    max-width:600px; 
     margin:5px;
 }

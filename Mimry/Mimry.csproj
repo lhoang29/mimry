@@ -229,6 +229,7 @@
     <Content Include="Views\MimSeqs\Index.cshtml" />
     <Content Include="TestData\mims.bin" />
     <Content Include="Views\MimSeqs\Edit.cshtml" />
+    <Content Include="Views\Shared\MimryHeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
