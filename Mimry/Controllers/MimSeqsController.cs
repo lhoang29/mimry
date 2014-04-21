@@ -77,6 +77,41 @@ namespace Mimry.Controllers
             return View(mc);
         }
 
+        public ActionResult Edit(Guid? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            MimSeq mimseq = db.MimSeqs.Find(id);
+            if (mimseq == null)
+            {
+                return HttpNotFound();
+            }
+            MimryEdit me = new MimryEdit() { MimSeqID = mimseq.MimSeqID, Title = mimseq.Title };
+            return View(me);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "MimSeqID,Title")] MimryEdit me)
+        {
+            if (ModelState.IsValid)
+            {
+                MimSeq ms = db.MimSeqs.Find(me.MimSeqID);
+                if (ms == null)
+                {
+                    return HttpNotFound();
+                }
+                ms.Title = me.Title;
+                db.Entry(ms).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            return View(me);
+        }
+
         // GET: /MimSeqs/Add/5
         public ActionResult Add(Guid? id)
         {
