@@ -5,7 +5,7 @@
 }
 
 <div>
-    @Html.Partial("MimryHeader", Model)
+    @Html.Partial("MimryHeader", new Mimry.ViewModels.MimryHeader() { MimSeqID = Model.MimSeqID, Title = Model.Title, ReturnUrl = "/MimSeqs/Details/" + Model.MimSeqID })
 	<hr />
     @{
         var sortedMims = Model.Mims.OrderBy(m => m.CreatedDate);

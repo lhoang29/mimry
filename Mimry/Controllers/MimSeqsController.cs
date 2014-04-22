@@ -42,9 +42,10 @@ namespace Mimry.Controllers
         }
 
         // GET: /MimSeqs/Create
-        public ActionResult Create()
+        public ActionResult Create(string returnUrl)
         {
-            return View();
+            MimryCreate mc = new MimryCreate() { ReturnUrl = returnUrl };
+            return View(mc);
         }
 
         // POST: /MimSeqs/Create
@@ -52,7 +53,7 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MimryTitle,MimTitle,ImageUrl,CaptionTop,CaptionBottom")] MimryCreate mc)
+        public ActionResult Create([Bind(Include = "MimryTitle,MimTitle,ImageUrl,CaptionTop,CaptionBottom,ReturnUrl")] MimryCreate mc)
         {
             Mim mim = new Mim();
             this.ValidateAddImage(mim, mc.ImageUrl, "ImageUrl");
@@ -71,13 +72,17 @@ namespace Mimry.Controllers
                 db.MimSeqs.Add(mimseq);
                 db.Mims.Add(mim);
                 db.SaveChanges();
+                if (!String.IsNullOrWhiteSpace(mc.ReturnUrl))
+                {
+                    return Redirect(mc.ReturnUrl);
+                }
                 return RedirectToAction("Index");
             }
 
             return View(mc);
         }
 
-        public ActionResult Edit(Guid? id)
+        public ActionResult Edit(Guid? id, string returnUrl)
         {
             if (id == null)
             {
@@ -88,13 +93,13 @@ namespace Mimry.Controllers
             {
                 return HttpNotFound();
             }
-            MimryEdit me = new MimryEdit() { MimSeqID = mimseq.MimSeqID, Title = mimseq.Title };
+            MimryEdit me = new MimryEdit() { MimSeqID = mimseq.MimSeqID, Title = mimseq.Title, ReturnUrl = returnUrl };
             return View(me);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MimSeqID,Title")] MimryEdit me)
+        public ActionResult Edit([Bind(Include = "MimSeqID,Title,ReturnUrl")] MimryEdit me)
         {
             if (ModelState.IsValid)
             {
@@ -107,13 +112,17 @@ namespace Mimry.Controllers
                 db.Entry(ms).State = EntityState.Modified;
                 db.SaveChanges();
 
+                if (!String.IsNullOrWhiteSpace(me.ReturnUrl))
+                {
+                    return Redirect(me.ReturnUrl);
+                }
                 return RedirectToAction("Index");
             }
             return View(me);
         }
 
         // GET: /MimSeqs/Add/5
-        public ActionResult Add(Guid? id)
+        public ActionResult Add(Guid? id, string returnUrl)
         {
             if (id == null)
             {
@@ -124,7 +133,7 @@ namespace Mimry.Controllers
             {
                 return HttpNotFound();
             }
-            MimryContinue mc = new MimryContinue() { MimSeqID = mimseq.MimSeqID };
+            MimryContinue mc = new MimryContinue() { MimSeqID = mimseq.MimSeqID, ReturnUrl = returnUrl };
             return View(mc);
         }
 
@@ -133,7 +142,7 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add([Bind(Include = "MimSeqID,Title,ImageUrl,CaptionTop,CaptionBottom")] MimryContinue mc)
+        public ActionResult Add([Bind(Include = "MimSeqID,Title,ImageUrl,CaptionTop,CaptionBottom,ReturnUrl")] MimryContinue mc)
         {
             Mim mim = new Mim();
             this.ValidateAddImage(mim, mc.ImageUrl, "ImageUrl");
@@ -159,6 +168,10 @@ namespace Mimry.Controllers
                 db.Entry(prevMim).State = EntityState.Modified;
                 db.SaveChanges();
 
+                if (!String.IsNullOrWhiteSpace(mc.ReturnUrl))
+                {
+                    return Redirect(mc.ReturnUrl);
+                }
                 return RedirectToAction("Index");
             }
             return View(mc);

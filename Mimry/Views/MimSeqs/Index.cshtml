@@ -8,7 +8,7 @@
     @foreach (var item in Model)
     {
         <hr class="divider" />
-        @Html.Partial("MimryHeader", item)
+        @Html.Partial("MimryHeader", new Mimry.ViewModels.MimryHeader() { MimSeqID = item.MimSeqID, Title = item.Title, ReturnUrl = "/MimSeqs/Index/" })
 
         var sortedMims = item.Mims.OrderBy(m => m.CreatedDate);
         foreach (var mim in sortedMims)

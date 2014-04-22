@@ -19,5 +19,7 @@ namespace Mimry.ViewModels
 
         [Display(Name = "Bottom Caption")]
         public string CaptionBottom { get; set; }
+
+        public string ReturnUrl { get; set; }
     }
 }

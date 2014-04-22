@@ -1,13 +1,13 @@
-﻿@model Mimry.Models.MimSeq
+﻿@model Mimry.ViewModels.MimryHeader
 
 <h2>
     <a class="falink" href="/MimSeqs/Details/@Model.MimSeqID" title="View">
         @Model.Title
     </a>
-    <a class="falink" href="/MimSeqs/Edit/@Model.MimSeqID" title="Change title">
+    <a class="falink" href="/MimSeqs/Edit/@Model.MimSeqID?returnUrl=@Model.ReturnUrl" title="Change title">
         <i class="fa fa-edit"></i>
     </a>
-    <a class="falink" href="/MimSeqs/Add/@Model.MimSeqID" title="Add to this Mimry">
+    <a class="falink" href="/MimSeqs/Add/@Model.MimSeqID?returnUrl=@Model.ReturnUrl" title="Add to this Mimry">
         <i class="fa fa-plus-square"></i>
     </a>
 </h2>
