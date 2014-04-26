@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Mimry.Models;
+using Mimry.ViewModels;
 using Mimry.Helpers;
 
 namespace Mimry.Controllers
@@ -33,7 +34,6 @@ namespace Mimry.Controllers
         [AllowAnonymous]
         public ActionResult Details(Guid? id)
         {
-            ViewBag.UserDB = userdb;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -43,7 +43,18 @@ namespace Mimry.Controllers
             {
                 return HttpNotFound();
             }
-            return View(mim);
+
+            MimDetails md = new MimDetails();
+            md.MimID = mim.MimID;
+            md.MimryTitle = mim.MimSeq.Title;
+            md.Title = mim.Title;
+            md.CreatedDate = mim.CreatedDate;
+            md.LastModifiedDate = mim.LastModifiedDate;
+            md.Creator = mim.GetCreatorName(userdb);
+            md.IsOwner = String.Compare(User.Identity.GetUserId(), mim.Creator, StringComparison.OrdinalIgnoreCase) == 0;
+            md.IsEditable = (mim.NextMimID == 0);
+
+            return View(md);
         }
 
         [AllowAnonymous]

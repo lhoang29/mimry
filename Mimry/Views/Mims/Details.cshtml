@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity;
-@model Mimry.Models.Mim
+@model Mimry.ViewModels.MimDetails
 
 @{
     ViewBag.Title = "Details";
@@ -12,11 +12,11 @@
 	<hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.MimSeq.Title)
+            @Html.DisplayNameFor(model => model.MimryTitle)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.MimSeq.Title)
+            @Html.DisplayFor(model => model.MimryTitle)
         </dd>
 
         <dt>
@@ -48,49 +48,30 @@
         </dt>
 
         <dd>
-            @{
-                string creatorName = Model.GetCreatorName(ViewBag.UserDB);
-                @Html.DisplayFor(model => creatorName)
-            }
+            @Html.DisplayFor(model => model.Creator)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Image)
+            <label>Image</label>
         </dt>
 
         <dd>
-            <img src="/Mims/Mimage/@Model.MimID" style="max-width:300px; max-height:300px;" />
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CaptionTop)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CaptionTop)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CaptionBottom)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CaptionBottom)
+            <img class="mim-full" src="/Mims/Mimage/@Model.MimID?caption=true" />
         </dd>
 
     </dl>
 </div>
 <p>
-    @if (User.Identity.IsAuthenticated && User.Identity.GetUserId().Equals(Model.Creator, StringComparison.OrdinalIgnoreCase))
+    @if (Model.IsOwner)
     {
-        if (Model.CreatedDate >= Model.MimSeq.Mims.Max(m => m.CreatedDate))
+        if (Model.IsEditable)
         {
             @Html.ActionLink("Edit", "Edit", new { id = Model.MimID }); @:|
         }
         else
-	    {
-            <label>This Mim can no longer be modified as its mimry has developed.</label>
-	    }
+        {
+            <label>This Mim can no longer be modified as its mimry has developed. |</label>
+        }
     }
     @Html.ActionLink("Back to List", "Index", "MimSeqs")
 </p>
