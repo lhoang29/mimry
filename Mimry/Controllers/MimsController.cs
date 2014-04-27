@@ -115,14 +115,14 @@ namespace Mimry.Controllers
             {
                 return HttpNotFound();
             }
-            if (!User.Identity.IsAuthenticated || !User.Identity.GetUserId().Equals(mim.Creator, StringComparison.OrdinalIgnoreCase))
+            if (String.Compare(User.Identity.GetUserId(), mim.Creator, StringComparison.OrdinalIgnoreCase) != 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            if (mim.CreatedDate < mim.MimSeq.Mims.Max(m => m.CreatedDate))
+            if (mim.NextMimID != 0)
             {
-                return RedirectToAction("Details", id);
+                return RedirectToAction("Details", new { id = id });
             }
             ViewBag.MimSeqID = new SelectList(db.MimSeqs, "MimSeqID", "Title", mim.MimSeqID);
             return View(mim);
