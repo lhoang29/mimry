@@ -162,6 +162,8 @@
     <Compile Include="Controllers\MimsController.cs" />
     <Compile Include="Controllers\MimSeqsController.cs" />
     <Compile Include="DAL\GenericRepository.cs" />
+    <Compile Include="DAL\MimDBConfiguration.cs" />
+    <Compile Include="DAL\MimDBInitializer.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -239,7 +241,9 @@
     <Content Include="Views\MimSeqs\Details.cshtml" />
     <Content Include="Views\MimSeqs\Add.cshtml" />
     <Content Include="Views\MimSeqs\Index.cshtml" />
-    <Content Include="TestData\mims.bin" />
+    <Content Include="TestData\mims.bin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\MimSeqs\Edit.cshtml" />
     <Content Include="Views\Shared\MimryHeader.cshtml" />
   </ItemGroup>
