@@ -12,21 +12,29 @@ using Microsoft.AspNet.Identity;
 using Mimry.Models;
 using Mimry.ViewModels;
 using Mimry.Helpers;
+using Mimry.DAL;
 
 namespace Mimry.Controllers
 {
     [Authorize]
     public class MimsController : Controller
     {
-        private MimDBContext db = new MimDBContext();
+        private IUnitOfWork m_UOW;
         private ApplicationDbContext userdb = new ApplicationDbContext();
+
+        public MimsController() : this(UnitOfWork.Current) { }
+
+        public MimsController(IUnitOfWork uow)
+        {
+            m_UOW = uow;
+        }
 
         // GET: /Mims/
         [AllowAnonymous]
         public ActionResult Index()
         {
             ViewBag.UserDB = userdb;
-            var mims = db.Mims.Include(m => m.MimSeq);
+            var mims = m_UOW.MimRepository.Get(null, null, includeProperties: "MimSeq");
             return View(mims.ToList());
         }
 
@@ -38,7 +46,7 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Mim mim = db.Mims.Single(m => m.MimID == id);
+            Mim mim = m_UOW.MimRepository.Get(m => m.MimID == id).Single();
             if (mim == null)
             {
                 return HttpNotFound();
@@ -64,7 +72,7 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Mim mim = db.Mims.Single(m => m.MimID == id);
+            Mim mim = m_UOW.MimRepository.Get(m => m.MimID == id).Single();
             if (mim == null)
             {
                 return HttpNotFound();
@@ -77,7 +85,7 @@ namespace Mimry.Controllers
         // GET: /Mims/Create
         public ActionResult Create()
         {
-            ViewBag.MimSeqID = new SelectList(db.MimSeqs, "MimSeqID", "Title");
+            ViewBag.MimSeqID = new SelectList(m_UOW.MimSeqRepository.Get(), "MimSeqID", "Title");
             return View();
         }
 
@@ -94,12 +102,12 @@ namespace Mimry.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Mims.Add(mim);
-                db.SaveChanges();
+                m_UOW.MimRepository.Insert(mim);
+                m_UOW.Save();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.MimSeqID = new SelectList(db.MimSeqs, "MimSeqID", "Title", mim.MimSeqID);
+            ViewBag.MimSeqID = new SelectList(m_UOW.MimSeqRepository.Get(), "MimSeqID", "Title", mim.MimSeqID);
             return View(mim);
         }
 
@@ -110,7 +118,7 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Mim mim = db.Mims.Single(m => m.MimID == id);
+            Mim mim = m_UOW.MimRepository.Get(m => m.MimID == id).Single();
             if (mim == null)
             {
                 return HttpNotFound();
@@ -124,7 +132,7 @@ namespace Mimry.Controllers
             {
                 return RedirectToAction("Details", new { id = id });
             }
-            ViewBag.MimSeqID = new SelectList(db.MimSeqs, "MimSeqID", "Title", mim.MimSeqID);
+            ViewBag.MimSeqID = new SelectList(m_UOW.MimSeqRepository.Get(), "MimSeqID", "Title", mim.MimSeqID);
             return View(mim);
         }
 
@@ -135,7 +143,7 @@ namespace Mimry.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="MimID,Title,Creator,CaptionTop,CaptionBottom")] Mim mim, string imageUrl)
         {
-            Mim currentMim = db.Mims.Single(m => m.MimID == mim.MimID);
+            Mim currentMim = m_UOW.MimRepository.Get(m => m.MimID == mim.MimID).Single();
             if (currentMim == null)
             {
                 return HttpNotFound();
@@ -158,8 +166,8 @@ namespace Mimry.Controllers
                 currentMim.Title = mim.Title;
                 currentMim.CaptionTop = mim.CaptionTop;
                 currentMim.CaptionBottom = mim.CaptionBottom;
-                db.Entry(currentMim).State = EntityState.Modified;
-                db.SaveChanges();
+                m_UOW.MimRepository.Update(currentMim);
+                m_UOW.Save();
                 return RedirectToAction("Details", new { id = currentMim.MimID });
             }
             return View(mim);
@@ -172,7 +180,7 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Mim mim = db.Mims.Find(id);
+            Mim mim = m_UOW.MimRepository.GetByID(id);
             if (mim == null)
             {
                 return HttpNotFound();
@@ -185,9 +193,9 @@ namespace Mimry.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Mim mim = db.Mims.Find(id);
-            db.Mims.Remove(mim);
-            db.SaveChanges();
+            Mim mim = m_UOW.MimRepository.GetByID(id);
+            m_UOW.MimRepository.Delete(mim);
+            m_UOW.Save();
             return RedirectToAction("Index");
         }
 
@@ -195,7 +203,7 @@ namespace Mimry.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                m_UOW.Dispose();
             }
             base.Dispose(disposing);
         }

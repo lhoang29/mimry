@@ -10,19 +10,27 @@ using Microsoft.AspNet.Identity;
 using Mimry.Models;
 using Mimry.Helpers;
 using Mimry.ViewModels;
+using Mimry.DAL;
 
 namespace Mimry.Controllers
 {
     [Authorize]
     public class MimSeqsController : Controller
     {
-        private MimDBContext db = new MimDBContext();
+        private IUnitOfWork m_UOW;
+
+        public MimSeqsController() : this(UnitOfWork.Current) { }
+
+        public MimSeqsController(IUnitOfWork uow)
+        {
+            m_UOW = uow;
+        }
 
         // GET: /MimSeqs/
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return View(db.MimSeqs.ToList());
+            return View(m_UOW.MimSeqRepository.Get());
         }
 
         // GET: /MimSeqs/Details/5
@@ -33,7 +41,7 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MimSeq mimseq = db.MimSeqs.Find(id);
+            MimSeq mimseq = m_UOW.MimSeqRepository.GetByID(id);
             if (mimseq == null)
             {
                 return HttpNotFound();
@@ -69,9 +77,10 @@ namespace Mimry.Controllers
                 mim.CaptionBottom = mc.CaptionBottom;
                 mim.MimSeq = mimseq;
 
-                db.MimSeqs.Add(mimseq);
-                db.Mims.Add(mim);
-                db.SaveChanges();
+                m_UOW.MimSeqRepository.Insert(mimseq);
+                m_UOW.MimRepository.Insert(mim);
+                m_UOW.Save();
+
                 if (!String.IsNullOrWhiteSpace(mc.ReturnUrl))
                 {
                     return Redirect(mc.ReturnUrl);
@@ -88,7 +97,7 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MimSeq mimseq = db.MimSeqs.Find(id);
+            MimSeq mimseq = m_UOW.MimSeqRepository.GetByID(id);
             if (mimseq == null)
             {
                 return HttpNotFound();
@@ -103,14 +112,15 @@ namespace Mimry.Controllers
         {
             if (ModelState.IsValid)
             {
-                MimSeq ms = db.MimSeqs.Find(me.MimSeqID);
+                MimSeq ms = m_UOW.MimSeqRepository.GetByID(me.MimSeqID);
                 if (ms == null)
                 {
                     return HttpNotFound();
                 }
                 ms.Title = me.Title;
-                db.Entry(ms).State = EntityState.Modified;
-                db.SaveChanges();
+
+                m_UOW.MimSeqRepository.Update(ms);
+                m_UOW.Save();
 
                 if (!String.IsNullOrWhiteSpace(me.ReturnUrl))
                 {
@@ -128,7 +138,7 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MimSeq mimseq = db.MimSeqs.Find(id);
+            MimSeq mimseq = m_UOW.MimSeqRepository.GetByID(id);
             if (mimseq == null)
             {
                 return HttpNotFound();
@@ -155,18 +165,18 @@ namespace Mimry.Controllers
                 mim.CaptionTop = mc.CaptionTop;
                 mim.CaptionBottom = mc.CaptionBottom;
 
-                Mim prevMim = db.Mims.Single(m => m.MimSeqID == mim.MimSeqID && m.NextMimID == 0);
+                Mim prevMim = m_UOW.MimRepository.Get(m => m.MimSeqID == mim.MimSeqID && m.NextMimID == 0).Single();
                 if (prevMim == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 mim.PrevMimID = prevMim.ID;
-                db.Mims.Add(mim);
-                db.SaveChanges();
+                m_UOW.MimRepository.Insert(mim);
+                m_UOW.Save();
 
                 prevMim.NextMimID = mim.ID;
-                db.Entry(prevMim).State = EntityState.Modified;
-                db.SaveChanges();
+                m_UOW.MimRepository.Update(prevMim);
+                m_UOW.Save();
 
                 if (!String.IsNullOrWhiteSpace(mc.ReturnUrl))
                 {
@@ -184,7 +194,7 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MimSeq mimseq = db.MimSeqs.Find(id);
+            MimSeq mimseq = m_UOW.MimSeqRepository.GetByID(id);
             if (mimseq == null)
             {
                 return HttpNotFound();
@@ -197,9 +207,9 @@ namespace Mimry.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            MimSeq mimseq = db.MimSeqs.Find(id);
-            db.MimSeqs.Remove(mimseq);
-            db.SaveChanges();
+            MimSeq mimseq = m_UOW.MimSeqRepository.GetByID(id);
+            m_UOW.MimSeqRepository.Delete(mimseq);
+            m_UOW.Save();
             return RedirectToAction("Index");
         }
 
@@ -207,7 +217,7 @@ namespace Mimry.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                m_UOW.Dispose();
             }
             base.Dispose(disposing);
         }
