@@ -1,5 +1,5 @@
 ﻿function likeMimry(mimryID) {
-    if ($(this).hasClass('falink-liked')) {
+    if ($(this).hasClass('ml-liked')) {
         return;
     }
     $this = $(this);
@@ -9,7 +9,7 @@
         dataType: "json",
         cache: false,
         success: function (data) {
-            $this.attr('class', 'falink-liked');
+            $this.attr('class', 'ml-liked');
             $this.attr('title', 'Liked');
         },
         error: function (request, status, err) {

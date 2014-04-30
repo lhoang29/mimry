@@ -50,12 +50,12 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
-a.falink {
+a.ml {
     margin:3px;
     outline:0px;
 }
 
-a.falink-liked {
+a.ml-liked {
     margin:3px;
     outline:0px;
     color:cadetblue;
@@ -63,13 +63,25 @@ a.falink-liked {
     text-decoration:none;
 }
 
-a.falink, a.falink:visited {
+a.ml, a.ml:visited {
     color:black;
 }
-a.falink:hover, a.falink:active, a.falink:focus {
+a.ml:hover, a.ml:active, a.ml:focus {
     color:darkgray;
     text-decoration:none;
 }
+
+.ml-pin {
+    position:absolute;
+    right:5px;
+    top:5px;
+}
+
+div.mim {
+    position:relative;
+    display:inline-block;
+}
+
 img.mim {
     max-width:400px; 
     max-height:400px; 

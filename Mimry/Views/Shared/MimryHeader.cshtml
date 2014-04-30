@@ -1,22 +1,20 @@
 ﻿@model Mimry.ViewModels.MimryHeader
 
 <h2>
-    <a class="falink" href="/MimSeqs/Details/@Model.MimSeqID" title="View">
+    <a class="ml" href="/MimSeqs/Details/@Model.MimSeqID" title="View">
         @Model.Title
     </a>
-    <a class="falink" href="/MimSeqs/Edit/@Model.MimSeqID?returnUrl=@Model.ReturnUrl" title="Change title">
+    <a class="ml" href="/MimSeqs/Edit/@Model.MimSeqID?returnUrl=@Model.ReturnUrl" title="Change title">
         <i class="fa fa-edit"></i>
     </a>
-    <a class="falink" href="/MimSeqs/Add/@Model.MimSeqID?returnUrl=@Model.ReturnUrl" title="Add to this Mimry">
+    <a class="ml" href="/MimSeqs/Add/@Model.MimSeqID?returnUrl=@Model.ReturnUrl" title="Add to this Mimry">
         <i class="fa fa-plus-square"></i>
     </a>
     @{
-        var likeClass = Model.IsLiked ? "falink-liked" : "falink";
+        var likeClass = Model.IsLiked ? "ml-liked" : "ml";
         var likeTitle = Model.IsLiked ? "Liked" : "Like this Mimry";
         <a class="@likeClass" href="#" title="@likeTitle" onclick="likeMimry.call(this, '@Model.MimSeqID'); return false;">
             <i class="fa fa-thumbs-o-up"></i>
         </a>
     }
-   
-
 </h2>

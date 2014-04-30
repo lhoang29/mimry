@@ -20,9 +20,21 @@
         var sortedMims = item.Mims.OrderBy(m => m.CreatedDate);
         foreach (var mim in sortedMims)
         {
-            <a href="/Mims/Details/@mim.MimID">
-                <img class="img-rounded mim" src="/Mims/Mimage/@mim.MimID?caption=true"/>
-            </a>
+            var mimDetailUrl = Url.Action("Details", "Mims", new { id = mim.MimID });
+            <div class="mim">
+                <a href="@mimDetailUrl">
+                    <img class="img-rounded mim" src="/Mims/Mimage/@mim.MimID?caption=true" />
+                </a>
+                <div class="ml-pin">
+                    <a class="ml ml-pin-default" href="#" title="Nice!">
+                        <i class="fa fa-smile-o fa-2x"></i>
+                    </a>
+                    <br />
+                    <a class="ml ml-pin-default" href="#" title="Meh">
+                        <i class="fa fa-meh-o fa-2x"></i>
+                    </a>
+                </div>
+            </div>
         }
         <br />
         <hr />
