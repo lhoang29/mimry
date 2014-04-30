@@ -30,7 +30,13 @@ namespace Mimry.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return View(m_UOW.MimSeqRepository.Get());
+            var mimSeqs = m_UOW.MimSeqRepository.Get();
+            var mimSeqViews = new List<MimSeqView>();
+            foreach (var ms in mimSeqs)
+            {
+                mimSeqViews.Add(this.ToMimSeqView(ms));
+            }
+            return View(mimSeqViews);
         }
 
         // GET: /MimSeqs/Details/5
@@ -46,7 +52,7 @@ namespace Mimry.Controllers
             {
                 return HttpNotFound();
             }
-            return View(mimseq);
+            return View(this.ToMimSeqView(mimseq));
         }
 
         // GET: /MimSeqs/Create
@@ -129,6 +135,35 @@ namespace Mimry.Controllers
                 return RedirectToAction("Index");
             }
             return View(me);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Like(Guid id)
+        {
+            if (Request.IsAuthenticated)
+            {
+                MimSeq mimseq = m_UOW.MimSeqRepository.GetByID(id);
+                if (mimseq == null)
+                {
+                    return HttpNotFound();
+                }
+
+                string userName = User.Identity.GetUserName();
+                MimSeqLike msl = m_UOW.MimSeqLikeRepository.GetByID(id, userName);
+                if (msl == null)
+                {
+                    msl = new MimSeqLike() { MimSeqID = id, User = userName };
+                    m_UOW.MimSeqLikeRepository.Insert(msl);
+                    m_UOW.Save();
+                }
+                return new JsonResult() { Data = "success" };
+            }
+            else
+            {
+                Response.StatusCode = 403;
+                return new JsonResult() { Data = new { LogOnUrl = Url.Action("Login", "Account") } };
+            }
         }
 
         // GET: /MimSeqs/Add/5
@@ -220,6 +255,14 @@ namespace Mimry.Controllers
                 m_UOW.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private MimSeqView ToMimSeqView(MimSeq ms)
+        {
+            var msv = new MimSeqView();
+            msv.MimSeq = ms;
+            msv.IsLiked = (m_UOW.MimSeqLikeRepository.GetByID(ms.MimSeqID, User.Identity.GetUserName()) != null);
+            return msv;
         }
     }
 }

@@ -12,5 +12,7 @@ namespace Mimry.ViewModels
         public string Title { get; set; }
 
         public string ReturnUrl { get; set; }
+
+        public bool IsLiked { get; set; }
     }
 }

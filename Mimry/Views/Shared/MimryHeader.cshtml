@@ -10,4 +10,13 @@
     <a class="falink" href="/MimSeqs/Add/@Model.MimSeqID?returnUrl=@Model.ReturnUrl" title="Add to this Mimry">
         <i class="fa fa-plus-square"></i>
     </a>
+    @{
+        var likeClass = Model.IsLiked ? "falink-liked" : "falink";
+        var likeTitle = Model.IsLiked ? "Liked" : "Like this Mimry";
+        <a class="@likeClass" href="#" title="@likeTitle" onclick="likeMimry.call(this, '@Model.MimSeqID'); return false;">
+            <i class="fa fa-thumbs-o-up"></i>
+        </a>
+    }
+   
+
 </h2>

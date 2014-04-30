@@ -46,7 +46,7 @@ namespace Mimry.DAL
             }
         }
 
-        public virtual TEntity GetByID(object id)
+        public virtual TEntity GetByID(params object[] id)
         {
             return m_DbSet.Find(id);
         }

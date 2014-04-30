@@ -8,6 +8,7 @@ namespace Mimry.DAL
     {
         GenericRepository<Mim> MimRepository { get; }
         GenericRepository<MimSeq> MimSeqRepository { get; }
+        GenericRepository<MimSeqLike> MimSeqLikeRepository { get; }
         void Save();
     }
 
@@ -17,6 +18,8 @@ namespace Mimry.DAL
         private MimDBContext m_Context = new MimDBContext();
         private GenericRepository<Mim> m_MimRepository;
         private GenericRepository<MimSeq> m_MimSeqRepository;
+        private GenericRepository<MimSeqLike> m_MimSeqLikeRepository;
+
         private bool m_Disposed = false;
 
         public static UnitOfWork Current
@@ -57,6 +60,18 @@ namespace Mimry.DAL
                     this.m_MimSeqRepository = new GenericRepository<MimSeq>(m_Context);
                 }
                 return m_MimSeqRepository;
+            }
+        }
+
+        public GenericRepository<MimSeqLike> MimSeqLikeRepository
+        {
+            get 
+            {
+                if (m_MimSeqLikeRepository == null)
+                {
+                    this.m_MimSeqLikeRepository = new GenericRepository<MimSeqLike>(m_Context);
+                }
+                return m_MimSeqLikeRepository;
             }
         }
 

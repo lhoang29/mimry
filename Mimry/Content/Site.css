@@ -52,6 +52,15 @@ input[type="checkbox"].input-validation-error {
 
 a.falink {
     margin:3px;
+    outline:0px;
+}
+
+a.falink-liked {
+    margin:3px;
+    outline:0px;
+    color:cadetblue;
+    cursor:default;
+    text-decoration:none;
 }
 
 a.falink, a.falink:visited {

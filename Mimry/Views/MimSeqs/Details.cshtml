@@ -1,14 +1,23 @@
-﻿@model Mimry.Models.MimSeq
+﻿@model Mimry.ViewModels.MimSeqView
 
 @{
     ViewBag.Title = "Details";
 }
 
 <div>
-    @Html.Partial("MimryHeader", new Mimry.ViewModels.MimryHeader() { MimSeqID = Model.MimSeqID, Title = Model.Title, ReturnUrl = "/MimSeqs/Details/" + Model.MimSeqID })
+    @{
+        var mimryHeader = new Mimry.ViewModels.MimryHeader() 
+        {
+            MimSeqID = Model.MimSeq.MimSeqID,
+            Title = Model.MimSeq.Title,
+            ReturnUrl = "/MimSeqs/Details/" + Model.MimSeq.MimSeqID,
+            IsLiked = Model.IsLiked
+        };
+    }
+    @Html.Partial("MimryHeader", mimryHeader)
 	<hr />
     @{
-        var sortedMims = Model.Mims.OrderBy(m => m.CreatedDate);
+        var sortedMims = Model.MimSeq.Mims.OrderBy(m => m.CreatedDate);
         foreach (var mim in sortedMims)
         {
             <div style="text-align:center">

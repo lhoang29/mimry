@@ -80,10 +80,19 @@ namespace Mimry.Models
         public DateTime CreatedDate { get; set; }
         public virtual ICollection<Mim> Mims { get; set; }
     }
+    public class MimSeqLike : IDateCreated
+    {
+        [Key, Column(Order = 1)]
+        public Guid MimSeqID { get; set; }
+        [Key, Column(Order = 2)]
+        public string User { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
     public class MimDBContext : DbContext
     {
         public DbSet<Mim> Mims { get; set; }
         public DbSet<MimSeq> MimSeqs { get; set; }
+        public DbSet<MimSeqLike> MimSeqLikes { get; set; }
 
         public override int SaveChanges()
         {
