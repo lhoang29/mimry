@@ -13,7 +13,7 @@
             $this.attr('title', 'Liked');
         },
         error: function (request, status, err) {
-            if (request.status == 403) {
+            if (request.status == 401) {
                 var response = $.parseJSON(request.responseText);
                 window.location = response.LogOnUrl;
             }
