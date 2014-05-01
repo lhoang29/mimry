@@ -14,7 +14,6 @@ using Mimry.DAL;
 
 namespace Mimry.Controllers
 {
-    [Authorize]
     public class MimSeqsController : Controller
     {
         private IUnitOfWork m_UOW;
