@@ -161,8 +161,7 @@ namespace Mimry.Controllers
             }
             else
             {
-                Response.StatusCode = 403;
-                return new JsonResult() { Data = new { LogOnUrl = Url.Action("Login", "Account") } };
+                return new JsonResult() { Data = Url.Action("Login", "Account") };
             }
         }
 

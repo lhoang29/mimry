@@ -9,16 +9,13 @@
         dataType: "json",
         cache: false,
         success: function (data) {
-            $this.attr('class', 'ml-liked');
-            $this.attr('title', 'Liked');
-        },
-        error: function (request, status, err) {
-            if (request.status == 403) {
-                var response = $.parseJSON(request.responseText);
-                window.location = response.LogOnUrl;
+            if (data == 'success') {
+                $this.attr('class', 'ml-liked');
+                $this.attr('title', 'Liked');
             }
-        },
-        complete: function () {
+            else {
+                window.location = data;
+            }
         }
     });
 }
