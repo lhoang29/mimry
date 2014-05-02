@@ -169,6 +169,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Helpers.cs" />
+    <Compile Include="Migrations\201405010219257_InitialCreate.cs" />
+    <Compile Include="Migrations\201405010219257_InitialCreate.Designer.cs">
+      <DependentUpon>201405010219257_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405020359138_AddMimVote.cs" />
+    <Compile Include="Migrations\201405020359138_AddMimVote.Designer.cs">
+      <DependentUpon>201405020359138_AddMimVote.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\MimModels.cs" />
@@ -257,6 +266,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201405010219257_InitialCreate.resx">
+      <DependentUpon>201405010219257_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405020359138_AddMimVote.resx">
+      <DependentUpon>201405020359138_AddMimVote.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

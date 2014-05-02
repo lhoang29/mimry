@@ -9,6 +9,7 @@ namespace Mimry.DAL
         GenericRepository<Mim> MimRepository { get; }
         GenericRepository<MimSeq> MimSeqRepository { get; }
         GenericRepository<MimSeqLike> MimSeqLikeRepository { get; }
+        GenericRepository<MimVote> MimVoteRepository { get; }
         void Save();
     }
 
@@ -19,6 +20,7 @@ namespace Mimry.DAL
         private GenericRepository<Mim> m_MimRepository;
         private GenericRepository<MimSeq> m_MimSeqRepository;
         private GenericRepository<MimSeqLike> m_MimSeqLikeRepository;
+        private GenericRepository<MimVote> m_MimVoteRepository;
 
         private bool m_Disposed = false;
 
@@ -72,6 +74,18 @@ namespace Mimry.DAL
                     this.m_MimSeqLikeRepository = new GenericRepository<MimSeqLike>(m_Context);
                 }
                 return m_MimSeqLikeRepository;
+            }
+        }
+
+        public GenericRepository<MimVote> MimVoteRepository
+        {
+            get
+            {
+                if (m_MimVoteRepository == null)
+                {
+                    this.m_MimVoteRepository = new GenericRepository<MimVote>(m_Context);
+                }
+                return m_MimVoteRepository;
             }
         }
 

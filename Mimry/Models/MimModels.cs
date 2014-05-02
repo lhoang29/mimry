@@ -88,11 +88,23 @@ namespace Mimry.Models
         public string User { get; set; }
         public DateTime CreatedDate { get; set; }
     }
+
+    public class MimVote : IDateCreated
+    {
+        [Key, Column(Order = 1)]
+        public int MimID { get; set; }
+        [Key, Column(Order = 2)]
+        public string User { get; set; }
+        public int Vote { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+
     public class MimDBContext : DbContext
     {
         public DbSet<Mim> Mims { get; set; }
         public DbSet<MimSeq> MimSeqs { get; set; }
         public DbSet<MimSeqLike> MimSeqLikes { get; set; }
+        public DbSet<MimVote> MimVotes { get; set; }
 
         public override int SaveChanges()
         {
