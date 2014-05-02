@@ -189,6 +189,7 @@
     <Compile Include="ViewModels\MimryEdit.cs" />
     <Compile Include="ViewModels\MimryHeader.cs" />
     <Compile Include="ViewModels\MimSeqView.cs" />
+    <Compile Include="ViewModels\MimView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -257,6 +258,7 @@
     </Content>
     <Content Include="Views\MimSeqs\Edit.cshtml" />
     <Content Include="Views\Shared\MimryHeader.cshtml" />
+    <Content Include="Views\Shared\Mim.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

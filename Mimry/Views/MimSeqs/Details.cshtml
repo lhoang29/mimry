@@ -8,17 +8,16 @@
     @{
         var mimryHeader = new Mimry.ViewModels.MimryHeader() 
         {
-            MimSeqID = Model.MimSeq.MimSeqID,
-            Title = Model.MimSeq.Title,
-            ReturnUrl = "/MimSeqs/Details/" + Model.MimSeq.MimSeqID,
+            MimSeqID = Model.MimSeqID,
+            Title = Model.Title,
+            ReturnUrl = "/MimSeqs/Details/" + Model.MimSeqID,
             IsLiked = Model.IsLiked
         };
     }
     @Html.Partial("MimryHeader", mimryHeader)
 	<hr />
     @{
-        var sortedMims = Model.MimSeq.Mims.OrderBy(m => m.CreatedDate);
-        foreach (var mim in sortedMims)
+        foreach (var mim in Model.MimViews)
         {
             <div style="text-align:center">
                 <a href="/Mims/Details/@mim.MimID">

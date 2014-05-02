@@ -259,9 +259,19 @@ namespace Mimry.Controllers
         private MimSeqView ToMimSeqView(MimSeq ms)
         {
             var msv = new MimSeqView();
-            msv.MimSeq = ms;
+            msv.MimSeqID = ms.MimSeqID;
+            msv.Title = ms.Title;
             msv.IsLiked = (m_UOW.MimSeqLikeRepository.GetByID(ms.MimSeqID, User.Identity.GetUserName()) != null);
+            msv.MimViews = ms.Mims
+                .OrderBy(m => m.CreatedDate)
+                .Select(m => new MimView() { MimID = m.MimID, Vote = this.GetVote(m) });
             return msv;
+        }
+
+        private int GetVote(Mim m)
+        {
+            var mv = m_UOW.MimVoteRepository.GetByID(m.ID, User.Identity.GetUserName());
+            return (mv == null) ? 0 : mv.Vote;
         }
     }
 }

@@ -7,34 +7,18 @@
 <div class="container-fluid">
     @foreach (var it in Model)
     {
-        var item = it.MimSeq;
-        var mimryHeader = new Mimry.ViewModels.MimryHeader() 
-        { 
-            MimSeqID = item.MimSeqID, 
-            Title = item.Title, 
+        var mimryHeader = new Mimry.ViewModels.MimryHeader()
+        {
+            MimSeqID = it.MimSeqID,
+            Title = it.Title, 
             ReturnUrl = "/MimSeqs/Index/",
             IsLiked = it.IsLiked
         };
         @Html.Partial("MimryHeader", mimryHeader)
 
-        var sortedMims = item.Mims.OrderBy(m => m.CreatedDate);
-        foreach (var mim in sortedMims)
+        foreach (var mimView in it.MimViews)
         {
-            var mimDetailUrl = Url.Action("Details", "Mims", new { id = mim.MimID });
-            <div class="mim">
-                <a href="@mimDetailUrl">
-                    <img class="img-rounded mim" src="/Mims/Mimage/@mim.MimID?caption=true" />
-                </a>
-                <div class="ml-pin">
-                    <a class="ml ml-pin-default" href="#" title="Nice!">
-                        <i class="fa fa-smile-o fa-2x"></i>
-                    </a>
-                    <br />
-                    <a class="ml ml-pin-default" href="#" title="Meh">
-                        <i class="fa fa-meh-o fa-2x"></i>
-                    </a>
-                </div>
-            </div>
+            @Html.Partial("Mim", mimView)
         }
         <br />
         <hr />

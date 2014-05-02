@@ -82,6 +82,34 @@ namespace Mimry.Controllers
             return base.File(imageData, "Image/jpeg");
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Vote(Guid id, string vote)
+        {
+            if (Request.IsAuthenticated)
+            {
+                Mim mim = m_UOW.MimRepository.Get(m => m.MimID == id).Single();
+                string userName = User.Identity.GetUserName();
+                MimVote mv = m_UOW.MimVoteRepository.GetByID(mim.ID, userName);
+                if (mv == null)
+                {
+                    mv = new MimVote() { MimID = mim.ID, User = userName, Vote = Convert.ToInt32(vote) };
+                    m_UOW.MimVoteRepository.Insert(mv);
+                }
+                else
+                {
+                    mv.Vote = Convert.ToInt32(vote);
+                    m_UOW.MimVoteRepository.Update(mv);
+                }
+                m_UOW.Save();
+                return new JsonResult() { Data = "success" };
+            }
+            else
+            {
+                return new JsonResult() { Data = Url.Action("Login", "Account") };
+            }
+        }
+
         // GET: /Mims/Create
         public ActionResult Create()
         {
