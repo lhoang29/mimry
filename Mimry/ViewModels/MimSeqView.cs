@@ -10,6 +10,7 @@ namespace Mimry.ViewModels
         public Guid MimSeqID { get; set; }
         public string Title { get; set; }
         public bool IsLiked { get; set; }
+        public bool IsOwner { get; set; }
         public IEnumerable<MimView> MimViews { get; set; }
     }
 }

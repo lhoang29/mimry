@@ -11,7 +11,8 @@
             MimSeqID = Model.MimSeqID,
             Title = Model.Title,
             ReturnUrl = "/MimSeqs/Details/" + Model.MimSeqID,
-            IsLiked = Model.IsLiked
+            IsLiked = Model.IsLiked,
+            IsOwner = Model.IsOwner
         };
     }
     @Html.Partial("MimryHeader", mimryHeader)

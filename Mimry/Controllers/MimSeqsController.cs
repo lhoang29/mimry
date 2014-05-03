@@ -18,6 +18,7 @@ namespace Mimry.Controllers
     public class MimSeqsController : Controller
     {
         private IUnitOfWork m_UOW;
+        private ApplicationDbContext userdb = new ApplicationDbContext();
 
         public MimSeqsController() : this(UnitOfWork.Current) { }
 
@@ -108,6 +109,10 @@ namespace Mimry.Controllers
             {
                 return HttpNotFound();
             }
+            if (!IsCurrentUserMimSeqOwner(mimseq))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             MimryEdit me = new MimryEdit() { MimSeqID = mimseq.MimSeqID, Title = mimseq.Title, ReturnUrl = returnUrl };
             return View(me);
         }
@@ -122,6 +127,10 @@ namespace Mimry.Controllers
                 if (ms == null)
                 {
                     return HttpNotFound();
+                }
+                if (!IsCurrentUserMimSeqOwner(ms))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 ms.Title = me.Title;
 
@@ -269,7 +278,21 @@ namespace Mimry.Controllers
             msv.MimViews = ms.Mims
                 .OrderBy(m => m.CreatedDate)
                 .Select(m => new MimView() { MimID = m.MimID, Vote = this.GetVote(m), ViewMode = vm });
+            msv.IsOwner = this.IsCurrentUserMimSeqOwner(ms);
             return msv;
+        }
+
+        private bool IsCurrentUserMimSeqOwner(MimSeq ms)
+        {
+            try
+            {
+                var mimseqOwner = ms.Mims.Single(m => m.PrevMimID == 0).GetCreatorName(userdb);
+                return User.Identity.GetUserName().Equals(mimseqOwner, StringComparison.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private int GetVote(Mim m)

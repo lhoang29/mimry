@@ -14,5 +14,6 @@ namespace Mimry.ViewModels
         public string ReturnUrl { get; set; }
 
         public bool IsLiked { get; set; }
+        public bool IsOwner { get; set; }
     }
 }
