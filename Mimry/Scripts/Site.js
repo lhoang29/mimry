@@ -1,7 +1,4 @@
 ﻿function likeMimry(mimryID) {
-    if ($(this).hasClass('ml-liked')) {
-        return;
-    }
     $this = $(this);
     $.ajax({
         url: '/MimSeqs/Like/' + mimryID,
@@ -10,8 +7,9 @@
         cache: false,
         success: function (data) {
             if (data == 'success') {
-                $this.attr('class', 'ml-liked');
-                $this.attr('title', 'Liked');
+                var currentlyLiked = $this.hasClass('ml-liked');
+                $this.attr('class', currentlyLiked ? 'ml' : 'ml-liked');
+                $this.attr('title', currentlyLiked ? 'Like' : 'Liked');
             }
             else {
                 window.location = data;

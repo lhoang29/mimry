@@ -155,8 +155,12 @@ namespace Mimry.Controllers
                 {
                     msl = new MimSeqLike() { MimSeqID = id, User = userName };
                     m_UOW.MimSeqLikeRepository.Insert(msl);
-                    m_UOW.Save();
                 }
+                else
+                {
+                    m_UOW.MimSeqLikeRepository.Delete(msl);
+                }
+                m_UOW.Save();
                 return new JsonResult() { Data = "success" };
             }
             else
