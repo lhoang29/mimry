@@ -53,6 +53,7 @@ input[type="checkbox"].input-validation-error {
 a.ml {
     margin:3px;
     outline:0px;
+    text-decoration:none;
 }
 
 a.ml-liked {
@@ -65,9 +66,8 @@ a.ml-liked {
 a.ml, a.ml:visited {
     color:black;
 }
-a.ml:hover, a.ml:active, a.ml:focus, a.ml-liked:hover, a.ml-liked:active, a.ml-liked:focus {
+a.ml:hover, a.ml-liked:hover {
     color:darkgray;
-    text-decoration:none;
 }
 
 .ml-pin {
