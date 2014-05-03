@@ -22,7 +22,7 @@
 
 function voteMim(mimryID, vote) {
     if ($(this).hasClass('ml-liked')) {
-        return;
+        vote = 0;
     }
     $this = $(this);
     $.ajax({
@@ -32,7 +32,12 @@ function voteMim(mimryID, vote) {
         cache: false,
         success: function (data) {
             if (data == 'success') {
-                $this.attr('class', 'ml-liked');
+                if (vote != 0) {
+                    $this.attr('class', 'ml-liked');
+                }
+                else {
+                    $this.attr('class', 'ml');
+                }
                 $this.siblings('.ml-liked').attr('class', 'ml');
             }
             else {

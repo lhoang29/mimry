@@ -59,14 +59,13 @@ a.ml-liked {
     margin:3px;
     outline:0px;
     color:cadetblue;
-    cursor:default;
     text-decoration:none;
 }
 
 a.ml, a.ml:visited {
     color:black;
 }
-a.ml:hover, a.ml:active, a.ml:focus {
+a.ml:hover, a.ml:active, a.ml:focus, a.ml-liked:hover, a.ml-liked:active, a.ml-liked:focus {
     color:darkgray;
     text-decoration:none;
 }
