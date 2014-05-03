@@ -34,7 +34,7 @@ namespace Mimry.Controllers
             var mimSeqViews = new List<MimSeqView>();
             foreach (var ms in mimSeqs)
             {
-                mimSeqViews.Add(this.ToMimSeqView(ms));
+                mimSeqViews.Add(this.ToMimSeqView(ms, MimViewMode.Thumbnail));
             }
             return View(mimSeqViews);
         }
@@ -52,7 +52,7 @@ namespace Mimry.Controllers
             {
                 return HttpNotFound();
             }
-            return View(this.ToMimSeqView(mimseq));
+            return View(this.ToMimSeqView(mimseq, MimViewMode.Full));
         }
 
         // GET: /MimSeqs/Create
@@ -260,7 +260,7 @@ namespace Mimry.Controllers
             base.Dispose(disposing);
         }
 
-        private MimSeqView ToMimSeqView(MimSeq ms)
+        private MimSeqView ToMimSeqView(MimSeq ms, MimViewMode vm)
         {
             var msv = new MimSeqView();
             msv.MimSeqID = ms.MimSeqID;
@@ -268,7 +268,7 @@ namespace Mimry.Controllers
             msv.IsLiked = (m_UOW.MimSeqLikeRepository.GetByID(ms.MimSeqID, User.Identity.GetUserName()) != null);
             msv.MimViews = ms.Mims
                 .OrderBy(m => m.CreatedDate)
-                .Select(m => new MimView() { MimID = m.MimID, Vote = this.GetVote(m) });
+                .Select(m => new MimView() { MimID = m.MimID, Vote = this.GetVote(m), ViewMode = vm });
             return msv;
         }
 
