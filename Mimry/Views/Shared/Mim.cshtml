@@ -1,4 +1,5 @@
-﻿@model Mimry.ViewModels.MimView
+﻿@using Mimry.ViewModels
+@model MimView
 
 @{
     var mimClass = String.Empty;
@@ -12,21 +13,12 @@
             break;
     }
     var mimDetailUrl = Url.Action("Details", "Mims", new { id = Model.MimID });
-    var upClass = "ajVoteUp " + (Model.Vote > 0 ? "ml-liked" : "ml");
-    var downClass = "ajVoteDown " + (Model.Vote < 0 ? "ml-liked" : "ml");
     <div class="mim">
         <a href="@mimDetailUrl">
             <img class="@mimClass" src="/Mims/Mimage/@Model.MimID?caption=true" />
         </a>
         <div class="ml-pin">
-            <input name="MimID" type="hidden" value="@Model.MimID" />
-            <button class="@upClass" title="Nice!">
-                <i class="fa fa-smile-o fa-2x"></i>
-            </button>
-            <br />
-            <button class="@downClass" title="Meh">
-                <i class="fa fa-meh-o fa-2x"></i>
-            </button>
+            @Html.Partial("MimActions", new MimActionsView() { MimID = Model.MimID, Vote = Model.Vote })
         </div>
     </div>
 }

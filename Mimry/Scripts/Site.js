@@ -7,29 +7,23 @@
         $.ajax({
             url: '/Mims/Vote/' + mimryID + '?vote=' + vote,
             type: "POST",
-            dataType: "json",
+            dataType: "html",
             cache: false,
             success: function (data) {
-                if (data == 'success') {
-                    if (vote != 0) {
-                        $this.attr('class', 'ml-liked');
-                    }
-                    else {
-                        $this.attr('class', 'ml');
-                    }
-                    $this.siblings('.ml-liked').attr('class', 'ml');
-                }
-                else {
-                    window.location = data;
+                $this.parent('.ml-pin').html(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status == 401) {
+                    window.location = jqXHR.responseText;
                 }
             }
         });
     }
 
-    $('.ajVoteUp').click(function () {
+    $('.ml-pin').on('click', '.ajVoteUp', function () {
         voteMim.call(this, $(this).siblings('[name="MimID"]').val(), 1);
     });
-    $('.ajVoteDown').click(function () {
+    $('.ml-pin').on('click', '.ajVoteDown', function () {
         voteMim.call(this, $(this).siblings('[name="MimID"]').val(), -1);
     });
 

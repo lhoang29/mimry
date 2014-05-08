@@ -158,6 +158,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Attributes\AjaxAuthorizeAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\MimsController.cs" />
     <Compile Include="Controllers\MimSeqsController.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Models\MimModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\MimActionsView.cs" />
     <Compile Include="ViewModels\MimDetails.cs" />
     <Compile Include="ViewModels\MimryContinue.cs" />
     <Compile Include="ViewModels\MimryCreate.cs" />
@@ -269,6 +271,7 @@
     <Content Include="Views\Shared\MimryHeader.cshtml" />
     <Content Include="Views\Shared\Mim.cshtml" />
     <Content Include="Views\Shared\MimryComment.cshtml" />
+    <Content Include="Views\Shared\MimActions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

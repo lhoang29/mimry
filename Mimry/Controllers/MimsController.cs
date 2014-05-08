@@ -13,10 +13,11 @@ using Mimry.Models;
 using Mimry.ViewModels;
 using Mimry.Helpers;
 using Mimry.DAL;
+using Mimry.Attributes;
 
 namespace Mimry.Controllers
 {
-    [Authorize]
+    [AjaxAuthorize("/Account/Login/")]
     public class MimsController : Controller
     {
         private IUnitOfWork m_UOW;
@@ -83,31 +84,23 @@ namespace Mimry.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public ActionResult Vote(Guid id, string vote)
         {
-            if (Request.IsAuthenticated)
+            Mim mim = m_UOW.MimRepository.Get(m => m.MimID == id).Single();
+            string userName = User.Identity.GetUserName();
+            MimVote mv = m_UOW.MimVoteRepository.GetByID(mim.ID, userName);
+            if (mv == null)
             {
-                Mim mim = m_UOW.MimRepository.Get(m => m.MimID == id).Single();
-                string userName = User.Identity.GetUserName();
-                MimVote mv = m_UOW.MimVoteRepository.GetByID(mim.ID, userName);
-                if (mv == null)
-                {
-                    mv = new MimVote() { MimID = mim.ID, User = userName, Vote = Convert.ToInt32(vote) };
-                    m_UOW.MimVoteRepository.Insert(mv);
-                }
-                else
-                {
-                    mv.Vote = Convert.ToInt32(vote);
-                    m_UOW.MimVoteRepository.Update(mv);
-                }
-                m_UOW.Save();
-                return new JsonResult() { Data = "success" };
+                mv = new MimVote() { MimID = mim.ID, User = userName, Vote = Convert.ToInt32(vote) };
+                m_UOW.MimVoteRepository.Insert(mv);
             }
             else
             {
-                return new JsonResult() { Data = Url.Action("Login", "Account") };
+                mv.Vote = Convert.ToInt32(vote);
+                m_UOW.MimVoteRepository.Update(mv);
             }
+            m_UOW.Save();
+            return PartialView("MimActions", new MimActionsView() { MimID = mim.MimID, Vote = mv.Vote });
         }
 
         // GET: /Mims/Create
