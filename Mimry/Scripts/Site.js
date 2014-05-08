@@ -32,21 +32,19 @@
         $.ajax({
             url: '/MimSeqs/Like/' + mimryID,
             type: "POST",
-            dataType: "json",
+            dataType: "html",
             cache: false,
             success: function (data) {
-                if (data == 'success') {
-                    var currentlyLiked = $this.hasClass('ml-liked');
-                    $this.attr('class', currentlyLiked ? 'ml' : 'ml-liked');
-                    $this.attr('title', currentlyLiked ? 'Like' : 'Liked');
-                }
-                else {
-                    window.location = data;
+                $this.parent('.mr-header-actions').html(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status == 401) {
+                    window.location = jqXHR.responseText;
                 }
             }
         });
     }
-    $('.ajLike').click(function () {
+    $('.mr-header-actions').on('click', '.ajLike', function () {
         likeMimry.call(this, $(this).siblings('[name="MimSeqID"]').val());
     });
 });

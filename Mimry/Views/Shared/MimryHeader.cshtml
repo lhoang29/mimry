@@ -1,6 +1,7 @@
-﻿@model Mimry.ViewModels.MimryHeader
+﻿@using Mimry.ViewModels
+@model MimryHeader
 
-<h2>
+<div class="mr-header">
     <a class="ml" href="/MimSeqs/Details/@Model.MimSeqID" title="View">
         @Model.Title
     </a>
@@ -13,12 +14,7 @@
     <a class="ml" href="/MimSeqs/Add/@Model.MimSeqID?returnUrl=@Model.ReturnUrl" title="Add to this Mimry">
         <i class="fa fa-plus-square"></i>
     </a>
-    @{
-        var likeClass = "ajLike " + (Model.IsLiked ? "ml-liked" : "ml");
-        var likeTitle = Model.IsLiked ? "Liked" : "Like";
-        <input name="MimSeqID" type="hidden" value="@Model.MimSeqID" />
-        <button class="@likeClass" title="@likeTitle">
-            <i class="fa fa-thumbs-o-up"></i>
-        </button>
-    }
-</h2>
+    <div class="mr-header-actions">
+        @Html.Partial("MimryHeaderActions", new MimryHeaderActionsView() { MimSeqID = Model.MimSeqID, IsLiked = Model.IsLiked })
+    </div>
+</div>

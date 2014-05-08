@@ -11,10 +11,11 @@ using Mimry.Models;
 using Mimry.Helpers;
 using Mimry.ViewModels;
 using Mimry.DAL;
+using Mimry.Attributes;
 
 namespace Mimry.Controllers
 {
-    [Authorize]
+    [AjaxAuthorize("/Account/Login/")]
     public class MimSeqsController : Controller
     {
         private IUnitOfWork m_UOW;
@@ -147,35 +148,36 @@ namespace Mimry.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public ActionResult Like(Guid id)
         {
-            if (Request.IsAuthenticated)
+            MimSeq mimseq = m_UOW.MimSeqRepository.GetByID(id);
+            if (mimseq == null)
             {
-                MimSeq mimseq = m_UOW.MimSeqRepository.GetByID(id);
-                if (mimseq == null)
-                {
-                    return HttpNotFound();
-                }
+                return HttpNotFound();
+            }
 
-                string userName = User.Identity.GetUserName();
-                MimSeqLike msl = m_UOW.MimSeqLikeRepository.GetByID(id, userName);
-                if (msl == null)
-                {
-                    msl = new MimSeqLike() { MimSeqID = id, User = userName };
-                    m_UOW.MimSeqLikeRepository.Insert(msl);
-                }
-                else
-                {
-                    m_UOW.MimSeqLikeRepository.Delete(msl);
-                }
-                m_UOW.Save();
-                return new JsonResult() { Data = "success" };
+            string userName = User.Identity.GetUserName();
+            MimSeqLike msl = m_UOW.MimSeqLikeRepository.GetByID(id, userName);
+            bool isLiked = (msl == null);
+            if (msl == null)
+            {
+                msl = new MimSeqLike() { MimSeqID = id, User = userName };
+                m_UOW.MimSeqLikeRepository.Insert(msl);
             }
             else
             {
-                return new JsonResult() { Data = Url.Action("Login", "Account") };
+                m_UOW.MimSeqLikeRepository.Delete(msl);
             }
+            m_UOW.Save();
+
+            return PartialView(
+                "MimryHeaderActions", 
+                new MimryHeaderActionsView() 
+                { 
+                    MimSeqID = mimseq.MimSeqID,
+                    IsLiked = isLiked
+                }
+            );
         }
 
         [HttpPost]

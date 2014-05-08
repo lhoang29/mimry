@@ -49,6 +49,16 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
+div.mr-header {
+    font-size:30px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+div.mr-header-actions {
+    display:inline-block;
+}
+
 a.ml {
     margin:3px;
     outline:0px;
