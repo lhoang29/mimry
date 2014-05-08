@@ -5,7 +5,7 @@ namespace Mimry.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Mimry.Models.MimDBContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Mimry.DAL.MimDBContext>
     {
         public Configuration()
         {
@@ -13,7 +13,7 @@ namespace Mimry.Migrations
             ContextKey = "Mimry.Models.MimDBContext";
         }
 
-        protected override void Seed(Mimry.Models.MimDBContext context)
+        protected override void Seed(Mimry.DAL.MimDBContext context)
         {
             //  This method will be called after migrating to the latest version.
 

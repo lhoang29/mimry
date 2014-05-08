@@ -44,3 +44,7 @@ function voteMim(mimryID, vote) {
         }
     });
 }
+
+function clearComment() {
+    $('#txtComment').val('');
+}

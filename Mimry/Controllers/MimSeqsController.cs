@@ -178,6 +178,26 @@ namespace Mimry.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PostComment(Guid id, string txtComment)
+        {
+            MimSeq mimseq = m_UOW.MimSeqRepository.GetByID(id);
+            if (mimseq == null)
+            {
+                return HttpNotFound();
+            }
+
+            MimSeqComment msc = new MimSeqComment();
+            msc.MimSeq = mimseq;
+            msc.User = User.Identity.GetUserName();
+            msc.Value = txtComment;
+            m_UOW.MimSeqCommentRepository.Insert(msc);
+            m_UOW.Save();
+
+            return PartialView("MimryComment", msc);
+        }
+
         // GET: /MimSeqs/Add/5
         public ActionResult Add(Guid? id, string returnUrl)
         {
@@ -279,6 +299,10 @@ namespace Mimry.Controllers
                 .OrderBy(m => m.CreatedDate)
                 .Select(m => new MimView() { MimID = m.MimID, Vote = this.GetVote(m), ViewMode = vm });
             msv.IsOwner = this.IsCurrentUserMimSeqOwner(ms);
+            if (vm == MimViewMode.Full)
+            {
+                msv.Comments = ms.Comments;
+            }
             return msv;
         }
 

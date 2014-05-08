@@ -7,21 +7,13 @@ using System.Linq;
 
 namespace Mimry.Models
 {
-    public interface IDateCreated
-    {
-        DateTime CreatedDate { get; set; }
-    }
-    public interface IDateModified
-    {
-        DateTime LastModifiedDate { get; set; }
-    }
     public class Mim : IDateCreated, IDateModified
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid MimID { get; set; }
 
         [Display(Name="Mim Title")]
@@ -79,17 +71,19 @@ namespace Mimry.Models
         public string Title { get; set; }
         public DateTime CreatedDate { get; set; }
         public virtual ICollection<Mim> Mims { get; set; }
+        public virtual ICollection<MimSeqComment> Comments { get; set; }
     }
-    public class MimSeqLike : IDateCreated
+    public class MimSeqLike : IUserAction
     {
         [Key, Column(Order = 1)]
         public Guid MimSeqID { get; set; }
         [Key, Column(Order = 2)]
         public string User { get; set; }
         public DateTime CreatedDate { get; set; }
+        public DateTime LastModifiedDate { get; set; }
     }
 
-    public class MimVote : IDateCreated
+    public class MimVote : IUserAction
     {
         [Key, Column(Order = 1)]
         public int MimID { get; set; }
@@ -97,38 +91,6 @@ namespace Mimry.Models
         public string User { get; set; }
         public int Vote { get; set; }
         public DateTime CreatedDate { get; set; }
-    }
-
-    public class MimDBContext : DbContext
-    {
-        public DbSet<Mim> Mims { get; set; }
-        public DbSet<MimSeq> MimSeqs { get; set; }
-        public DbSet<MimSeqLike> MimSeqLikes { get; set; }
-        public DbSet<MimVote> MimVotes { get; set; }
-
-        public override int SaveChanges()
-        {
-            foreach (var entity in ChangeTracker.Entries()
-              .Where(p => p.State == EntityState.Added || p.State == EntityState.Modified))
-            {
-                if (entity.State == EntityState.Added)
-                {
-                    if (entity.Entity is IDateCreated)
-                    {
-                        ((IDateCreated)entity.Entity).CreatedDate = DateTime.Now;
-                    }
-                    if (entity.Entity is IDateModified)
-                    {
-                        ((IDateModified)entity.Entity).LastModifiedDate = DateTime.Now;
-                    }
-                }
-                if (entity.State == EntityState.Modified && entity.Entity is IDateModified)
-                {
-                    ((IDateModified)entity.Entity).LastModifiedDate = DateTime.Now;
-                }
-            }
-
-            return base.SaveChanges();
-        }
+        public DateTime LastModifiedDate { get; set; }
     }
 }

@@ -12,5 +12,6 @@ namespace Mimry.ViewModels
         public bool IsLiked { get; set; }
         public bool IsOwner { get; set; }
         public IEnumerable<MimView> MimViews { get; set; }
+        public IEnumerable<MimSeqComment> Comments { get; set; }
     }
 }
