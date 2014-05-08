@@ -24,6 +24,7 @@ namespace Mimry.Attributes
                 filterContext.HttpContext.Response.StatusCode = Convert.ToInt32(HttpStatusCode.Unauthorized);
                 filterContext.HttpContext.Response.Write(m_RedirectUrl);
                 filterContext.HttpContext.Response.End();
+                filterContext.Result = new HttpUnauthorizedResult();
             }
             else
             {

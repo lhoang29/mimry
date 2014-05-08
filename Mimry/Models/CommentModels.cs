@@ -13,7 +13,7 @@ namespace Mimry.Models
         public virtual MimSeq MimSeq { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         public string User { get; set; }
         public virtual MimSeqComment Parent { get; set; }
         [Required]
@@ -25,6 +25,7 @@ namespace Mimry.Models
         [Key, Column(Order = 1)]
         public int MimSeqCommentID { get; set; }
         [Key, Column(Order = 2)]
+        [Required(AllowEmptyStrings = false)]
         public string User { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
@@ -35,6 +36,7 @@ namespace Mimry.Models
         [Key, Column(Order = 1)]
         public int MimSeqCommentID { get; set; }
         [Key, Column(Order = 2)]
+        [Required(AllowEmptyStrings = false)]
         public string User { get; set; }
         public int Vote { get; set; }
         public DateTime CreatedDate { get; set; }

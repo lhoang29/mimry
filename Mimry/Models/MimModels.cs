@@ -27,7 +27,7 @@ namespace Mimry.Models
         [Display(Name = "Last Modified")]
         public DateTime LastModifiedDate { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         [Display(Name = "Created By")]
         public string Creator { get; set; }
         
@@ -78,6 +78,7 @@ namespace Mimry.Models
         [Key, Column(Order = 1)]
         public Guid MimSeqID { get; set; }
         [Key, Column(Order = 2)]
+        [Required(AllowEmptyStrings = false)]
         public string User { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
@@ -88,6 +89,7 @@ namespace Mimry.Models
         [Key, Column(Order = 1)]
         public int MimID { get; set; }
         [Key, Column(Order = 2)]
+        [Required(AllowEmptyStrings = false)]
         public string User { get; set; }
         public int Vote { get; set; }
         public DateTime CreatedDate { get; set; }
