@@ -16,8 +16,8 @@
     @{
         var likeClass = Model.IsLiked ? "ml-liked" : "ml";
         var likeTitle = Model.IsLiked ? "Liked" : "Like";
-        <a class="@likeClass" href="#" title="@likeTitle" onclick="likeMimry.call(this, '@Model.MimSeqID'); return false;">
+        <button class="@likeClass" title="@likeTitle" onclick="likeMimry.call(this, '@Model.MimSeqID'); return false;">
             <i class="fa fa-thumbs-o-up"></i>
-        </a>
+        </button>
     }
 </h2>

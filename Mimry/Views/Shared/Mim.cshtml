@@ -19,13 +19,13 @@
             <img class="@mimClass" src="/Mims/Mimage/@Model.MimID?caption=true" />
         </a>
         <div class="ml-pin">
-            <a class="@upClass" href="#" title="Nice!" onclick="voteMim.call(this, '@Model.MimID', 1); return false;">
+            <button class="@upClass" title="Nice!" onclick="voteMim.call(this, '@Model.MimID', 1); return false;">
                 <i class="fa fa-smile-o fa-2x"></i>
-            </a>
+            </button>
             <br />
-            <a class="@downClass" href="#" title="Meh" onclick="voteMim.call(this, '@Model.MimID', -1); return false;">
+            <button class="@downClass" title="Meh" onclick="voteMim.call(this, '@Model.MimID', -1); return false;">
                 <i class="fa fa-meh-o fa-2x"></i>
-            </a>
+            </button>
         </div>
     </div>
 }
