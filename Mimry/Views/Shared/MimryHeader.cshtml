@@ -14,9 +14,10 @@
         <i class="fa fa-plus-square"></i>
     </a>
     @{
-        var likeClass = Model.IsLiked ? "ml-liked" : "ml";
+        var likeClass = "ajLike " + (Model.IsLiked ? "ml-liked" : "ml");
         var likeTitle = Model.IsLiked ? "Liked" : "Like";
-        <button class="@likeClass" title="@likeTitle" onclick="likeMimry.call(this, '@Model.MimSeqID'); return false;">
+        <input name="MimSeqID" type="hidden" value="@Model.MimSeqID" />
+        <button class="@likeClass" title="@likeTitle">
             <i class="fa fa-thumbs-o-up"></i>
         </button>
     }
