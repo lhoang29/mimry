@@ -14,7 +14,16 @@
     <a class="ml" href="/MimSeqs/Add/@Model.MimSeqID?returnUrl=@Model.ReturnUrl" title="Add to this Mimry">
         <i class="fa fa-plus-square"></i>
     </a>
+    <a class="ml" href="/MimSeqs/Details/@Model.MimSeqID?returnUrl=@Model.ReturnUrl" title="View comments">
+        <i class="fa fa-comments-o"></i>
+        <span class="badge">@Model.CommentCount</span>
+    </a>
     <div class="mr-header-actions">
-        @Html.Partial("MimryHeaderActions", new MimryHeaderActionsView() { MimSeqID = Model.MimSeqID, IsLiked = Model.IsLiked })
+        @Html.Partial("MimryHeaderActions", new MimryHeaderActionsView() 
+        { 
+            MimSeqID = Model.MimSeqID, 
+            IsLiked = Model.IsLiked,
+            LikeCount = Model.LikeCount
+        })
     </div>
 </div>

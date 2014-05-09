@@ -8,5 +8,6 @@ namespace Mimry.ViewModels
     {
         public Guid MimSeqID { get; set; }
         public bool IsLiked { get; set; }
+        public int LikeCount { get; set; }
     }
 }

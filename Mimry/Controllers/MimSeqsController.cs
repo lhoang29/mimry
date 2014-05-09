@@ -170,12 +170,15 @@ namespace Mimry.Controllers
             }
             m_UOW.Save();
 
+            int likeCount = m_UOW.MimSeqLikeRepository.Get(ml => ml.MimSeqID == id).Count();
+
             return PartialView(
                 "MimryHeaderActions", 
                 new MimryHeaderActionsView() 
                 { 
                     MimSeqID = mimseq.MimSeqID,
-                    IsLiked = isLiked
+                    IsLiked = isLiked,
+                    LikeCount = likeCount
                 }
             );
         }
@@ -297,6 +300,8 @@ namespace Mimry.Controllers
             msv.MimSeqID = ms.MimSeqID;
             msv.Title = ms.Title;
             msv.IsLiked = (m_UOW.MimSeqLikeRepository.GetByID(ms.MimSeqID, User.Identity.GetUserName()) != null);
+            msv.LikeCount = m_UOW.MimSeqLikeRepository.Get(m => m.MimSeqID == ms.MimSeqID).Count();
+            msv.CommentCount = ms.Comments.Count();
             msv.MimViews = ms.Mims
                 .OrderBy(m => m.CreatedDate)
                 .Select(m => new MimView() { MimID = m.MimID, Vote = this.GetVote(m), ViewMode = vm });
