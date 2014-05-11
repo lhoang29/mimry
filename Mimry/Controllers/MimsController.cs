@@ -22,6 +22,8 @@ namespace Mimry.Controllers
     {
         private IUnitOfWork m_UOW;
         private ApplicationDbContext userdb = new ApplicationDbContext();
+        private const int c_ThumbnailSize = 400;
+        private const int c_MediumSize = 600;
 
         public MimsController() : this(UnitOfWork.Current) { }
 
@@ -67,7 +69,7 @@ namespace Mimry.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Mimage(Guid? id, bool caption = false)
+        public ActionResult Mimage(Guid? id, bool caption = false, MimViewMode mode = MimViewMode.Thumbnail)
         {
             if (id == null)
             {
@@ -80,6 +82,34 @@ namespace Mimry.Controllers
             }
 
             byte[] imageData = caption ? MimsController.GenerateMeme(mim) : Convert.FromBase64String(mim.Image);
+
+            int maxSize = 0;
+            switch (mode)
+            {
+                case MimViewMode.Thumbnail:
+                    maxSize = c_ThumbnailSize;
+                    break;
+                case MimViewMode.Medium:
+                    maxSize = c_MediumSize;
+                    break;
+            }
+
+            if (maxSize > 0)
+            {
+                using (Bitmap bm = new Bitmap(new MemoryStream(imageData)))
+                {
+                    var resizedBitmap = MimsController.Resize(bm, maxSize);
+
+                    using (MemoryStream msb = new MemoryStream())
+                    {
+                        resizedBitmap.Save(msb, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        var resizedImageData = msb.ToArray();
+                        imageData = new byte[resizedImageData.Length];
+                        Array.Copy(resizedImageData, imageData, imageData.Length);
+                    }
+                }
+            }
+
             return base.File(imageData, "Image/jpeg");
         }
 
@@ -227,6 +257,24 @@ namespace Mimry.Controllers
                 m_UOW.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public static Bitmap Resize(Bitmap bm, int maxScaleSize)
+        {
+            int maxSize = Math.Max(bm.Width, bm.Height);
+            if (maxSize > maxScaleSize)
+            {
+                float scale = (float)maxScaleSize / maxSize;
+                var scaleWidth = (int)(bm.Width * scale);
+                var scaleHeight = (int)(bm.Height * scale);
+                Bitmap result = new Bitmap(scaleWidth, scaleHeight);
+                using (var graph = Graphics.FromImage(result))
+                {
+                    graph.DrawImage(bm, 0, 0, scaleWidth, scaleHeight);
+                }
+                return result;
+            }
+            return bm;
         }
 
         private static byte[] GenerateMeme(Mim mim)

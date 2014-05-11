@@ -8,14 +8,15 @@
         case Mimry.ViewModels.MimViewMode.Thumbnail:
             mimClass = "img-rounded mim";
             break;
+        case Mimry.ViewModels.MimViewMode.Medium:
         case Mimry.ViewModels.MimViewMode.Full:
-            mimClass = "mim-full";
+            mimClass = "mim";
             break;
     }
     var mimDetailUrl = Url.Action("Details", "Mims", new { id = Model.MimID });
     <div class="mim">
         <a href="@mimDetailUrl">
-            <img class="@mimClass" src="/Mims/Mimage/@Model.MimID?caption=true" />
+            <img class="@mimClass" src="/Mims/Mimage/@Model.MimID?caption=true&mode=@Model.ViewMode" />
         </a>
         <div class="ml-pin">
             @Html.Partial("MimActions", new MimActionsView() { MimID = Model.MimID, Vote = Model.Vote })

@@ -7,6 +7,7 @@ namespace Mimry.ViewModels
     public enum MimViewMode 
     { 
         Thumbnail = 0,
+        Medium,
         Full
     }
     public class MimView

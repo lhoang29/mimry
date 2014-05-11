@@ -54,7 +54,9 @@ namespace Mimry.Controllers
             {
                 return HttpNotFound();
             }
-            return View(this.ToMimSeqView(mimseq, MimViewMode.Full));
+            var msv = this.ToMimSeqView(mimseq, MimViewMode.Medium);
+            msv.Comments = mimseq.Comments;
+            return View(msv);
         }
 
         // GET: /MimSeqs/Create
@@ -306,10 +308,6 @@ namespace Mimry.Controllers
                 .OrderBy(m => m.CreatedDate)
                 .Select(m => new MimView() { MimID = m.MimID, Vote = this.GetVote(m), ViewMode = vm });
             msv.IsOwner = this.IsCurrentUserMimSeqOwner(ms);
-            if (vm == MimViewMode.Full)
-            {
-                msv.Comments = ms.Comments;
-            }
             return msv;
         }
 
