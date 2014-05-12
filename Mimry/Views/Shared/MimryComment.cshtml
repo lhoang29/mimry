@@ -1,7 +1,14 @@
-﻿@model Mimry.Models.MimSeqComment
+﻿@using Mimry.ViewModels
+@model MimryCommentView
+
 <div class="row">
-    <h4>@Model.Value</h4>
-</div>
-<div class="row">
-    <p class="text-muted">@Model.User - @Model.LastModifiedDate.ToString()</p>
+    <div>
+        <h4>@Model.Value</h4>
+    </div>
+    <div class="text-muted">
+        <div class="mr-comment-actions">
+            @Html.Partial("MimryCommentActions", new MimryCommentActionsView() { CommentID = Model.CommentID, Vote = Model.Vote })
+        </div>
+        @Model.User - @Model.LastModifiedDate.ToString()
+    </div>
 </div>

@@ -47,6 +47,34 @@
     $('.mr-header-actions').on('click', '.ajLike', function () {
         likeMimry.call(this, $(this).siblings('[name="MimSeqID"]').val());
     });
+
+    voteMimryComment = function (commentID, vote) {
+        if ($(this).hasClass('ml-liked')) {
+            vote = 0;
+        }
+        $this = $(this);
+        $.ajax({
+            url: '/MimSeqs/VoteComment/' + commentID + '?vote=' + vote,
+            type: "POST",
+            dataType: "html",
+            cache: false,
+            success: function (data) {
+                $this.parent('.mr-comment-actions').html(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status == 401) {
+                    window.location = jqXHR.responseText;
+                }
+            }
+        });
+    }
+
+    $('.mr-comment-actions').on('click', '.ajComVoteUp', function () {
+        voteMimryComment.call(this, $(this).siblings('[name="CommentID"]').val(), 1);
+    });
+    $('.mr-comment-actions').on('click', '.ajComVoteDown', function () {
+        voteMimryComment.call(this, $(this).siblings('[name="CommentID"]').val(), -1);
+    });
 });
 
 function clearComment() {

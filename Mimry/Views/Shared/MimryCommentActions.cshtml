@@ -1,0 +1,12 @@
+﻿@model Mimry.ViewModels.MimryCommentActionsView
+@{
+    var upClass = "ajComVoteUp " + (Model.Vote > 0 ? "ml-liked" : "ml");
+    var downClass = "ajComVoteDown " + (Model.Vote < 0 ? "ml-liked" : "ml");
+}
+<input type="hidden" name="CommentID" value="@Model.CommentID" />
+<button class="@upClass">
+    <i class="fa fa-angle-up"></i>
+</button>
+<button class="@downClass">
+    <i class="fa fa-angle-down"></i>
+</button>

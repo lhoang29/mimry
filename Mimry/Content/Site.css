@@ -55,7 +55,7 @@ div.mr-header {
     margin-bottom:10px;
 }
 
-div.mr-header-actions {
+div.mr-header-actions, div.mr-comment-actions {
     display:inline-block;
 }
 

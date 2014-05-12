@@ -191,6 +191,8 @@
     <Compile Include="Models\MimModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\MimryCommentView.cs" />
+    <Compile Include="ViewModels\MimryCommentActionsView.cs" />
     <Compile Include="ViewModels\MimryHeaderActionsView.cs" />
     <Compile Include="ViewModels\MimActionsView.cs" />
     <Compile Include="ViewModels\MimDetails.cs" />
@@ -274,6 +276,7 @@
     <Content Include="Views\Shared\MimryComment.cshtml" />
     <Content Include="Views\Shared\MimActions.cshtml" />
     <Content Include="Views\Shared\MimryHeaderActions.cshtml" />
+    <Content Include="Views\Shared\MimryCommentActions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

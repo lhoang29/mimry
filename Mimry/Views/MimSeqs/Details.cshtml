@@ -64,7 +64,7 @@
                         </div>
                     }
                     <div id="commentSection">
-                        @foreach (var comment in Model.Comments.OrderByDescending(c => c.LastModifiedDate))
+                        @foreach (var comment in Model.CommentViews.OrderByDescending(c => c.LastModifiedDate))
                         {
                             @Html.Partial("MimryComment", comment)
                         }

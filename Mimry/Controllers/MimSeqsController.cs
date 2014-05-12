@@ -55,7 +55,13 @@ namespace Mimry.Controllers
                 return HttpNotFound();
             }
             var msv = this.ToMimSeqView(mimseq, MimViewMode.Medium);
-            msv.Comments = mimseq.Comments;
+            msv.CommentViews = mimseq.Comments.Select(c => new MimryCommentView() {
+                CommentID = c.CommentID,
+                LastModifiedDate = c.LastModifiedDate,
+                User = c.User,
+                Value = c.Value,
+                Vote = this.GetCommentVote(c)
+            });
             return View(msv);
         }
 
@@ -205,6 +211,33 @@ namespace Mimry.Controllers
             return PartialView("MimryComment", msc);
         }
 
+        [HttpPost]
+        public ActionResult VoteComment(int id, string vote)
+        {
+            MimSeqComment mc = m_UOW.MimSeqCommentRepository.Get(msc => msc.CommentID == id).Single();
+            string userName = User.Identity.GetUserName();
+            MimSeqCommentVote mscv = m_UOW.MimSeqCommentVoteRepository.GetByID(mc.CommentID, userName);
+            if (mscv == null)
+            {
+                mscv = new MimSeqCommentVote() {
+                    MimSeqCommentID = id,
+                    Vote = Convert.ToInt32(vote),
+                    User = userName
+                };
+                m_UOW.MimSeqCommentVoteRepository.Insert(mscv);
+            }
+            else
+            {
+                mscv.Vote = Convert.ToInt32(vote);
+                m_UOW.MimSeqCommentVoteRepository.Update(mscv);
+            }
+            m_UOW.Save();
+            return PartialView("MimryCommentActions", new MimryCommentActionsView() { 
+                CommentID = id,
+                Vote = mscv.Vote 
+            });
+        }
+
         // GET: /MimSeqs/Add/5
         public ActionResult Add(Guid? id, string returnUrl)
         {
@@ -328,6 +361,12 @@ namespace Mimry.Controllers
         {
             var mv = m_UOW.MimVoteRepository.GetByID(m.ID, User.Identity.GetUserName());
             return (mv == null) ? 0 : mv.Vote;
+        }
+
+        private int GetCommentVote(MimSeqComment msc)
+        {
+            var mcv = m_UOW.MimSeqCommentVoteRepository.GetByID(msc.CommentID, User.Identity.GetUserName());
+            return (mcv == null) ? 0 : mcv.Vote;
         }
     }
 }

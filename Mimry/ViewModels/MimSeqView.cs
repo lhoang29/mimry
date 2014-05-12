@@ -14,6 +14,6 @@ namespace Mimry.ViewModels
         public int LikeCount { get; set; }
         public int CommentCount { get; set; }
         public IEnumerable<MimView> MimViews { get; set; }
-        public IEnumerable<MimSeqComment> Comments { get; set; }
+        public IEnumerable<MimryCommentView> CommentViews { get; set; }
     }
 }
