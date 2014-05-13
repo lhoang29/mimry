@@ -110,3 +110,9 @@ div.mim {
 img.mim {
     margin:5px;
 }
+
+img.mim-full {
+    width:100%;
+    min-width:300px;
+    margin:5px;
+}
