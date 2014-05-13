@@ -97,6 +97,7 @@ button.ml-liked {
 }
 
 .ml-pin {
+    text-align:left;
     position:absolute;
     right:5px;
     top:5px;
