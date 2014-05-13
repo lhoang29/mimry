@@ -183,6 +183,10 @@
     <Compile Include="Migrations\201405042349251_AddMimSeqComment.Designer.cs">
       <DependentUpon>201405042349251_AddMimSeqComment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405130206346_DeleteMimSeqCommentLike.cs" />
+    <Compile Include="Migrations\201405130206346_DeleteMimSeqCommentLike.Designer.cs">
+      <DependentUpon>201405130206346_DeleteMimSeqCommentLike.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BaseModels.cs" />
@@ -296,6 +300,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405042349251_AddMimSeqComment.resx">
       <DependentUpon>201405042349251_AddMimSeqComment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405130206346_DeleteMimSeqCommentLike.resx">
+      <DependentUpon>201405130206346_DeleteMimSeqCommentLike.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

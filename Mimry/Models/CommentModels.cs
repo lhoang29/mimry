@@ -20,17 +20,6 @@ namespace Mimry.Models
         public string Value { get; set; }
     }
 
-    public class MimSeqCommentLike : IUserAction
-    {
-        [Key, Column(Order = 1)]
-        public int MimSeqCommentID { get; set; }
-        [Key, Column(Order = 2)]
-        [Required(AllowEmptyStrings = false)]
-        public string User { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime LastModifiedDate { get; set; }
-    }
-
     public class MimSeqCommentVote : IUserAction
     {
         [Key, Column(Order = 1)]

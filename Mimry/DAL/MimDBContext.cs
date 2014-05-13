@@ -12,7 +12,6 @@ namespace Mimry.DAL
         public DbSet<MimSeqLike> MimSeqLikes { get; set; }
         public DbSet<MimVote> MimVotes { get; set; }
         public DbSet<MimSeqComment> MimSeqComments { get; set; }
-        public DbSet<MimSeqCommentLike> MimSeqCommentLikes { get; set; }
         public DbSet<MimSeqCommentVote> MimSeqCommentVotes { get; set; }
 
         public override int SaveChanges()
