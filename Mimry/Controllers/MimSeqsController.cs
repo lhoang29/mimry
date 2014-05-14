@@ -33,6 +33,10 @@ namespace Mimry.Controllers
         public ActionResult Index()
         {
             var mimSeqs = m_UOW.MimSeqRepository.Get();
+            if (mimSeqs == null)
+            {
+                return HttpNotFound();
+            }
             var mimSeqViews = new List<MimSeqView>();
             foreach (var ms in mimSeqs)
             {
