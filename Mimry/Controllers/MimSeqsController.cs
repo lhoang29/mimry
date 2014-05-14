@@ -169,6 +169,11 @@ namespace Mimry.Controllers
             }
 
             string userName = User.Identity.GetUserName();
+            if (String.IsNullOrWhiteSpace(userName))
+            {
+                // If code can get in here with an invalid user name then there's an internal server error
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
             MimSeqLike msl = m_UOW.MimSeqLikeRepository.GetByID(id, userName);
             bool isLiked = (msl == null);
             if (msl == null)
@@ -205,9 +210,21 @@ namespace Mimry.Controllers
                 return HttpNotFound();
             }
 
+            if (String.IsNullOrWhiteSpace(txtComment))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            string userName = User.Identity.GetUserName();
+            if (String.IsNullOrWhiteSpace(userName))
+            {
+                // If code can get in here with an invalid user name then there's an internal server error
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+
             MimSeqComment msc = new MimSeqComment();
             msc.MimSeq = mimseq;
-            msc.User = User.Identity.GetUserName();
+            msc.User = userName;
             msc.Value = txtComment;
             m_UOW.MimSeqCommentRepository.Insert(msc);
             m_UOW.Save();
@@ -218,8 +235,27 @@ namespace Mimry.Controllers
         [HttpPost]
         public ActionResult VoteComment(int id, string vote)
         {
-            MimSeqComment mc = m_UOW.MimSeqCommentRepository.Get(msc => msc.CommentID == id).Single();
+            var mscs = m_UOW.MimSeqCommentRepository.Get(msc => msc.CommentID == id);
+            if (mscs == null)
+	        {
+                return HttpNotFound();
+	        }
+            MimSeqComment mc = null;
+            try
+            {
+                mc = mscs.Single();
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+
             string userName = User.Identity.GetUserName();
+            if (String.IsNullOrWhiteSpace(userName))
+            {
+                // If code can get in here with an invalid user name then there's an internal server error
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
             MimSeqCommentVote mscv = m_UOW.MimSeqCommentVoteRepository.GetByID(mc.CommentID, userName);
             if (mscv == null)
             {

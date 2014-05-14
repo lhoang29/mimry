@@ -49,10 +49,19 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Mim mim = m_UOW.MimRepository.Get(m => m.MimID == id).Single();
-            if (mim == null)
+            var mims = m_UOW.MimRepository.Get(m => m.MimID == id);
+            if (mims == null)
             {
                 return HttpNotFound();
+            }
+            Mim mim = null;
+            try
+            {
+                mim = mims.Single();
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
 
             MimDetails md = new MimDetails();
@@ -75,10 +84,19 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Mim mim = m_UOW.MimRepository.Get(m => m.MimID == id).Single();
-            if (mim == null)
+            var mims = m_UOW.MimRepository.Get(m => m.MimID == id);
+            if (mims == null)
             {
                 return HttpNotFound();
+            }
+            Mim mim = null;
+            try
+            {
+                mim = mims.Single();
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
 
             byte[] imageData = caption ? MimsController.GenerateMeme(mim) : Convert.FromBase64String(mim.Image);
@@ -116,8 +134,26 @@ namespace Mimry.Controllers
         [HttpPost]
         public ActionResult Vote(Guid id, string vote)
         {
-            Mim mim = m_UOW.MimRepository.Get(m => m.MimID == id).Single();
+            var mims = m_UOW.MimRepository.Get(m => m.MimID == id);
+            if (mims == null)
+            {
+                return HttpNotFound();
+            }
+            Mim mim = null;
+            try
+            {
+                mim = mims.Single();
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
             string userName = User.Identity.GetUserName();
+            if (String.IsNullOrWhiteSpace(userName))
+            {
+                // If code can get in here with an invalid user name then there's an internal server error
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
             MimVote mv = m_UOW.MimVoteRepository.GetByID(mim.ID, userName);
             if (mv == null)
             {
@@ -169,10 +205,19 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Mim mim = m_UOW.MimRepository.Get(m => m.MimID == id).Single();
-            if (mim == null)
+            var mims = m_UOW.MimRepository.Get(m => m.MimID == id);
+            if (mims == null)
             {
                 return HttpNotFound();
+            }
+            Mim mim = null;
+            try
+            {
+                mim = mims.Single();
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
             if (String.Compare(User.Identity.GetUserId(), mim.Creator, StringComparison.OrdinalIgnoreCase) != 0)
             {
@@ -194,10 +239,19 @@ namespace Mimry.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="MimID,Title,Creator,CaptionTop,CaptionBottom")] Mim mim, string imageUrl)
         {
-            Mim currentMim = m_UOW.MimRepository.Get(m => m.MimID == mim.MimID).Single();
-            if (currentMim == null)
+            var mims = m_UOW.MimRepository.Get(m => m.MimID == mim.MimID);
+            if (mims == null)
             {
                 return HttpNotFound();
+            }
+            Mim currentMim = null;
+            try
+            {
+                currentMim = mims.Single();
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
             if (!String.IsNullOrWhiteSpace(imageUrl))
             {
@@ -259,22 +313,33 @@ namespace Mimry.Controllers
             base.Dispose(disposing);
         }
 
-        public static Bitmap Resize(Bitmap bm, int maxScaleSize)
+        /// <summary>
+        /// Resize an image so that its width or height is no larger than 
+        /// the specified value while keeping aspect ratio.
+        /// </summary>
+        /// <param name="image">The image to resize.</param>
+        /// <param name="maxScaleSize">The maximum size in either width or height.</param>
+        /// <returns>New resized image.</returns>
+        /// <remarks>
+        /// If the specified image is already smaller than the specified max size
+        /// then nothing is done.
+        /// </remarks>
+        public static Bitmap Resize(Bitmap image, int maxScaleSize)
         {
-            int maxSize = Math.Max(bm.Width, bm.Height);
+            int maxSize = Math.Max(image.Width, image.Height);
             if (maxSize > maxScaleSize)
             {
                 float scale = (float)maxScaleSize / maxSize;
-                var scaleWidth = (int)(bm.Width * scale);
-                var scaleHeight = (int)(bm.Height * scale);
+                var scaleWidth = (int)(image.Width * scale);
+                var scaleHeight = (int)(image.Height * scale);
                 Bitmap result = new Bitmap(scaleWidth, scaleHeight);
                 using (var graph = Graphics.FromImage(result))
                 {
-                    graph.DrawImage(bm, 0, 0, scaleWidth, scaleHeight);
+                    graph.DrawImage(image, 0, 0, scaleWidth, scaleHeight);
                 }
                 return result;
             }
-            return bm;
+            return image;
         }
 
         private static byte[] GenerateMeme(Mim mim)

@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
@@ -59,6 +60,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Controllers\MimSeqUnitTest.cs" />
+    <Compile Include="Controllers\MimUnitTest.cs" />
     <Compile Include="MockDAL\MockRepository.cs" />
     <Compile Include="MockDAL\MockUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

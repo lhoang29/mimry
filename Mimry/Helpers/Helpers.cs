@@ -33,7 +33,8 @@ namespace Mimry.Helpers
                 imageLoadError = "Invalid URL, Mimry was unable to grab the image at the specified address, please double check";
             }
 
-            if (c.ModelState[modelStateProperty].Errors != null)
+            if (c.ModelState[modelStateProperty] != null && 
+                c.ModelState[modelStateProperty].Errors != null)
             {
                 c.ModelState[modelStateProperty].Errors.Clear();
             }

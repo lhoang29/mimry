@@ -1,6 +1,7 @@
-Mimry/App_Data/*
+Mimry/App_Data
+packages
+TestResults
 */bin
 */obj
-packages/*
 *.suo
 *.csproj.user
