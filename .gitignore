@@ -1,6 +1,6 @@
 Mimry/App_Data/*
-Mimry/bin/*
-Mimry/obj/*
+*/bin
+*/obj
 packages/*
 *.suo
 *.csproj.user

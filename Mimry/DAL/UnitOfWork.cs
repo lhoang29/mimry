@@ -6,12 +6,12 @@ namespace Mimry.DAL
 {
     public interface IUnitOfWork : IDisposable
     {
-        GenericRepository<Mim> MimRepository { get; }
-        GenericRepository<MimSeq> MimSeqRepository { get; }
-        GenericRepository<MimSeqLike> MimSeqLikeRepository { get; }
-        GenericRepository<MimVote> MimVoteRepository { get; }
-        GenericRepository<MimSeqComment> MimSeqCommentRepository { get; }
-        GenericRepository<MimSeqCommentVote> MimSeqCommentVoteRepository { get; }
+        IRepository<Mim> MimRepository { get; }
+        IRepository<MimSeq> MimSeqRepository { get; }
+        IRepository<MimSeqLike> MimSeqLikeRepository { get; }
+        IRepository<MimVote> MimVoteRepository { get; }
+        IRepository<MimSeqComment> MimSeqCommentRepository { get; }
+        IRepository<MimSeqCommentVote> MimSeqCommentVoteRepository { get; }
         void Save();
     }
 
@@ -43,7 +43,7 @@ namespace Mimry.DAL
             }
         }
 
-        public GenericRepository<Mim> MimRepository
+        public IRepository<Mim> MimRepository
         {
             get
             {
@@ -56,7 +56,7 @@ namespace Mimry.DAL
             }
         }
 
-        public GenericRepository<MimSeq> MimSeqRepository
+        public IRepository<MimSeq> MimSeqRepository
         {
             get
             {
@@ -69,7 +69,7 @@ namespace Mimry.DAL
             }
         }
 
-        public GenericRepository<MimSeqLike> MimSeqLikeRepository
+        public IRepository<MimSeqLike> MimSeqLikeRepository
         {
             get 
             {
@@ -81,7 +81,7 @@ namespace Mimry.DAL
             }
         }
 
-        public GenericRepository<MimVote> MimVoteRepository
+        public IRepository<MimVote> MimVoteRepository
         {
             get
             {
@@ -93,7 +93,7 @@ namespace Mimry.DAL
             }
         }
 
-        public GenericRepository<MimSeqComment> MimSeqCommentRepository
+        public IRepository<MimSeqComment> MimSeqCommentRepository
         {
             get 
             {
@@ -105,7 +105,7 @@ namespace Mimry.DAL
             }
         }
 
-        public GenericRepository<MimSeqCommentVote> MimSeqCommentVoteRepository
+        public IRepository<MimSeqCommentVote> MimSeqCommentVoteRepository
         {
             get
             {

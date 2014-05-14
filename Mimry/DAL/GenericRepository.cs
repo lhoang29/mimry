@@ -7,7 +7,22 @@ using System.Linq.Expressions;
 
 namespace Mimry.DAL
 {
-    public class GenericRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity>
+        where TEntity : class
+    {
+        IEnumerable<TEntity> Get(
+            Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, 
+            IOrderedQueryable<TEntity>> orderBy = null,
+            string includeProperties = "");
+        TEntity GetByID(params object[] id);
+        void Insert(TEntity entity);
+        void Delete(object id);
+        void Delete(TEntity entityToDelete);
+        void Update(TEntity entityToUpdate);
+    }
+    public class GenericRepository<TEntity> : IRepository<TEntity>
+        where TEntity : class
     {
         internal MimDBContext m_Context;
         internal DbSet<TEntity> m_DbSet;
@@ -18,7 +33,7 @@ namespace Mimry.DAL
             this.m_DbSet = context.Set<TEntity>();
         }
 
-        public virtual IEnumerable<TEntity> Get(
+        public IEnumerable<TEntity> Get(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "")
@@ -46,23 +61,23 @@ namespace Mimry.DAL
             }
         }
 
-        public virtual TEntity GetByID(params object[] id)
+        public TEntity GetByID(params object[] id)
         {
             return m_DbSet.Find(id);
         }
 
-        public virtual void Insert(TEntity entity)
+        public void Insert(TEntity entity)
         {
             m_DbSet.Add(entity);
         }
 
-        public virtual void Delete(object id)
+        public void Delete(object id)
         {
             TEntity entityToDelete = m_DbSet.Find(id);
             Delete(entityToDelete);
         }
 
-        public virtual void Delete(TEntity entityToDelete)
+        public void Delete(TEntity entityToDelete)
         {
             if (m_Context.Entry(entityToDelete).State == EntityState.Detached)
             {
@@ -71,7 +86,7 @@ namespace Mimry.DAL
             m_DbSet.Remove(entityToDelete);
         }
 
-        public virtual void Update(TEntity entityToUpdate)
+        public void Update(TEntity entityToUpdate)
         {
             m_DbSet.Attach(entityToUpdate);
             m_Context.Entry(entityToUpdate).State = EntityState.Modified;
