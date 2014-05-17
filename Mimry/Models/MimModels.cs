@@ -50,6 +50,8 @@ namespace Mimry.Models
         
         public virtual MimSeq MimSeq { get; set; }
 
+        public virtual ICollection<MimVote> Votes { get; set; }
+
         public string GetCreatorName(ApplicationDbContext db)
         { 
             ApplicationUser user = db.Users.Find(this.Creator);
@@ -72,6 +74,7 @@ namespace Mimry.Models
         public DateTime CreatedDate { get; set; }
         public virtual ICollection<Mim> Mims { get; set; }
         public virtual ICollection<MimSeqComment> Comments { get; set; }
+        public virtual ICollection<MimSeqLike> Likes { get; set; }
     }
     public class MimSeqLike : IUserAction
     {
@@ -80,6 +83,8 @@ namespace Mimry.Models
         [Key, Column(Order = 2)]
         [Required(AllowEmptyStrings = false)]
         public string User { get; set; }
+        [ForeignKey("MimSeqID")]
+        public virtual MimSeq MimSeq { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
     }
@@ -91,6 +96,8 @@ namespace Mimry.Models
         [Key, Column(Order = 2)]
         [Required(AllowEmptyStrings = false)]
         public string User { get; set; }
+        [ForeignKey("MimID")]
+        public virtual Mim Mim { get; set; }
         public int Vote { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
