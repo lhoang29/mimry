@@ -22,7 +22,7 @@ namespace Mimry.Controllers
     {
         private IUnitOfWork m_UOW;
         private ApplicationDbContext userdb = new ApplicationDbContext();
-        private const int c_ThumbnailSize = 400;
+        private const int c_ThumbnailSize = 350;
         private const int c_MediumSize = 600;
 
         public MimsController() : this(UnitOfWork.Current) { }

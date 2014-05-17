@@ -10,6 +10,7 @@ namespace Mimry.DAL
     public interface IRepository<TEntity>
         where TEntity : class
     {
+        IQueryable<TEntity> GetQuery();
         IEnumerable<TEntity> Get(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, 
@@ -31,6 +32,11 @@ namespace Mimry.DAL
         {
             this.m_Context = context;
             this.m_DbSet = context.Set<TEntity>();
+        }
+        
+        public IQueryable<TEntity> GetQuery()
+        {
+            return m_DbSet;
         }
 
         public IEnumerable<TEntity> Get(

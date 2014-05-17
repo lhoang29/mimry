@@ -11,6 +11,10 @@ namespace MimryUnitTests.MockDAL
     public class MockRepository<TEntity> : IRepository<TEntity>
         where TEntity : class
     {
+        public IQueryable<TEntity> GetQuery()
+        {
+            return null;
+        }
         public IEnumerable<TEntity> Get(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,

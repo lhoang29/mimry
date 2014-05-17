@@ -5,25 +5,27 @@
 }
 
 <div class="container-fluid">
-    @foreach (var it in Model)
-    {
-        var mimryHeader = new Mimry.ViewModels.MimryHeader()
+    @if (Model != null) { 
+        foreach (var it in Model)
         {
-            MimSeqID = it.MimSeqID,
-            Title = it.Title, 
-            ReturnUrl = "/MimSeqs/Index/",
-            IsLiked = it.IsLiked,
-            IsOwner = it.IsOwner,
-            LikeCount = it.LikeCount,
-            CommentCount = it.CommentCount
-        };
-        @Html.Partial("MimryHeader", mimryHeader)
+            var mimryHeader = new Mimry.ViewModels.MimryHeader()
+            {
+                MimSeqID = it.MimSeqID,
+                Title = it.Title, 
+                ReturnUrl = "/MimSeqs/Index/",
+                IsLiked = it.IsLiked,
+                IsOwner = it.IsOwner,
+                LikeCount = it.LikeCount,
+                CommentCount = it.CommentCount
+            };
+            @Html.Partial("MimryHeader", mimryHeader)
 
-        foreach (var mimView in it.MimViews)
-        {
-            @Html.Partial("Mim", mimView)
+            foreach (var mimView in it.MimViews)
+            {
+                @Html.Partial("Mim", mimView)
+            }
+            <br />
+            <hr />
         }
-        <br />
-        <hr />
     }
 </div>
