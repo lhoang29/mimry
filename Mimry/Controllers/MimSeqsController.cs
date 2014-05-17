@@ -221,7 +221,7 @@ namespace Mimry.Controllers
                 // If code can get in here with an invalid user name then there's an internal server error
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
-
+            
             MimSeqComment msc = new MimSeqComment();
             msc.MimSeq = mimseq;
             msc.User = userName;
@@ -229,7 +229,15 @@ namespace Mimry.Controllers
             m_UOW.MimSeqCommentRepository.Insert(msc);
             m_UOW.Save();
 
-            return PartialView("MimryComment", msc);
+            MimryCommentView mcv = new MimryCommentView()
+            {
+                Value = txtComment,
+                User = userName,
+                CommentID = msc.CommentID,
+                LastModifiedDate = msc.LastModifiedDate,
+                Vote = 0
+            };
+            return PartialView("MimryComment", mcv);
         }
 
         [HttpPost]
