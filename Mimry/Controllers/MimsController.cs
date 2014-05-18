@@ -240,16 +240,25 @@ namespace Mimry.Controllers
         }
 
         // GET: /Mims/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Mim mim = m_UOW.MimRepository.GetByID(id);
-            if (mim == null)
+            var mims = m_UOW.MimRepository.Get(m => m.MimID == id);
+            if (mims == null)
             {
                 return HttpNotFound();
+            }
+            Mim mim = null;
+            try
+            {
+                mim = mims.Single();
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
             return View(mim);
         }
@@ -257,12 +266,43 @@ namespace Mimry.Controllers
         // POST: /Mims/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(Guid id)
         {
-            Mim mim = m_UOW.MimRepository.GetByID(id);
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var mims = m_UOW.MimRepository.Get(m => m.MimID == id);
+            if (mims == null)
+            {
+                return HttpNotFound();
+            }
+            Mim mim = null;
+            try
+            {
+                mim = mims.Single();
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+            int prevMimID = mim.PrevMimID;
             m_UOW.MimRepository.Delete(mim);
+            if (prevMimID > 0)
+            {
+                Mim prevMim = m_UOW.MimRepository.GetByID(prevMimID);
+                if (prevMim != null)
+                {
+                    prevMim.NextMimID = 0;
+                    m_UOW.MimRepository.Update(prevMim);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+                }
+            }
             m_UOW.Save();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "MimSeqs");
         }
 
         protected override void Dispose(bool disposing)
