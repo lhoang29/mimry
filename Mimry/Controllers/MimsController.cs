@@ -159,35 +159,6 @@ namespace Mimry.Controllers
             return PartialView("MimActions", new MimActionsView() { MimID = mim.MimID, Vote = mv.Vote });
         }
 
-        // GET: /Mims/Create
-        public ActionResult Create()
-        {
-            ViewBag.MimSeqID = new SelectList(m_UOW.MimSeqRepository.Get(), "MimSeqID", "Title");
-            return View();
-        }
-
-        // POST: /Mims/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MimID,Title,CaptionTop,CaptionBottom,MimSeqID")] Mim mim, string imageUrl)
-        {
-            mim.Creator = User.Identity.GetUserId();
-
-            this.ValidateAddImage(mim, imageUrl, "Image");
-
-            if (ModelState.IsValid)
-            {
-                m_UOW.MimRepository.Insert(mim);
-                m_UOW.Save();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.MimSeqID = new SelectList(m_UOW.MimSeqRepository.Get(), "MimSeqID", "Title", mim.MimSeqID);
-            return View(mim);
-        }
-
         // GET: /Mims/Edit/5
         public ActionResult Edit(Guid? id)
         {
