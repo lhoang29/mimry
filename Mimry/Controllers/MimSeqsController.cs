@@ -19,7 +19,6 @@ namespace Mimry.Controllers
     public class MimSeqsController : Controller
     {
         private IUnitOfWork m_UOW;
-        private ApplicationDbContext userdb = new ApplicationDbContext();
 
         public MimSeqsController() : this(UnitOfWork.Current) { }
 
@@ -65,15 +64,7 @@ namespace Mimry.Controllers
                     msv.Title = item.Title;
                     msv.LikeCount = item.LikeCount;
                     msv.CommentCount = item.CommentCount;
-                    msv.IsOwner = false;
-                    if (item.Owner != null)
-                    {
-                        var creator = new Mim() { Creator = item.Owner }.GetCreatorName(userdb);
-                        if (creator.Equals(currentUserName, StringComparison.OrdinalIgnoreCase))
-                        {
-                            msv.IsOwner = true;
-                        }
-                    }
+                    msv.IsOwner = item.Owner != null && item.Owner.Equals(currentUserName, StringComparison.OrdinalIgnoreCase);
                     msv.IsLiked = (item.Like != null);
                     var mimViews = new List<MimView>();
                     foreach (var mv in item.Mims)
@@ -141,7 +132,7 @@ namespace Mimry.Controllers
                 MimSeq mimseq = new MimSeq();
                 mimseq.Title = mc.MimryTitle;
 
-                mim.Creator = User.Identity.GetUserId();
+                mim.Creator = User.Identity.GetUserName();
                 mim.Title = mc.MimTitle;
                 mim.CaptionTop = mc.CaptionTop;
                 mim.CaptionBottom = mc.CaptionBottom;
@@ -364,7 +355,7 @@ namespace Mimry.Controllers
 
             if (ModelState.IsValid)
             {
-                mim.Creator = User.Identity.GetUserId();
+                mim.Creator = User.Identity.GetUserName();
                 mim.MimSeqID = mc.MimSeqID;
                 mim.Title = mc.Title;
                 mim.CaptionTop = mc.CaptionTop;
@@ -446,7 +437,7 @@ namespace Mimry.Controllers
         {
             try
             {
-                var mimseqOwner = ms.Mims.Single(m => m.PrevMimID == 0).GetCreatorName(userdb);
+                var mimseqOwner = ms.Mims.Single(m => m.PrevMimID == 0).Creator;
                 return User.Identity.GetUserName().Equals(mimseqOwner, StringComparison.OrdinalIgnoreCase);
             }
             catch

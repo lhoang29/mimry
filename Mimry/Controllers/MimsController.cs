@@ -21,7 +21,6 @@ namespace Mimry.Controllers
     public class MimsController : Controller
     {
         private IUnitOfWork m_UOW;
-        private ApplicationDbContext userdb = new ApplicationDbContext();
         private const int c_ThumbnailSize = 350;
         private const int c_MediumSize = 600;
 
@@ -30,15 +29,6 @@ namespace Mimry.Controllers
         public MimsController(IUnitOfWork uow)
         {
             m_UOW = uow;
-        }
-
-        // GET: /Mims/
-        [AllowAnonymous]
-        public ActionResult Index()
-        {
-            ViewBag.UserDB = userdb;
-            var mims = m_UOW.MimRepository.Get(null, null, includeProperties: "MimSeq");
-            return View(mims.ToList());
         }
 
         // GET: /Mims/Details/5
@@ -70,8 +60,8 @@ namespace Mimry.Controllers
             md.Title = mim.Title;
             md.CreatedDate = mim.CreatedDate;
             md.LastModifiedDate = mim.LastModifiedDate;
-            md.Creator = mim.GetCreatorName(userdb);
-            md.IsOwner = String.Compare(User.Identity.GetUserId(), mim.Creator, StringComparison.OrdinalIgnoreCase) == 0;
+            md.Creator = mim.Creator;
+            md.IsOwner = String.Compare(User.Identity.GetUserName(), mim.Creator, StringComparison.OrdinalIgnoreCase) == 0;
             md.IsEditable = (mim.NextMimID == 0);
 
             return View(md);
@@ -219,7 +209,7 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
-            if (String.Compare(User.Identity.GetUserId(), mim.Creator, StringComparison.OrdinalIgnoreCase) != 0)
+            if (String.Compare(User.Identity.GetUserName(), mim.Creator, StringComparison.OrdinalIgnoreCase) != 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }

@@ -277,7 +277,6 @@
     <Content Include="Views\Mims\Delete.cshtml" />
     <Content Include="Views\Mims\Details.cshtml" />
     <Content Include="Views\Mims\Edit.cshtml" />
-    <Content Include="Views\Mims\Index.cshtml" />
     <Content Include="Views\MimSeqs\Create.cshtml" />
     <Content Include="Views\MimSeqs\Delete.cshtml" />
     <Content Include="Views\MimSeqs\Details.cshtml" />

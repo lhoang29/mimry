@@ -51,19 +51,6 @@ namespace Mimry.Models
         public virtual MimSeq MimSeq { get; set; }
 
         public virtual ICollection<MimVote> Votes { get; set; }
-
-        public string GetCreatorName(ApplicationDbContext db)
-        { 
-            ApplicationUser user = db.Users.Find(this.Creator);
-            if (user != null)
-            {
-                return user.UserName;
-            }
-            else
-            {
-                return this.Creator;
-            }
-        }
     }
     public class MimSeq : IDateCreated
     {
