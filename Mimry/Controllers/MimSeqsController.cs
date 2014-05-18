@@ -33,58 +33,65 @@ namespace Mimry.Controllers
         public ActionResult Index()
         {
             var mimSeqViews = new List<MimSeqView>();
-            string currentUserName = User.Identity.GetUserName();
-
-            var data = m_UOW.MimSeqRepository.GetQuery().Select(ms => new
+            try
             {
-                ID = ms.MimSeqID,
-                Title = ms.Title,
-                LikeCount = ms.Likes.Count,
-                CommentCount = ms.Comments.Count,
-                Like = Request.IsAuthenticated
-                    ? ms.Likes.FirstOrDefault(l => l.User == currentUserName)
-                    : null,
-                Owner = Request.IsAuthenticated
-                    ? ms.Mims.FirstOrDefault(m => m.PrevMimID == 0).Creator
-                    : null,
-                Mims = ms.Mims.OrderBy(m => m.CreatedDate).Select(m => new
+                string currentUserName = User.Identity.GetUserName();
+                var data = m_UOW.MimSeqRepository.GetQuery().Select(ms => new
                 {
-                    MimID = m.MimID,
-                    MimVote = Request.IsAuthenticated
-                        ? m.Votes.FirstOrDefault(v => v.User == currentUserName)
-                        : null
-                })
-            }).ToList();
+                    ID = ms.MimSeqID,
+                    Title = ms.Title,
+                    Date = ms.CreatedDate,
+                    LikeCount = ms.Likes.Count,
+                    CommentCount = ms.Comments.Count,
+                    Like = Request.IsAuthenticated
+                        ? ms.Likes.FirstOrDefault(l => l.User == currentUserName)
+                        : null,
+                    Owner = Request.IsAuthenticated
+                        ? ms.Mims.FirstOrDefault(m => m.PrevMimID == 0).Creator
+                        : null,
+                    Mims = ms.Mims.OrderBy(m => m.CreatedDate).Select(m => new
+                    {
+                        MimID = m.MimID,
+                        MimVote = Request.IsAuthenticated
+                            ? m.Votes.FirstOrDefault(v => v.User == currentUserName)
+                            : null
+                    })
+                }).ToList().OrderBy(item => item.Date);
 
-            //foreach (var item in data)
-            //{
-            //    MimSeqView msv = new MimSeqView();
-            //    msv.MimSeqID = item.ID;
-            //    msv.Title = item.Title;
-            //    msv.LikeCount = item.LikeCount;
-            //    msv.CommentCount = item.CommentCount;
-            //    msv.IsOwner = false;
-            //    if (item.Owner != null)
-            //    {
-            //        var creator = new Mim() { Creator = item.Owner }.GetCreatorName(userdb);
-            //        if (creator.Equals(currentUserName, StringComparison.OrdinalIgnoreCase))
-            //        {
-            //            msv.IsOwner = true;
-            //        }
-            //    }
-            //    msv.IsLiked = (item.Like != null);
-            //    var mimViews = new List<MimView>();
-            //    foreach (var mv in item.Mims)
-            //    {
-            //        MimView mimView = new MimView();
-            //        mimView.MimID = mv.MimID;
-            //        mimView.ViewMode = MimViewMode.Thumbnail;
-            //        mimView.Vote = (mv.MimVote != null) ? mv.MimVote.Vote : 0;
-            //        mimViews.Add(mimView);
-            //    }
-            //    msv.MimViews = mimViews;
-            //    mimSeqViews.Add(msv);
-            //}
+                foreach (var item in data)
+                {
+                    MimSeqView msv = new MimSeqView();
+                    msv.MimSeqID = item.ID;
+                    msv.Title = item.Title;
+                    msv.LikeCount = item.LikeCount;
+                    msv.CommentCount = item.CommentCount;
+                    msv.IsOwner = false;
+                    if (item.Owner != null)
+                    {
+                        var creator = new Mim() { Creator = item.Owner }.GetCreatorName(userdb);
+                        if (creator.Equals(currentUserName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            msv.IsOwner = true;
+                        }
+                    }
+                    msv.IsLiked = (item.Like != null);
+                    var mimViews = new List<MimView>();
+                    foreach (var mv in item.Mims)
+                    {
+                        MimView mimView = new MimView();
+                        mimView.MimID = mv.MimID;
+                        mimView.ViewMode = MimViewMode.Thumbnail;
+                        mimView.Vote = (mv.MimVote != null) ? mv.MimVote.Vote : 0;
+                        mimViews.Add(mimView);
+                    }
+                    msv.MimViews = mimViews;
+                    mimSeqViews.Add(msv);
+                }
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
             return View(mimSeqViews);
         }
 

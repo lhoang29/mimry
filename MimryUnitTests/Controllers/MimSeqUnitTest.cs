@@ -19,7 +19,9 @@ namespace MimryUnitTests.Controllers
             var msc = new MimSeqsController(mockUOW);
 
             var result = msc.Index();
-            Assert.AreEqual(result.GetType(), typeof(HttpNotFoundResult));
+            Assert.AreEqual(result.GetType(), typeof(HttpStatusCodeResult));
+            HttpStatusCodeResult httpResult = result as HttpStatusCodeResult;
+            Assert.AreEqual(httpResult.StatusCode, Convert.ToInt32(HttpStatusCode.InternalServerError));
         }
         [TestMethod]
         public void TestDetails()
@@ -31,7 +33,7 @@ namespace MimryUnitTests.Controllers
             Assert.AreEqual(result.GetType(), typeof(HttpStatusCodeResult));
 
             HttpStatusCodeResult httpResult = result as HttpStatusCodeResult;
-            Assert.AreNotEqual(httpResult.StatusCode, HttpStatusCode.OK);
+            Assert.AreNotEqual(httpResult.StatusCode, Convert.ToInt32(Convert.ToInt32(HttpStatusCode.OK)));
 
             result = msc.Details(new Guid());
             Assert.AreEqual(result.GetType(), typeof(HttpNotFoundResult));
@@ -84,7 +86,7 @@ namespace MimryUnitTests.Controllers
             Assert.AreEqual(result.GetType(), typeof(HttpStatusCodeResult));
 
             HttpStatusCodeResult httpResult = result as HttpStatusCodeResult;
-            Assert.AreNotEqual(httpResult.StatusCode, HttpStatusCode.OK);
+            Assert.AreNotEqual(httpResult.StatusCode, Convert.ToInt32(HttpStatusCode.OK));
 
             string returnUrl = "testReturnUrl";
             
@@ -150,7 +152,7 @@ namespace MimryUnitTests.Controllers
             Assert.AreEqual(result.GetType(), typeof(HttpStatusCodeResult));
 
             HttpStatusCodeResult httpResult = result as HttpStatusCodeResult;
-            Assert.AreNotEqual(httpResult.StatusCode, HttpStatusCode.OK);
+            Assert.AreNotEqual(httpResult.StatusCode, Convert.ToInt32(HttpStatusCode.OK));
 
             result = msc.Add(new Guid(), null);
             Assert.AreEqual(result.GetType(), typeof(HttpNotFoundResult));
