@@ -1,0 +1,28 @@
+﻿@model Mimry.ViewModels.MimSeqPageView
+
+@if (Model != null && Model.MimSeqViews != null)
+{
+    var nextPageUrl = Url.Action("Index", new { page = Model.PageIndex });
+    foreach (var it in Model.MimSeqViews)
+    {
+        var mimryHeader = new Mimry.ViewModels.MimryHeader()
+        {
+            MimSeqID = it.MimSeqID,
+            Title = it.Title,
+            ReturnUrl = "/MimSeqs/Index/",
+            IsLiked = it.IsLiked,
+            IsOwner = it.IsOwner,
+            LikeCount = it.LikeCount,
+            CommentCount = it.CommentCount
+        };
+        @Html.Partial("MimryHeader", mimryHeader)
+
+        foreach (var mimView in it.MimViews)
+        {
+            @Html.Partial("Mim", mimView)
+        }
+        <hr />
+    }
+
+    <a class="infinite-more-link" href="@nextPageUrl"></a>
+}

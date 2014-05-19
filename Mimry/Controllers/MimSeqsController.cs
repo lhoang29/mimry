@@ -19,6 +19,7 @@ namespace Mimry.Controllers
     public class MimSeqsController : Controller
     {
         private IUnitOfWork m_UOW;
+        private const int c_PageSize = 3; // # of mimries to load
 
         public MimSeqsController() : this(UnitOfWork.Current) { }
 
@@ -29,17 +30,19 @@ namespace Mimry.Controllers
 
         // GET: /MimSeqs/
         [AllowAnonymous]
-        public ActionResult Index()
+        public ActionResult Index(int page = 0)
         {
-            var mimSeqViews = new List<MimSeqView>();
+            MimSeqPageView msPageData = null;
             try
             {
                 string currentUserName = User.Identity.GetUserName();
-                var data = m_UOW.MimSeqRepository.GetQuery().Select(ms => new
+                var data = m_UOW.MimSeqRepository.GetQuery()
+                    .OrderBy(ms => ms.CreatedDate)
+                    .Skip(page * c_PageSize).Take(c_PageSize)
+                    .Select(ms => new
                 {
                     ID = ms.MimSeqID,
                     Title = ms.Title,
-                    Date = ms.CreatedDate,
                     LikeCount = ms.Likes.Count,
                     CommentCount = ms.Comments.Count,
                     Like = Request.IsAuthenticated
@@ -55,8 +58,9 @@ namespace Mimry.Controllers
                             ? m.Votes.FirstOrDefault(v => v.User == currentUserName)
                             : null
                     })
-                }).ToList().OrderBy(item => item.Date);
+                }).ToList();
 
+                var mimSeqViews = new List<MimSeqView>();
                 foreach (var item in data)
                 {
                     MimSeqView msv = new MimSeqView();
@@ -78,12 +82,27 @@ namespace Mimry.Controllers
                     msv.MimViews = mimViews;
                     mimSeqViews.Add(msv);
                 }
+                if (mimSeqViews.Count > 0)
+                {
+                    msPageData = new MimSeqPageView()
+                    {
+                        MimSeqViews = mimSeqViews,
+                        PageIndex = page + 1
+                    };
+                }
             }
             catch
             {
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
-            return View(mimSeqViews);
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("MimryIndexContent", msPageData);
+            }
+            else
+            {
+                return View(msPageData);
+            }
         }
 
         // GET: /MimSeqs/Details/5

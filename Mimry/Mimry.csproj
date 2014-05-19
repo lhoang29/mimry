@@ -216,6 +216,7 @@
     <Compile Include="ViewModels\MimryCreate.cs" />
     <Compile Include="ViewModels\MimryEdit.cs" />
     <Compile Include="ViewModels\MimryHeader.cs" />
+    <Compile Include="ViewModels\MimSeqPageView.cs" />
     <Compile Include="ViewModels\MimSeqView.cs" />
     <Compile Include="ViewModels\MimView.cs" />
   </ItemGroup>
@@ -291,6 +292,7 @@
     <Content Include="Views\Shared\MimActions.cshtml" />
     <Content Include="Views\Shared\MimryHeaderActions.cshtml" />
     <Content Include="Views\Shared\MimryCommentActions.cshtml" />
+    <Content Include="Views\Shared\MimryIndexContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
