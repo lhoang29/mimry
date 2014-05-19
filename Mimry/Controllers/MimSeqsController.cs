@@ -105,7 +105,8 @@ namespace Mimry.Controllers
                 LastModifiedDate = c.LastModifiedDate,
                 User = c.User,
                 Value = c.Value,
-                Vote = this.GetCommentVote(c)
+                Vote = this.GetCommentVote(c),
+                ShowEdit = c.User.Equals(User.Identity.GetUserName(), StringComparison.OrdinalIgnoreCase)
             });
             return View(msv);
         }
@@ -276,7 +277,8 @@ namespace Mimry.Controllers
                 User = userName,
                 CommentID = msc.CommentID,
                 LastModifiedDate = msc.LastModifiedDate,
-                Vote = 0
+                Vote = 0,
+                ShowEdit = true
             };
             return PartialView("MimryComment", mcv);
         }
@@ -321,9 +323,12 @@ namespace Mimry.Controllers
                 m_UOW.MimSeqCommentVoteRepository.Update(mscv);
             }
             m_UOW.Save();
+
+            bool isCurrentUserCommentOwner = mc.User.Equals(userName, StringComparison.OrdinalIgnoreCase);
             return PartialView("MimryCommentActions", new MimryCommentActionsView() { 
                 CommentID = id,
-                Vote = mscv.Vote 
+                Vote = mscv.Vote,
+                ShowEdit = isCurrentUserCommentOwner
             });
         }
 

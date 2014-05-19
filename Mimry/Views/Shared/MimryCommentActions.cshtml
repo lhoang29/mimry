@@ -2,6 +2,7 @@
 @{
     var upClass = "ajComVoteUp " + (Model.Vote > 0 ? "ml-liked" : "ml");
     var downClass = "ajComVoteDown " + (Model.Vote < 0 ? "ml-liked" : "ml");
+    var editClass = "ajComEdit ml";
 }
 <input type="hidden" name="CommentID" value="@Model.CommentID" />
 <button class="@upClass">
@@ -10,3 +11,9 @@
 <button class="@downClass">
     <i class="fa fa-angle-down"></i>
 </button>
+@if (Model.ShowEdit)
+{
+    <button class="@editClass">
+        <i class="fa fa-edit"></i>
+    </button>
+}

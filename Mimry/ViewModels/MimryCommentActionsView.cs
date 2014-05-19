@@ -8,5 +8,6 @@ namespace Mimry.ViewModels
     {
         public int CommentID { get; set; }
         public int Vote { get; set; }
+        public bool ShowEdit { get; set; }
     }
 }

@@ -11,5 +11,6 @@ namespace Mimry.ViewModels
         public string User { get; set; }
         public string Value { get; set; }
         public int Vote { get; set; }
+        public bool ShowEdit { get; set; }
     }
 }
