@@ -65,8 +65,12 @@
         }
         $this = $(this);
         $.ajax({
-            url: '/MimSeqs/VoteComment/' + commentID + '?vote=' + vote,
+            url: '/MimSeqs/VoteComment/',
             type: "POST",
+            data: AddAntiForgeryToken({
+                id: commentID,
+                vote: vote
+            }),
             dataType: "html",
             cache: false,
             success: function (data) {

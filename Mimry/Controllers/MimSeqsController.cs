@@ -384,6 +384,7 @@ namespace Mimry.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult VoteComment(int id, string vote)
         {
             var mscs = m_UOW.MimSeqCommentRepository.Get(msc => msc.CommentID == id);
