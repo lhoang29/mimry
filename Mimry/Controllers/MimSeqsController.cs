@@ -279,6 +279,7 @@ namespace Mimry.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Like(Guid id)
         {
             MimSeq mimseq = m_UOW.MimSeqRepository.GetByID(id);

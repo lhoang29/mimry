@@ -40,6 +40,9 @@
         $.ajax({
             url: '/MimSeqs/Like/' + mimryID,
             type: "POST",
+            data: AddAntiForgeryToken({
+                id: mimryID
+            }),
             dataType: "html",
             cache: false,
             success: function (data) {
