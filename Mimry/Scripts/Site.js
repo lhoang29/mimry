@@ -1,4 +1,8 @@
 ﻿$(function () {
+    AddAntiForgeryToken = function (data) {
+        data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+        return data;
+    };
     voteMim = function (mimryID, vote) {
         if ($(this).hasClass('ml-liked')) {
             vote = 0;
@@ -98,10 +102,11 @@
             var commentID = $(this).closest('.row').find('[name="CommentID"]').val();
             $.post(
                 '/MimSeqs/EditComment/',
+                AddAntiForgeryToken(
                 {
                     id: commentID,
                     txtComment: $(this).val()
-                },
+                }),
                 function (data, textStatus, jqXHR) {
                     $comment.text(data);
                     $commentEditor.hide();

@@ -361,6 +361,7 @@ namespace Mimry.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EditComment(int id, string txtComment)
         {
             MimSeqComment msc = m_UOW.MimSeqCommentRepository.GetByID(id);
