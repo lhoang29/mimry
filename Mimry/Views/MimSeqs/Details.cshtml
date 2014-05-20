@@ -4,76 +4,79 @@
     ViewBag.Title = "Details";
 }
 
-<div>
-    @{
-        var mimryHeader = new Mimry.ViewModels.MimryHeader() 
-        {
-            MimSeqID = Model.MimSeqID,
-            Title = Model.Title,
-            ReturnUrl = "/MimSeqs/Details/" + Model.MimSeqID,
-            IsLiked = Model.IsLiked,
-            IsOwner = Model.IsOwner,
-            LikeCount = Model.LikeCount,
-            CommentCount = Model.CommentCount
-        };
-    }
-    @Html.Partial("MimryHeader", mimryHeader)
-	<hr />
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
-                @{
-                    foreach (var mim in Model.MimViews)
-                    {
-                        <div style="text-align:center">
-                            @Html.Partial("Mim", mim)
-                        </div>
+@if (Model != null)
+{
+    <div>
+        @{
+            var mimryHeader = new Mimry.ViewModels.MimryHeader() 
+            {
+                MimSeqID = Model.MimSeqID,
+                Title = Model.Title,
+                ReturnUrl = "/MimSeqs/Details/" + Model.MimSeqID,
+                IsLiked = Model.IsLiked,
+                IsOwner = Model.IsOwner,
+                LikeCount = Model.LikeCount,
+                CommentCount = Model.CommentCount
+            };
+        }
+        @Html.Partial("MimryHeader", mimryHeader)
+	    <hr />
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    @{
+                        foreach (var mim in Model.MimViews)
+                        {
+                            <div style="text-align:center">
+                                @Html.Partial("Mim", mim)
+                            </div>
+                        }
                     }
-                }
-            </div>
-            <div class="col-md-6">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <h3>Comments:</h3>
-                    </div>
-                    @if (Request.IsAuthenticated)
-                    {
-                        using (Ajax.BeginForm("PostComment", "MimSeqs",
-                            new AjaxOptions()
+                </div>
+                <div class="col-md-6">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <h3>Comments:</h3>
+                        </div>
+                        @if (Request.IsAuthenticated)
+                        {
+                            using (Ajax.BeginForm("PostComment", "MimSeqs",
+                                new AjaxOptions()
+                                {
+                                    HttpMethod = "Post",
+                                    InsertionMode = InsertionMode.InsertBefore,
+                                    UpdateTargetId = "commentSection",
+                                    OnSuccess = "clearComment"
+                                }))
                             {
-                                HttpMethod = "Post",
-                                InsertionMode = InsertionMode.InsertBefore,
-                                UpdateTargetId = "commentSection",
-                                OnSuccess = "clearComment"
-                            }))
+                                @Html.AntiForgeryToken()
+                                <div class="form-group">
+                                    @Html.Hidden("id", Model.MimSeqID)
+                                    <textarea id="txtComment" name="txtComment" class="form-control" rows="3" placeholder="Enter something here..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-info">Post</button>
+                                </div>
+                            }
+                        }
+                        else
                         {
-                            @Html.AntiForgeryToken()
-                            <div class="form-group">
-                                @Html.Hidden("id", Model.MimSeqID)
-                                <textarea id="txtComment" name="txtComment" class="form-control" rows="3" placeholder="Enter something here..."></textarea>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-info">Post</button>
+                            <div class="form-group bg-info">
+                                <h4>Please sign in to post comments.</h4>
                             </div>
                         }
-                    }
-                    else
-                    {
-                        <div class="form-group bg-info">
-                            <h4>Please sign in to post comments.</h4>
+                        <div id="commentSection">
+                            @foreach (var comment in Model.CommentViews.OrderByDescending(c => c.LastModifiedDate))
+                            {
+                                @Html.Partial("MimryComment", comment)
+                            }
                         </div>
-                    }
-                    <div id="commentSection">
-                        @foreach (var comment in Model.CommentViews.OrderByDescending(c => c.LastModifiedDate))
-                        {
-                            @Html.Partial("MimryComment", comment)
-                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryunobtrusive")

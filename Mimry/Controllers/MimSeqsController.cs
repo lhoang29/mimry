@@ -113,20 +113,78 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MimSeq mimseq = m_UOW.MimSeqRepository.GetByID(id);
-            if (mimseq == null)
+            MimSeqView msv = null;
+            try
             {
-                return HttpNotFound();
+                string currentUserName = User.Identity.GetUserName();
+                var data = m_UOW.MimSeqRepository.GetQuery()
+                .Where(ms => ms.MimSeqID == id)
+                .Select(ms => new
+                {
+                    ID = ms.MimSeqID,
+                    Title = ms.Title,
+                    LikeCount = ms.Likes.Count,
+                    Like = Request.IsAuthenticated
+                        ? ms.Likes.FirstOrDefault(l => l.User == currentUserName)
+                        : null,
+                    Owner = Request.IsAuthenticated
+                        ? ms.Mims.FirstOrDefault(m => m.PrevMimID == 0).Creator
+                        : null,
+                    Mims = ms.Mims.OrderBy(m => m.CreatedDate).Select(m => new
+                    {
+                        MimID = m.MimID,
+                        MimVote = Request.IsAuthenticated
+                            ? m.Votes.FirstOrDefault(v => v.User == currentUserName)
+                            : null
+                    }),
+                    Comments = ms.Comments.Select(c => new
+                    {
+                        CommentID = c.CommentID,
+                        LastModifiedDate = c.LastModifiedDate,
+                        User = c.User,
+                        Value = c.Value,
+                        Vote = Request.IsAuthenticated ? c.Votes.FirstOrDefault(v => v.User == currentUserName) : null
+                    })
+                }).ToList();
+
+                var msvData = data[0];
+
+                msv = new MimSeqView();
+                msv.MimSeqID = msvData.ID;
+                msv.Title = msvData.Title;
+                msv.LikeCount = msvData.LikeCount;
+                msv.IsOwner = msvData.Owner != null && msvData.Owner.Equals(currentUserName, StringComparison.OrdinalIgnoreCase);
+                msv.IsLiked = (msvData.Like != null);
+                var mimViews = new List<MimView>();
+                foreach (var mv in msvData.Mims)
+                {
+                    MimView mimView = new MimView();
+                    mimView.MimID = mv.MimID;
+                    mimView.ViewMode = MimViewMode.Medium;
+                    mimView.Vote = (mv.MimVote != null) ? mv.MimVote.Vote : 0;
+                    mimViews.Add(mimView);
+                }
+                msv.MimViews = mimViews;
+
+                var commentViews = new List<MimryCommentView>();
+                foreach (var cv in msvData.Comments)
+                {
+                    var mcv = new MimryCommentView();
+                    mcv.CommentID = cv.CommentID;
+                    mcv.LastModifiedDate = cv.LastModifiedDate;
+                    mcv.ShowEdit = cv.User.Equals(currentUserName, StringComparison.OrdinalIgnoreCase);
+                    mcv.User = cv.User;
+                    mcv.Value = cv.Value;
+                    mcv.Vote = (cv.Vote != null) ? cv.Vote.Vote : 0;
+                    commentViews.Add(mcv);
+                }
+                msv.CommentViews = commentViews;
+                msv.CommentCount = commentViews.Count;
             }
-            var msv = this.ToMimSeqView(mimseq, MimViewMode.Medium);
-            msv.CommentViews = mimseq.Comments.Select(c => new MimryCommentView() {
-                CommentID = c.CommentID,
-                LastModifiedDate = c.LastModifiedDate,
-                User = c.User,
-                Value = c.Value,
-                Vote = this.GetCommentVote(c),
-                ShowEdit = c.User.Equals(User.Identity.GetUserName(), StringComparison.OrdinalIgnoreCase)
-            });
+            catch
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
             return View(msv);
         }
 
@@ -448,21 +506,6 @@ namespace Mimry.Controllers
             base.Dispose(disposing);
         }
 
-        private MimSeqView ToMimSeqView(MimSeq ms, MimViewMode vm)
-        {
-            var msv = new MimSeqView();
-            msv.MimSeqID = ms.MimSeqID;
-            msv.Title = ms.Title;
-            msv.IsLiked = (m_UOW.MimSeqLikeRepository.GetByID(ms.MimSeqID, User.Identity.GetUserName()) != null);
-            msv.LikeCount = m_UOW.MimSeqLikeRepository.Get(m => m.MimSeqID == ms.MimSeqID).Count();
-            msv.CommentCount = ms.Comments.Count();
-            msv.MimViews = ms.Mims
-                .OrderBy(m => m.CreatedDate)
-                .Select(m => new MimView() { MimID = m.MimID, Vote = this.GetVote(m), ViewMode = vm });
-            msv.IsOwner = this.IsCurrentUserMimSeqOwner(ms);
-            return msv;
-        }
-
         private bool IsCurrentUserMimSeqOwner(MimSeq ms)
         {
             try
@@ -474,18 +517,6 @@ namespace Mimry.Controllers
             {
                 return false;
             }
-        }
-
-        private int GetVote(Mim m)
-        {
-            var mv = m_UOW.MimVoteRepository.GetByID(m.ID, User.Identity.GetUserName());
-            return (mv == null) ? 0 : mv.Vote;
-        }
-
-        private int GetCommentVote(MimSeqComment msc)
-        {
-            var mcv = m_UOW.MimSeqCommentVoteRepository.GetByID(msc.CommentID, User.Identity.GetUserName());
-            return (mcv == null) ? 0 : mcv.Vote;
         }
     }
 }
