@@ -122,6 +122,7 @@ namespace Mimry.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Vote(Guid id, string vote)
         {
             var mims = m_UOW.MimRepository.Get(m => m.MimID == id);

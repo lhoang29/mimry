@@ -9,8 +9,12 @@
         }
         $this = $(this);
         $.ajax({
-            url: '/Mims/Vote/' + mimryID + '?vote=' + vote,
+            url: '/Mims/Vote/',
             type: "POST",
+            data: AddAntiForgeryToken({
+                id: mimryID,
+                vote: vote
+            }),
             dataType: "html",
             cache: false,
             success: function (data) {

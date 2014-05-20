@@ -4,6 +4,7 @@
     ViewBag.Title = "Mimry";
 }
 
+@Html.AntiForgeryToken()
 <div id="mrMainView" class="container-fluid">
     @Html.Partial("MimryIndexContent", Model)
 </div>
