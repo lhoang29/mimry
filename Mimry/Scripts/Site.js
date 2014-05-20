@@ -75,7 +75,42 @@
     $('.mr-comment-actions').on('click', '.ajComVoteDown', function () {
         voteMimryComment.call(this, $(this).siblings('[name="CommentID"]').val(), -1);
     });
+    $commentEditor = $('#mrdCommentEdit');
+    $commentEditor.hide();
 
+    var $comment;
+    $('.mr-comment-actions').on('click', '.ajComEdit', function () {
+        $comment = $(this).closest('.row').find('h4');
+        $commentEditor.height($comment.height());
+        $commentEditor.val($comment.text());
+        $comment.hide();
+        $comment.parent().append($commentEditor);
+        $commentEditor.show();
+        $commentEditor.focus();
+    });
+    $commentEditor.focusout(function () {
+        $(this).hide();
+        $comment.show();
+    });
+    $commentEditor.keypress(function (event) {
+        var keyCode = (event.which ? event.which : event.keyCode);
+        if (keyCode === 10 || keyCode == 13 && event.ctrlKey) {
+            var commentID = $(this).closest('.row').find('[name="CommentID"]').val();
+            $.post(
+                '/MimSeqs/EditComment/',
+                {
+                    id: commentID,
+                    txtComment: $(this).val()
+                },
+                function (data, textStatus, jqXHR) {
+                    $comment.text(data);
+                    $commentEditor.hide();
+                    $comment.show();
+                },
+                'html');
+            return false;
+        }
+    });
     $window = $(window);
     $window.load(function () {
         var load = true;

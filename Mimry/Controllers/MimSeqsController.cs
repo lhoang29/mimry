@@ -361,6 +361,27 @@ namespace Mimry.Controllers
         }
 
         [HttpPost]
+        public ActionResult EditComment(int id, string txtComment)
+        {
+            MimSeqComment msc = m_UOW.MimSeqCommentRepository.GetByID(id);
+            if (msc == null || msc.MimSeq == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (String.IsNullOrWhiteSpace(txtComment))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            msc.Value = txtComment;
+            m_UOW.MimSeqCommentRepository.Update(msc);
+            m_UOW.Save();
+
+            return Content(txtComment);
+        }
+
+        [HttpPost]
         public ActionResult VoteComment(int id, string vote)
         {
             var mscs = m_UOW.MimSeqCommentRepository.Get(msc => msc.CommentID == id);
