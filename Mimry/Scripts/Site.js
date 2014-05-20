@@ -75,6 +75,29 @@
     $('.mr-comment-actions').on('click', '.ajComVoteDown', function () {
         voteMimryComment.call(this, $(this).siblings('[name="CommentID"]').val(), -1);
     });
+
+    $window = $(window);
+    $window.load(function () {
+        var load = true;
+        $window.scroll(function () {
+            if (load) {
+                if ($window.height() + $window.scrollTop() == $(document).height()) {
+                    load = false;
+                    $anchorMore = $('.infinite-more-link');
+                    var getUrl = $anchorMore.attr('href');
+                    if (getUrl) {
+                        $.get(getUrl, null,
+                            function (data) {
+                                $anchorMore.remove();
+                                $('#mrMainView').append(data);
+                                load = true;
+                            },
+                        'html');
+                    }
+                }
+            }
+        });
+    })
 });
 
 function clearComment() {
