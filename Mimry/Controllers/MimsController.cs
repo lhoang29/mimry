@@ -90,7 +90,7 @@ namespace Mimry.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
 
-            byte[] imageData = caption ? MimsController.GenerateMeme(mim) : Convert.FromBase64String(mim.Image);
+            byte[] imageData = Convert.FromBase64String(mim.Image);
 
             int maxSize = 0;
             switch (mode)
@@ -105,19 +105,20 @@ namespace Mimry.Controllers
 
             if (maxSize > 0)
             {
-                using (Bitmap bm = new Bitmap(new MemoryStream(imageData)))
+                using (MagickImage mi = new MagickImage(imageData))
                 {
-                    var resizedBitmap = MimsController.Resize(bm, maxSize);
-                    using (MagickImage mi = new MagickImage(resizedBitmap))
+                    double percentageResize = (double)maxSize / Math.Max(mi.Width, mi.Height);
+                    if (percentageResize < 1)
                     {
-                        mi.Format = MagickFormat.Pjpeg; // progressive image
-                        using (MemoryStream msb = new MemoryStream())
-                        {
-                            mi.Write(msb);
-                            var resizedImageData = msb.ToArray();
-                            imageData = new byte[resizedImageData.Length];
-                            Array.Copy(resizedImageData, imageData, imageData.Length);
-                        }
+                        mi.Resize(new Percentage(percentageResize));
+                    }
+                    mi.Format = MagickFormat.Pjpeg; // progressive image
+                    using (MemoryStream msb = new MemoryStream())
+                    {
+                        mi.Write(msb);
+                        var resizedImageData = msb.ToArray();
+                        imageData = new byte[resizedImageData.Length];
+                        Array.Copy(resizedImageData, imageData, imageData.Length);
                     }
                 }
             }

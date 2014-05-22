@@ -41,6 +41,11 @@ namespace Mimry.Models
         [Display(Name = "Bottom Caption")]
         public string CaptionBottom { get; set; }
 
+        [Required]
+        public int Width { get; set; }
+        [Required]
+        public int Height { get; set; }
+
         public int NextMimID { get; set; }
 
         public int PrevMimID { get; set; }
