@@ -26,6 +26,11 @@ namespace Mimry.Helpers
                 else
                 {
                     mim.Image = Convert.ToBase64String(imageData);
+                    using (var bm = new System.Drawing.Bitmap(new System.IO.MemoryStream(imageData)))
+                    {
+                        mim.Width = bm.Width;
+                        mim.Height = bm.Height;
+                    }
                 }
             }
             catch (Exception ex)

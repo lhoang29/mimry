@@ -461,7 +461,7 @@ namespace Mimry.Controllers
 
             if (ModelState.IsValid)
             {
-                var firstMim = m_UOW.MimRepository.Get(m => m.MimSeqID == mim.MimSeqID && m.NextMimID == 0);
+                var firstMim = m_UOW.MimRepository.Get(m => m.MimSeqID == mc.MimSeqID && m.NextMimID == 0);
                 // A mimry should always have at least 1 Mim associated with it
                 if (firstMim == null)
                 {

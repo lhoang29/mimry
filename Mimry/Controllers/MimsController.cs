@@ -110,7 +110,7 @@ namespace Mimry.Controllers
                     double percentageResize = (double)maxSize / Math.Max(mi.Width, mi.Height);
                     if (percentageResize < 1)
                     {
-                        mi.Resize(new Percentage(percentageResize));
+                        mi.Resize(new Percentage(percentageResize * 100));
                     }
                     mi.Format = MagickFormat.Pjpeg; // progressive image
                     using (MemoryStream msb = new MemoryStream())
