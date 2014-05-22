@@ -14,6 +14,7 @@ using Mimry.ViewModels;
 using Mimry.Helpers;
 using Mimry.DAL;
 using Mimry.Attributes;
+using ImageMagick;
 
 namespace Mimry.Controllers
 {
@@ -107,13 +108,16 @@ namespace Mimry.Controllers
                 using (Bitmap bm = new Bitmap(new MemoryStream(imageData)))
                 {
                     var resizedBitmap = MimsController.Resize(bm, maxSize);
-
-                    using (MemoryStream msb = new MemoryStream())
+                    using (MagickImage mi = new MagickImage(resizedBitmap))
                     {
-                        resizedBitmap.Save(msb, System.Drawing.Imaging.ImageFormat.Jpeg);
-                        var resizedImageData = msb.ToArray();
-                        imageData = new byte[resizedImageData.Length];
-                        Array.Copy(resizedImageData, imageData, imageData.Length);
+                        mi.Format = MagickFormat.Pjpeg; // progressive image
+                        using (MemoryStream msb = new MemoryStream())
+                        {
+                            mi.Write(msb);
+                            var resizedImageData = msb.ToArray();
+                            imageData = new byte[resizedImageData.Length];
+                            Array.Copy(resizedImageData, imageData, imageData.Length);
+                        }
                     }
                 }
             }
