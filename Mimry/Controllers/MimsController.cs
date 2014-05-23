@@ -123,31 +123,45 @@ namespace Mimry.Controllers
                     break;
             }
 
-            if (maxSize > 0)
+            string jpegType = "image/jpeg";
+            string webpType = "image/webp";
+            string contentType = String.Empty;
+            using (MagickImage mi = new MagickImage(imageData))
             {
-                using (MagickImage mi = new MagickImage(imageData))
+                if (maxSize > 0)
                 {
                     double percentageResize = (double)maxSize / Math.Max(mi.Width, mi.Height);
                     if (percentageResize < 1)
                     {
                         mi.Sample(new Percentage(percentageResize * 100));
                     }
-                    mi.Format = MagickFormat.Pjpeg; // progressive image
                     mi.Quality = 75;
-                    using (MemoryStream msb = new MemoryStream())
-                    {
-                        mi.Write(msb);
-                        var resizedImageData = msb.ToArray();
-                        imageData = new byte[resizedImageData.Length];
-                        Array.Copy(resizedImageData, imageData, imageData.Length);
-                    }
+                }
+                else
+                {
+                    mi.Quality = 85;
+                }
+                if (Request.AcceptTypes.Contains(webpType))
+                {
+                    mi.Format = MagickFormat.WebP; // WebP format
+                    contentType = webpType;
+                }
+                else
+                {
+                    mi.Format = MagickFormat.Pjpeg; // Progressive format
+                    contentType = jpegType;
+                }
+                using (MemoryStream msb = new MemoryStream())
+                {
+                    mi.Write(msb);
+                    imageData = msb.ToArray();
                 }
             }
 
             Response.Cache.SetCacheability(HttpCacheability.Public);
             Response.Cache.SetLastModified(mim.LastModifiedDate);
 
-            return base.File(imageData, "Image/jpeg");
+            return base.File(imageData, contentType);
         }
 
         [HttpPost]
