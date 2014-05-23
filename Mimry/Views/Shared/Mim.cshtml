@@ -2,28 +2,39 @@
 @model MimView
 
 @{
-    var mimClass = String.Empty;
-    switch (Model.ViewMode)
-    {
-        case Mimry.ViewModels.MimViewMode.Thumbnail:
-            mimClass = "img-rounded mim";
-            break;
-        case Mimry.ViewModels.MimViewMode.Medium:
-        case Mimry.ViewModels.MimViewMode.Full:
-            mimClass = "mim-full mim";
-            break;
-    }
     int maxSize = MimView.GetMaxMimSize(Model.ViewMode);
     double scale = Math.Min(1, (double)maxSize / Math.Max(Model.Width, Model.Height));
     double width = Model.Width * scale;
     double height = Model.Height * scale;
     double containerWidth = maxSize + 20;
 
+    var mimClass = String.Empty;
+    var imageStyle = String.Empty;
+    var imageSource = String.Empty;
+    var containerWidthStyle = String.Empty;
+    
+    switch (Model.ViewMode)
+    {
+        case Mimry.ViewModels.MimViewMode.Thumbnail:
+            mimClass = "img-rounded mim";
+            imageStyle = "width=" + width + " height=" + height;
+            imageSource = "data-original";
+            containerWidthStyle = containerWidth + "px";
+            break;
+        case Mimry.ViewModels.MimViewMode.Medium:
+        case Mimry.ViewModels.MimViewMode.Full:
+            mimClass = "mim-full";
+            imageStyle = String.Empty;
+            imageSource = "src";
+            containerWidthStyle = "100%";
+            break;
+    }
+
     var mimDetailUrl = Url.Action("Details", "Mims", new { id = Model.MimID });
-    <div class="mim-container" style="width:@(containerWidth + "px"); ">
+    <div class="mim-container" style="width:@containerWidthStyle;">
         <div class="mim">
             <a href="@mimDetailUrl">
-                <img class="@mimClass" width="@width" height="@height" data-original="/Mims/Mimage/@Model.MimID?caption=true&mode=@Model.ViewMode" />
+                <img class="@mimClass" @imageStyle @imageSource="/Mims/Mimage/@Model.MimID?caption=true&mode=@Model.ViewMode"/>
             </a>
             <div class="ml-pin">
                 @Html.Partial("MimActions", new MimActionsView() { MimID = Model.MimID, Vote = Model.Vote })
