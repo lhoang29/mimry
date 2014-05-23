@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
+using ImageMagick;
 
 namespace Mimry.Helpers
 {
@@ -25,11 +26,16 @@ namespace Mimry.Helpers
                 }
                 else
                 {
-                    mim.Image = Convert.ToBase64String(imageData);
-                    using (var bm = new System.Drawing.Bitmap(new System.IO.MemoryStream(imageData)))
+                    using (var mgkImage = new MagickImage(imageData))
                     {
-                        mim.Width = bm.Width;
-                        mim.Height = bm.Height;
+                        mim.Width = mgkImage.Width;
+                        mim.Height = mgkImage.Height;
+                        using (var ms = new System.IO.MemoryStream())
+                        {
+                            mgkImage.Format = MagickFormat.Pjpeg;
+                            mgkImage.Write(ms);
+                            mim.Image = Convert.ToBase64String(ms.ToArray());
+                        }
                     }
                 }
             }
