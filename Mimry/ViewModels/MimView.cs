@@ -15,5 +15,24 @@ namespace Mimry.ViewModels
         public Guid MimID { get; set; }
         public int Vote { get; set; }
         public MimViewMode ViewMode { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        private const int c_ThumbnailSize = 350;
+        private const int c_MediumSize = 600;
+        public static int GetMaxMimSize(MimViewMode mode)
+        {
+            int maxSize = 0;
+            switch (mode)
+            {
+                case MimViewMode.Thumbnail:
+                    maxSize = c_ThumbnailSize;
+                    break;
+                case MimViewMode.Medium:
+                    maxSize = c_MediumSize;
+                    break;
+            }
+            return maxSize;
+        }
     }
 }

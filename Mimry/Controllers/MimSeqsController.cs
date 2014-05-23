@@ -54,6 +54,8 @@ namespace Mimry.Controllers
                     Mims = ms.Mims.OrderBy(m => m.CreatedDate).Select(m => new
                     {
                         MimID = m.MimID,
+                        Width = m.Width,
+                        Height = m.Height,
                         MimVote = Request.IsAuthenticated
                             ? m.Votes.FirstOrDefault(v => v.User == currentUserName)
                             : null
@@ -75,6 +77,8 @@ namespace Mimry.Controllers
                     {
                         MimView mimView = new MimView();
                         mimView.MimID = mv.MimID;
+                        mimView.Width = mv.Width;
+                        mimView.Height = mv.Height;
                         mimView.ViewMode = MimViewMode.Thumbnail;
                         mimView.Vote = (mv.MimVote != null) ? mv.MimVote.Vote : 0;
                         mimViews.Add(mimView);
@@ -133,6 +137,8 @@ namespace Mimry.Controllers
                     Mims = ms.Mims.OrderBy(m => m.CreatedDate).Select(m => new
                     {
                         MimID = m.MimID,
+                        Width = m.Width,
+                        Height = m.Height,
                         MimVote = Request.IsAuthenticated
                             ? m.Votes.FirstOrDefault(v => v.User == currentUserName)
                             : null
@@ -160,6 +166,8 @@ namespace Mimry.Controllers
                 {
                     MimView mimView = new MimView();
                     mimView.MimID = mv.MimID;
+                    mimView.Width = mv.Width;
+                    mimView.Height = mv.Height;
                     mimView.ViewMode = MimViewMode.Medium;
                     mimView.Vote = (mv.MimVote != null) ? mv.MimVote.Vote : 0;
                     mimViews.Add(mimView);

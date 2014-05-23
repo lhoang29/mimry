@@ -1,4 +1,12 @@
 ﻿$(function () {
+    lazyLoadMims = function () {
+        $("img.mim").lazyload({
+            effect: "fadeIn"
+        }).removeClass("mim");
+    };
+    lazyLoadMims();
+    $(document).ajaxStop(lazyLoadMims);
+
     AddAntiForgeryToken = function (data) {
         data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
         return data;

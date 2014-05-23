@@ -99,21 +99,17 @@ button.ml-liked {
 .ml-pin {
     text-align:left;
     position:absolute;
-    right:5px;
+    right:0px;
     top:5px;
 }
 
 div.mim {
     position:relative;
     display:inline-block;
-}
-
-img.mim {
-    margin:5px;
+    margin:10px;
 }
 
 img.mim-full {
     max-width:100%;
     min-width:300px;
-    margin:5px;
 }

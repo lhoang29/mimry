@@ -20,8 +20,6 @@ namespace Mimry.Controllers
     public class MimsController : Controller
     {
         private IUnitOfWork m_UOW;
-        private const int c_ThumbnailSize = 350;
-        private const int c_MediumSize = 600;
 
         public MimsController() : this(UnitOfWork.Current) { }
 
@@ -112,16 +110,7 @@ namespace Mimry.Controllers
 
             byte[] imageData = Convert.FromBase64String(mim.Image);
 
-            int maxSize = 0;
-            switch (mode)
-            {
-                case MimViewMode.Thumbnail:
-                    maxSize = c_ThumbnailSize;
-                    break;
-                case MimViewMode.Medium:
-                    maxSize = c_MediumSize;
-                    break;
-            }
+            int maxSize = MimView.GetMaxMimSize(mode);
 
             string jpegType = "image/jpeg";
             string webpType = "image/webp";
