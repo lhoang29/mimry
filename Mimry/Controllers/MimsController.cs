@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -15,6 +12,7 @@ using Mimry.Helpers;
 using Mimry.DAL;
 using Mimry.Attributes;
 using ImageMagick;
+using System.Globalization;
 
 namespace Mimry.Controllers
 {
@@ -75,7 +73,12 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var mims = m_UOW.MimRepository.Get(m => m.MimID == id);
+            var mims = m_UOW.MimRepository.GetQuery()
+                .Where(m => m.MimID == id)
+                .Select(m => new { 
+                    Image = m.Image, 
+                    LastModifiedDate = m.LastModifiedDate 
+                });
             if (mims == null)
             {
                 return HttpNotFound();
@@ -83,11 +86,28 @@ namespace Mimry.Controllers
             Mim mim = null;
             try
             {
-                mim = mims.Single();
+                var aMim = mims.Single();
+                mim = new Mim() { 
+                    Image = aMim.Image,
+                    LastModifiedDate = aMim.LastModifiedDate
+                };
             }
             catch
             {
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+
+            // Enable caching if image hasn't been modified since last time requested
+            if (!String.IsNullOrEmpty(Request.Headers["If-Modified-Since"]))
+            {
+                CultureInfo provider = CultureInfo.InvariantCulture;
+                var lastModifiedDate = DateTime.ParseExact(Request.Headers["If-Modified-Since"], "r", provider).ToLocalTime();
+                if (lastModifiedDate >= mim.LastModifiedDate.AddMilliseconds(-mim.LastModifiedDate.Millisecond))
+                {
+                    Response.StatusCode = 304;
+                    Response.StatusDescription = "Not Modified";
+                    return Content(String.Empty);
+                }
             }
 
             byte[] imageData = Convert.FromBase64String(mim.Image);
@@ -123,6 +143,9 @@ namespace Mimry.Controllers
                     }
                 }
             }
+
+            Response.Cache.SetCacheability(HttpCacheability.Public);
+            Response.Cache.SetLastModified(mim.LastModifiedDate);
 
             return base.File(imageData, "Image/jpeg");
         }
