@@ -17,14 +17,17 @@
     double scale = Math.Min(1, (double)maxSize / Math.Max(Model.Width, Model.Height));
     double width = Model.Width * scale;
     double height = Model.Height * scale;
-    
+    double containerWidth = maxSize + 20;
+
     var mimDetailUrl = Url.Action("Details", "Mims", new { id = Model.MimID });
-    <div class="mim">
-        <a href="@mimDetailUrl">
-            <img class="@mimClass" width="@width" height="@height" data-original="/Mims/Mimage/@Model.MimID?caption=true&mode=@Model.ViewMode" />
-        </a>
-        <div class="ml-pin">
-            @Html.Partial("MimActions", new MimActionsView() { MimID = Model.MimID, Vote = Model.Vote })
+    <div class="mim-container" style="width:@(containerWidth + "px"); ">
+        <div class="mim">
+            <a href="@mimDetailUrl">
+                <img class="@mimClass" width="@width" height="@height" data-original="/Mims/Mimage/@Model.MimID?caption=true&mode=@Model.ViewMode" />
+            </a>
+            <div class="ml-pin">
+                @Html.Partial("MimActions", new MimActionsView() { MimID = Model.MimID, Vote = Model.Vote })
+            </div>
         </div>
     </div>
 }

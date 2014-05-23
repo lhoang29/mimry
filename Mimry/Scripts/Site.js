@@ -145,13 +145,17 @@
                     $anchorMore = $('.infinite-more-link');
                     var getUrl = $anchorMore.attr('href');
                     if (getUrl) {
-                        $.get(getUrl, null,
-                            function (data) {
+                        $.ajax({
+                            url: getUrl,
+                            type: "GET",
+                            dataType: "html",
+                            cache: false,
+                            success: function (data) {
                                 $anchorMore.remove();
                                 $('#mrMainView').append(data);
                                 load = true;
-                            },
-                        'html');
+                            }
+                        });
                     }
                 }
             }

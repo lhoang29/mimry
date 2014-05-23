@@ -103,10 +103,16 @@ button.ml-liked {
     top:5px;
 }
 
+div.mim-container {
+    text-align:center;
+    padding-top:10px;
+    padding-bottom:10px;
+    display:inline-block;
+}
+
 div.mim {
     position:relative;
     display:inline-block;
-    margin:10px;
 }
 
 img.mim-full {
