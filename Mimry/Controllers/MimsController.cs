@@ -160,7 +160,7 @@ namespace Mimry.Controllers
 
             Response.Cache.SetCacheability(HttpCacheability.Public);
             Response.Cache.SetLastModified(mim.LastModifiedDate);
-            Response.Cache.SetMaxAge(TimeSpan.FromDays(1));
+            Response.Cache.SetMaxAge(TimeSpan.FromDays(60));
 
             return base.File(imageData, contentType);
         }
