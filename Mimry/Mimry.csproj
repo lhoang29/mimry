@@ -286,11 +286,9 @@
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Mims\Delete.cshtml" />
     <Content Include="Views\Mims\Details.cshtml" />
     <Content Include="Views\Mims\Edit.cshtml" />
     <Content Include="Views\MimSeqs\Create.cshtml" />
-    <Content Include="Views\MimSeqs\Delete.cshtml" />
     <Content Include="Views\MimSeqs\Details.cshtml" />
     <Content Include="Views\MimSeqs\Add.cshtml" />
     <Content Include="Views\MimSeqs\Index.cshtml" />

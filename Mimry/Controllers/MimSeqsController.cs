@@ -499,32 +499,6 @@ namespace Mimry.Controllers
             return View(mc);
         }
 
-        // GET: /MimSeqs/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            MimSeq mimseq = m_UOW.MimSeqRepository.GetByID(id);
-            if (mimseq == null)
-            {
-                return HttpNotFound();
-            }
-            return View(mimseq);
-        }
-
-        // POST: /MimSeqs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            MimSeq mimseq = m_UOW.MimSeqRepository.GetByID(id);
-            m_UOW.MimSeqRepository.Delete(mimseq);
-            m_UOW.Save();
-            return RedirectToAction("Index");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

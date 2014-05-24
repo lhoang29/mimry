@@ -273,30 +273,6 @@ namespace Mimry.Controllers
             return View(mim);
         }
 
-        // GET: /Mims/Delete/5
-        public ActionResult Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var mims = m_UOW.MimRepository.Get(m => m.MimID == id);
-            if (mims == null)
-            {
-                return HttpNotFound();
-            }
-            Mim mim = null;
-            try
-            {
-                mim = mims.Single();
-            }
-            catch
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
-            }
-            return View(mim);
-        }
-
         // POST: /Mims/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

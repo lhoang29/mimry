@@ -11,7 +11,7 @@
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.MimID)
     @Html.HiddenFor(model => model.Creator)
-    <div class="container-fluid">
+    <div class="container">
         <h3>Title</h3>
         @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.Title)
