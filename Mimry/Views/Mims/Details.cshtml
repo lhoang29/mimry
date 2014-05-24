@@ -6,6 +6,8 @@
 }
 
 <div class="container">
+    @Html.HiddenFor(model => model.MimID, new { @id = "MimID" })
+    @Html.AntiForgeryToken()
     <div class="form-group">
         <h2>@Model.Title</h2>
         <img class="mim-full" src="/Mims/Mimage/@Model.MimID?caption=true&mode=@Mimry.ViewModels.MimViewMode.Full" />
@@ -27,12 +29,16 @@
             {
                 @Html.ActionLink("Edit", "Edit", new { id = Model.MimID }, new { @class = "btn btn-primary" })
                 @: &nbsp;
-                @Html.ActionLink("Delete", "Delete", new { id = Model.MimID }, new { @class = "btn btn-danger" })
+                <button class="btn btn-danger bbDelete">Delete</button>
             }
             else
             {
                 <p class="bg-danger">This Mim can no longer be modified as its mimry has developed.</p>
             }
         }
-    </div>
 </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/bootbox")
+}

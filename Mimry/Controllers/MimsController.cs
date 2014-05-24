@@ -320,6 +320,7 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
+            string returnUrl = String.Empty;
             int prevMimID = mim.PrevMimID;
             MimSeq mimSeq = mim.MimSeq;
             // Entity Framework sets up cascade delete by default so simply deleting the parent object will delete all 1-many foreign key related objects.
@@ -331,6 +332,7 @@ namespace Mimry.Controllers
                 {
                     prevMim.NextMimID = 0;
                     m_UOW.MimRepository.Update(prevMim);
+                    returnUrl = Url.Action("Details", "MimSeqs", new { id = mimSeq.MimSeqID });
                 }
                 else
                 {
@@ -341,10 +343,11 @@ namespace Mimry.Controllers
             {
                 // If this is the only Mim left, delete the Mimry altogether.
                 m_UOW.MimSeqRepository.Delete(mimSeq);
+                returnUrl = Url.Action("Index", "MimSeqs");
             }
 
             m_UOW.Save();
-            return RedirectToAction("Index", "MimSeqs");
+            return Content(returnUrl);
         }
 
         protected override void Dispose(bool disposing)

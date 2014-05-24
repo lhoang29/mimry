@@ -135,6 +135,33 @@
             return false;
         }
     });
+
+    isNullOrWhiteSpace = function (str) {
+        return str === null || str.match(/^ *$/) !== null;
+    };
+
+    $('.bbDelete').click(function () {
+        bootbox.confirm("Are you sure you want to delete this Mim?", function (result) {
+            if (result == true) {
+                var mimID = $('#MimID').val();
+                $.ajax({
+                    url: '/Mims/Delete/',
+                    type: "POST",
+                    data: AddAntiForgeryToken({
+                        id: mimID
+                    }),
+                    dataType: "html",
+                    cache: false,
+                    success: function (data) {
+                        if (!isNullOrWhiteSpace(data)) {
+                            window.location = data;
+                        }
+                    }
+                });
+            }
+        });
+    });
+
     $window = $(window);
     $window.load(function () {
         var load = true;
