@@ -12,7 +12,7 @@
             {
                 MimSeqID = Model.MimSeqID,
                 Title = Model.Title,
-                ReturnUrl = "/MimSeqs/Details/" + Model.MimSeqID,
+                ReturnUrl = Url.Action("Details", "MimSeqs", new { id = Model.MimSeqID }),
                 IsLiked = Model.IsLiked,
                 IsOwner = Model.IsOwner,
                 LikeCount = Model.LikeCount,

@@ -208,7 +208,7 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MimryTitle,MimTitle,ImageUrl,CaptionTop,CaptionBottom,ReturnUrl")] MimryCreate mc)
+        public ActionResult Create([Bind(Include = "MimryTitle,MimTitle,ImageUrl,ReturnUrl")] MimryCreate mc)
         {
             Mim mim = new Mim();
             this.ValidateAddImage(mim, mc.ImageUrl, "ImageUrl");
@@ -220,8 +220,6 @@ namespace Mimry.Controllers
 
                 mim.Creator = User.Identity.GetUserName();
                 mim.Title = mc.MimTitle;
-                mim.CaptionTop = mc.CaptionTop;
-                mim.CaptionBottom = mc.CaptionBottom;
                 mim.MimSeq = mimseq;
 
                 m_UOW.MimSeqRepository.Insert(mimseq);
@@ -232,7 +230,7 @@ namespace Mimry.Controllers
                 {
                     return Redirect(mc.ReturnUrl);
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = mimseq.MimSeqID });
             }
 
             return View(mc);
@@ -281,7 +279,7 @@ namespace Mimry.Controllers
                 {
                     return Redirect(me.ReturnUrl);
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = ms.MimSeqID });
             }
             return View(me);
         }
@@ -462,7 +460,7 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add([Bind(Include = "MimSeqID,Title,ImageUrl,CaptionTop,CaptionBottom,ReturnUrl")] MimryContinue mc)
+        public ActionResult Add([Bind(Include = "MimSeqID,Title,ImageUrl,ReturnUrl")] MimryContinue mc)
         {
             Mim mim = new Mim();
             this.ValidateAddImage(mim, mc.ImageUrl, "ImageUrl");
@@ -496,7 +494,7 @@ namespace Mimry.Controllers
                 {
                     return Redirect(mc.ReturnUrl);
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = mc.MimSeqID });
             }
             return View(mc);
         }

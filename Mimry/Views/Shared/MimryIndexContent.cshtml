@@ -9,7 +9,7 @@
         {
             MimSeqID = it.MimSeqID,
             Title = it.Title,
-            ReturnUrl = "/MimSeqs/Index/",
+            ReturnUrl = Url.Action("Details", "MimSeqs", new { id = it.MimSeqID }),
             IsLiked = it.IsLiked,
             IsOwner = it.IsOwner,
             LikeCount = it.LikeCount,
