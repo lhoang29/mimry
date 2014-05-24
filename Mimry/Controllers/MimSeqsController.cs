@@ -28,6 +28,7 @@ namespace Mimry.Controllers
             m_UOW = uow;
         }
 
+        [AllowAnonymous]
         public ActionResult About()
         {
             return View();
