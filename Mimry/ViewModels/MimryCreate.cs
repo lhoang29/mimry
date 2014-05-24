@@ -4,20 +4,15 @@ namespace Mimry.ViewModels
 {
     public class MimryCreate
     {
-        [Display(Name = "Mimry Title")]
+        [Required(ErrorMessage = "Please enter a title.")]
         public string MimryTitle { get; set; }
 
-        [Display(Name = "Mim Title")]
         public string MimTitle { get; set; }
 
-        [Required]
-        [Display(Name = "Meme Image")]
+        [Required(ErrorMessage = "Please enter a URL.")]
         public string ImageUrl { get; set; }
 
-        [Display(Name = "Top Caption")]
         public string CaptionTop { get; set; }
-
-        [Display(Name = "Bottom Caption")]
         public string CaptionBottom { get; set; }
 
         public string ReturnUrl { get; set; }
