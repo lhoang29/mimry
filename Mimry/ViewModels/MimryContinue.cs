@@ -8,18 +8,10 @@ namespace Mimry.ViewModels
         [Required]
         public Guid MimSeqID { get; set; }
 
-        [Display(Name = "Mim Title")]
         public string Title { get; set; }
 
-        [Required]
-        [Display(Name = "Meme Image")]
+        [Required(ErrorMessage = "Please enter a URL.")]
         public string ImageUrl { get; set; }
-
-        [Display(Name = "Top Caption")]
-        public string CaptionTop { get; set; }
-
-        [Display(Name = "Bottom Caption")]
-        public string CaptionBottom { get; set; }
 
         public string ReturnUrl { get; set; }
     }

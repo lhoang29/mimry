@@ -8,8 +8,7 @@ namespace Mimry.ViewModels
         [Required]
         public Guid MimSeqID { get; set; }
 
-        [Required]
-        [Display(Name = "Mimry Title")]
+        [Required(ErrorMessage = "Please enter a title.")]
         public string Title { get; set; }
 
         public string ReturnUrl { get; set; }

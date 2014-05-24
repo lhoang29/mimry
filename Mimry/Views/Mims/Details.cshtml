@@ -5,74 +5,34 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Mim</h4>
-	<hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.MimryTitle)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MimryTitle)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastModifiedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastModifiedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Creator)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Creator)
-        </dd>
-
-        <dt>
-            <label>Image</label>
-        </dt>
-
-        <dd>
-            <img class="mim-full" src="/Mims/Mimage/@Model.MimID?caption=true&mode=@Mimry.ViewModels.MimViewMode.Full" />
-        </dd>
-
-    </dl>
+<div class="container">
+    <div class="form-group">
+        <h2>@Model.Title</h2>
+        <img class="mim-full" src="/Mims/Mimage/@Model.MimID?caption=true&mode=@Mimry.ViewModels.MimViewMode.Full" />
+    </div>
+    <div class="form-group" style="font-size:16px;">
+        <dl>
+            <dt>Belongs to</dt>
+            <dd>@Model.MimryTitle</dd>
+            <dt>Created on</dt>
+            <dd>@Model.CreatedDate</dd>
+            <dt>Last modified</dt>
+            <dd>@Model.LastModifiedDate</dd>
+            <dt>Creator</dt>
+            <dd>@Model.Creator</dd>
+        </dl>
+        @if (Model.IsOwner)
+        {
+            if (Model.IsEditable)
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = Model.MimID }, new { @class = "btn btn-primary" })
+                @: &nbsp;
+                @Html.ActionLink("Delete", "Delete", new { id = Model.MimID }, new { @class = "btn btn-danger" })
+            }
+            else
+            {
+                <p class="bg-danger">This Mim can no longer be modified as its mimry has developed.</p>
+            }
+        }
+    </div>
 </div>
-<p>
-    @if (Model.IsOwner)
-    {
-        if (Model.IsEditable)
-        {
-            @Html.ActionLink("Edit", "Edit", new { id = Model.MimID }); @:|
-            @Html.ActionLink("Delete", "Delete", new { id = Model.MimID }); @:|
-        }
-        else
-        {
-            <label>This Mim can no longer be modified as its mimry has developed. |</label>
-        }
-    }
-    @Html.ActionLink("Back to List", "Index", "MimSeqs")
-</p>

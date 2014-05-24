@@ -478,8 +478,6 @@ namespace Mimry.Controllers
                 mim.Creator = User.Identity.GetUserName();
                 mim.MimSeqID = mc.MimSeqID;
                 mim.Title = mc.Title;
-                mim.CaptionTop = mc.CaptionTop;
-                mim.CaptionBottom = mc.CaptionBottom;
 
                 Mim prevMim = firstMim.Single();
                 if (prevMim == null)
