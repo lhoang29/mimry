@@ -120,3 +120,7 @@ img.mim-full {
     max-width:100%;
     min-width:300px;
 }
+
+.jumbotron {
+  background: url(/Images/cream_dust.png) repeat 0 0;
+}

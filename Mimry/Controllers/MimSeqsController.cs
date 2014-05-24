@@ -28,6 +28,11 @@ namespace Mimry.Controllers
             m_UOW = uow;
         }
 
+        public ActionResult About()
+        {
+            return View();
+        }
+
         // GET: /MimSeqs/
         [AllowAnonymous]
         public ActionResult Index(int page = 0)

@@ -303,6 +303,7 @@
     <Content Include="Views\Shared\MimryHeaderActions.cshtml" />
     <Content Include="Views\Shared\MimryCommentActions.cshtml" />
     <Content Include="Views\Shared\MimryIndexContent.cshtml" />
+    <Content Include="Views\MimSeqs\About.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
