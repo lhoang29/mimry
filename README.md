@@ -1,3 +1,3 @@
 mimry
 =====
-http://mimry.azurewebsites.net
+See http://mimry.azurewebsites.net/MimSeqs/About
