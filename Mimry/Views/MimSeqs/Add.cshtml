@@ -6,6 +6,10 @@
 
 @using (Html.BeginForm())
 {
+    string returnUrl = String.IsNullOrWhiteSpace(Model.ReturnUrl) ?
+        Url.Action("Details", "MimSeqs", new { id = Model.MimSeqID }) :
+        Model.ReturnUrl;
+    
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.MimSeqID)
@@ -21,7 +25,7 @@
     <br /><br />
     
     <input type="submit" value="Add" class="btn btn-primary" />
-    <a href="@Model.ReturnUrl" class="btn btn-default">Cancel</a> 
+    <a href="@returnUrl" class="btn btn-default">Cancel</a> 
 }
 
 @section Scripts {

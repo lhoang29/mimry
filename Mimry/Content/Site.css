@@ -116,6 +116,14 @@ div.mim {
     max-width:100%;
 }
 
+div.mim-add {
+    border-width:1px;
+    border-color:gainsboro;
+    border-style:solid;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
 img.mim-full {
     max-width:100%;
     min-width:300px;

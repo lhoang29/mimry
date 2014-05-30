@@ -6,7 +6,7 @@
     double scale = Math.Min(1, (double)maxSize / Math.Max(Model.Width, Model.Height));
     double width = Model.Width * scale;
     double height = Model.Height * scale;
-    double containerWidth = maxSize + 20;
+    double containerWidth = maxSize + MimView.ContainerPadding;
 
     var mimClass = String.Empty;
     var imageStyle = String.Empty;
@@ -30,15 +30,30 @@
             break;
     }
 
-    var mimDetailUrl = Url.Action("Details", "Mims", new { id = Model.MimID });
-    <div class="mim-container" style="width:@containerWidthStyle;">
-        <div class="mim">
-            <a href="@mimDetailUrl">
-                <img class="@mimClass" @imageStyle @imageSource="/Mims/Mimage/@Model.MimID?caption=true&mode=@Model.ViewMode"/>
-            </a>
-            <div class="ml-pin">
-                @Html.Partial("MimActions", new MimActionsView() { MimID = Model.MimID, Vote = Model.Vote })
+    if (Model.MimID != Guid.Empty)
+    {
+        var mimDetailUrl = Url.Action("Details", "Mims", new { id = Model.MimID });
+        <div class="mim-container" style="width:@containerWidthStyle;">
+            <div class="mim">
+                <a href="@mimDetailUrl">
+                    <img class="@mimClass" @imageStyle @imageSource="/Mims/Mimage/@Model.MimID?caption=true&mode=@Model.ViewMode"/>
+                </a>
+                <div class="ml-pin">
+                    @Html.Partial("MimActions", new MimActionsView() { MimID = Model.MimID, Vote = Model.Vote })
+                </div>
             </div>
         </div>
-    </div>
+    }
+    else
+    {
+        string addUrl = Url.Action("Add", "MimSeqs", new { id = Model.MimSeqID });
+        string addSizeStyle = MimView.AddViewSize + "px";
+        <div class="mim-container" style="width:@containerWidthStyle;">
+            <a class="ml" href="@addUrl">
+                <div class="mim mim-add" style="width:@addSizeStyle; line-height:@addSizeStyle">
+                    <span style="font-size:larger;">ADD NEW</span>
+                </div>
+            </a>
+        </div>
+    }
 }
