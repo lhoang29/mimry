@@ -33,10 +33,13 @@ namespace MimryUnitTests.Controllers
             Assert.AreEqual(result.GetType(), typeof(HttpStatusCodeResult));
 
             HttpStatusCodeResult httpResult = result as HttpStatusCodeResult;
-            Assert.AreNotEqual(httpResult.StatusCode, Convert.ToInt32(Convert.ToInt32(HttpStatusCode.OK)));
+            Assert.AreNotEqual(httpResult.StatusCode, Convert.ToInt32(HttpStatusCode.OK));
 
             result = msc.Details(new Guid());
-            Assert.AreEqual(result.GetType(), typeof(HttpNotFoundResult));
+            Assert.AreEqual(result.GetType(), typeof(HttpStatusCodeResult));
+
+            httpResult = result as HttpStatusCodeResult;
+            Assert.AreEqual(httpResult.StatusCode, Convert.ToInt32(HttpStatusCode.InternalServerError));
         }
         [TestMethod]
         public void TestCreate()

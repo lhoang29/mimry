@@ -224,6 +224,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\MimryCommentView.cs" />
     <Compile Include="ViewModels\MimryCommentActionsView.cs" />
+    <Compile Include="ViewModels\MimEdit.cs" />
     <Compile Include="ViewModels\MimryHeaderActionsView.cs" />
     <Compile Include="ViewModels\MimActionsView.cs" />
     <Compile Include="ViewModels\MimDetails.cs" />

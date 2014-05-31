@@ -39,9 +39,6 @@ namespace MimryUnitTests.Controllers
 
             HttpStatusCodeResult httpResult = result as HttpStatusCodeResult;
             Assert.AreNotEqual(httpResult.StatusCode, HttpStatusCode.OK);
-
-            result = mc.Mimage(new Guid());
-            Assert.AreEqual(result.GetType(), typeof(HttpNotFoundResult));
         }
         [TestMethod]
         public void TestVote()
@@ -62,13 +59,7 @@ namespace MimryUnitTests.Controllers
             var mockUOW = new MockUnitOfWork();
             var mc = new MimsController(mockUOW);
 
-            var result = mc.Edit(null);
-            Assert.AreEqual(result.GetType(), typeof(HttpStatusCodeResult));
-
-            HttpStatusCodeResult httpResult = result as HttpStatusCodeResult;
-            Assert.AreNotEqual(httpResult.StatusCode, HttpStatusCode.OK);
-
-            result = mc.Edit(new Guid());
+            var result = mc.Edit(new Guid());
             Assert.AreEqual(result.GetType(), typeof(HttpNotFoundResult));
         }
         [TestMethod]
@@ -76,13 +67,13 @@ namespace MimryUnitTests.Controllers
         {
             var mockUOW = new MockUnitOfWork();
             var mc = new MimsController(mockUOW);
-            
-            Mim mim = new Mim();
-            var result = mc.Edit(mim, null);
+
+            MimEdit me = new MimEdit();
+            var result = mc.Edit(me);
             Assert.AreEqual(result.GetType(), typeof(HttpNotFoundResult));
 
-            string imageUrl = "test";
-            result = mc.Edit(mim, imageUrl);
+            me.ImageUrl = "test";
+            result = mc.Edit(me);
             Assert.AreEqual(result.GetType(), typeof(HttpNotFoundResult));
         }
         [TestMethod]

@@ -222,8 +222,11 @@ namespace Mimry.Controllers
             {
                 return RedirectToAction("Details", new { id = id });
             }
-            ViewBag.MimSeqID = new SelectList(m_UOW.MimSeqRepository.Get(), "MimSeqID", "Title", mim.MimSeqID);
-            return View(mim);
+            MimEdit me = new MimEdit() { 
+                MimID = mim.MimID,
+                Title = mim.Title
+            };
+            return View(me);
         }
 
         // POST: /Mims/Edit/5
@@ -231,9 +234,9 @@ namespace Mimry.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="MimID,Title,Creator,CaptionTop,CaptionBottom")] Mim mim, string imageUrl)
+        public ActionResult Edit([Bind(Include="MimID,Title,ImageUrl")] MimEdit me)
         {
-            var mims = m_UOW.MimRepository.Get(m => m.MimID == mim.MimID);
+            var mims = m_UOW.MimRepository.Get(m => m.MimID == me.MimID);
             if (mims == null)
             {
                 return HttpNotFound();
@@ -247,10 +250,9 @@ namespace Mimry.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
-            if (!String.IsNullOrWhiteSpace(imageUrl))
+            if (!String.IsNullOrWhiteSpace(me.ImageUrl))
             {
-                this.ValidateAddImage(mim, imageUrl, "Image");
-                currentMim.Image = mim.Image;
+                this.ValidateAddImage(currentMim, me.ImageUrl, "ImageUrl");
             }
             else
             {
@@ -262,16 +264,12 @@ namespace Mimry.Controllers
             }
             if (ModelState.IsValid)
             {
-                currentMim.Title = mim.Title;
-                currentMim.CaptionTop = mim.CaptionTop;
-                currentMim.CaptionBottom = mim.CaptionBottom;
-                currentMim.Width = mim.Width;
-                currentMim.Height = mim.Height;
+                currentMim.Title = me.Title;
                 m_UOW.MimRepository.Update(currentMim);
                 m_UOW.Save();
                 return RedirectToAction("Details", new { id = currentMim.MimID });
             }
-            return View(mim);
+            return View(me);
         }
 
         // POST: /Mims/Delete/5

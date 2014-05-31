@@ -1,4 +1,4 @@
-﻿@model Mimry.Models.Mim
+﻿@model Mimry.ViewModels.MimEdit
 
 @{
     ViewBag.Title = "Edit";
@@ -10,7 +10,6 @@
     
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.MimID)
-    @Html.HiddenFor(model => model.Creator)
     <div class="container">
         <h3>Title</h3>
         @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
@@ -20,7 +19,8 @@
         <img class="mim-full" src="/Mims/Mimage/@Model.MimID" />
 
         <h3>New Image URL</h3>
-        <input type="text" name="imageUrl" class="form-control" />
+        @Html.TextBoxFor(model => model.ImageUrl, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ImageUrl)
 
         <br /><br />
 
