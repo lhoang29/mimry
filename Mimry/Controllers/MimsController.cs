@@ -265,6 +265,8 @@ namespace Mimry.Controllers
                 currentMim.Title = mim.Title;
                 currentMim.CaptionTop = mim.CaptionTop;
                 currentMim.CaptionBottom = mim.CaptionBottom;
+                currentMim.Width = mim.Width;
+                currentMim.Height = mim.Height;
                 m_UOW.MimRepository.Update(currentMim);
                 m_UOW.Save();
                 return RedirectToAction("Details", new { id = currentMim.MimID });
