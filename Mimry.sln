@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mimry", "Mimry\Mimry.csproj", "{0CD6067A-8E20-436B-93CB-07BD86BE19AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MimryUnitTests", "MimryUnitTests\MimryUnitTests.csproj", "{56E918EE-2F9B-4C3D-94D3-40BDCFB682B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MimryTests", "MimryUnitTests\MimryTests.csproj", "{56E918EE-2F9B-4C3D-94D3-40BDCFB682B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
