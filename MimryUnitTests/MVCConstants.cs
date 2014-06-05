@@ -10,5 +10,7 @@ namespace MimryUnitTests
     {
         public static readonly string Controller = "controller";
         public static readonly string Action = "action";
+        public static readonly string ImpersonateUserName = "user1";
+        public static readonly string ImpersonatePassword = "112211";
     }
 }
