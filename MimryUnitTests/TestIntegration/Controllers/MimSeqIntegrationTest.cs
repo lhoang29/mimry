@@ -36,25 +36,53 @@ namespace MimryUnitTests.Controllers
         public void MimSeqCreate_WithSession_NoRedirect()
         {
             string returnUrl = String.Empty;
-            MimSeqIntegrationTest.Login(
-                returnUrl, 
-                MVCConstants.ImpersonateUserName, 
-                MVCConstants.ImpersonatePassword
-            );
-
+            MimSeqIntegrationTest.Login();
             App.NavigateTo<MimSeqsController>(c => c.Create(returnUrl));
             BaseIntegrationTest.TestRouteMatch(App.Route, "MimSeqs", "Create");
         }
 
-        private static void Login(string returnUrl, string userName, string password)
+        [TestMethod]
+        public void MimSeqEdit_WithoutSession_LinkNotExists()
         {
-            App.NavigateTo<AccountController>(c => c.Login(returnUrl));
-            App.FindFormFor<LoginViewModel>()
-                .Field(m => m.UserName).SetValueTo(userName)
-                .Field(m => m.Password).SetValueTo(password)
-                .Submit();
+            App.NavigateTo<MimSeqsController>(c => c.Index(0));
+            Exception exception = null;
+            try
+            {
+                var editElement = App.Browser.FindElement(OpenQA.Selenium.By.ClassName(MVCConstants.MimryEditClass));
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception.GetType(), typeof(OpenQA.Selenium.NoSuchElementException));
         }
 
+        [TestMethod]
+        public void MimSeqEdit_WithSession_LinkExists()
+        {
+            MimSeqIntegrationTest.Login();
+            App.NavigateTo<MimSeqsController>(c => c.Index(0));
+            Exception exception = null;
+            try
+            {
+                var editElement = App.Browser.FindElement(OpenQA.Selenium.By.ClassName(MVCConstants.MimryEditClass));
+                Assert.IsNotNull(editElement);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+            Assert.IsNull(exception);
+        }
 
+        private static void Login()
+        {
+            App.NavigateTo<AccountController>(c => c.Login(String.Empty));
+            App.FindFormFor<LoginViewModel>()
+                .Field(m => m.UserName).SetValueTo(MVCConstants.ImpersonateUserName)
+                .Field(m => m.Password).SetValueTo(MVCConstants.ImpersonatePassword)
+                .Submit();
+        }
     }
 }
