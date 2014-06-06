@@ -117,6 +117,27 @@ namespace MimryUnitTests.Controllers
             Assert.IsNull(exception);
         }
 
+        [TestMethod]
+        public void MimSeqAdd_Link_WithSession_NoRedirect()
+        {
+            MimSeqIntegrationTest.Login();
+            App.NavigateTo<MimSeqsController>(c => c.Index(0));
+            Exception exception = null;
+            try
+            {
+                var addElement = App.Browser.FindElement(By.ClassName(MVCConstants.MimryAddLinkClass));
+                Assert.IsNotNull(addElement);
+                var addHref = addElement.GetAttribute("href");
+                App.Browser.Navigate().GoToUrl(addHref);
+                Assert.AreEqual(App.Browser.Url, addHref, ignoreCase: true);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+            Assert.IsNull(exception);
+        }
+
         private static void Login()
         {
             App.NavigateTo<AccountController>(c => c.Login(String.Empty));
