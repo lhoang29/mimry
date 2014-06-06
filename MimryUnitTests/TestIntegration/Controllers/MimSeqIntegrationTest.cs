@@ -4,6 +4,7 @@ using SpecsFor;
 using SpecsFor.Mvc;
 using Mimry.Controllers;
 using Mimry.Models;
+using OpenQA.Selenium;
 
 namespace MimryUnitTests.Controllers
 {
@@ -48,14 +49,14 @@ namespace MimryUnitTests.Controllers
             Exception exception = null;
             try
             {
-                var editElement = App.Browser.FindElement(OpenQA.Selenium.By.ClassName(MVCConstants.MimryEditClass));
+                var editElement = App.Browser.FindElement(By.ClassName(MVCConstants.MimryEditClass));
             }
             catch (Exception ex)
             {
                 exception = ex;
             }
             Assert.IsNotNull(exception);
-            Assert.AreEqual(exception.GetType(), typeof(OpenQA.Selenium.NoSuchElementException));
+            Assert.AreEqual(exception.GetType(), typeof(NoSuchElementException));
         }
 
         [TestMethod]
@@ -66,8 +67,48 @@ namespace MimryUnitTests.Controllers
             Exception exception = null;
             try
             {
-                var editElement = App.Browser.FindElement(OpenQA.Selenium.By.ClassName(MVCConstants.MimryEditClass));
+                var editElement = App.Browser.FindElement(By.ClassName(MVCConstants.MimryEditClass));
                 Assert.IsNotNull(editElement);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+            Assert.IsNull(exception);
+        }
+
+        [TestMethod]
+        public void MimSeqAdd_Link_WithoutSession_RedirectsToLogin()
+        {
+            App.NavigateTo<MimSeqsController>(c => c.Index(0));
+            Exception exception = null;
+            try
+            {
+                var addElement = App.Browser.FindElement(By.ClassName(MVCConstants.MimryAddLinkClass));
+                Assert.IsNotNull(addElement);
+                var addHref = addElement.GetAttribute("href");
+                App.Browser.Navigate().GoToUrl(addHref);
+                BaseIntegrationTest.TestRouteMatch(App.Route, "Account", "Login");
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+            Assert.IsNull(exception);
+        }
+
+        [TestMethod]
+        public void MimSeqAdd_Box_WithoutSession_RedirectsToLogin()
+        {
+            App.NavigateTo<MimSeqsController>(c => c.Index(0));
+            Exception exception = null;
+            try
+            {
+                var addElement = App.Browser.FindElement(By.ClassName(MVCConstants.MimryAddBoxClass));
+                Assert.IsNotNull(addElement);
+                var addHref = addElement.GetAttribute("href");
+                App.Browser.Navigate().GoToUrl(addHref);
+                BaseIntegrationTest.TestRouteMatch(App.Route, "Account", "Login");
             }
             catch (Exception ex)
             {

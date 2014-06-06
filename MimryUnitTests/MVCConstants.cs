@@ -14,5 +14,7 @@ namespace MimryUnitTests
         public static readonly string ImpersonatePassword = "112211";
 
         public static readonly string MimryEditClass = "acc_mimry_edit";
+        public static readonly string MimryAddLinkClass = "acc_mimry_add_link";
+        public static readonly string MimryAddBoxClass = "acc_mimry_add_box";
     }
 }
