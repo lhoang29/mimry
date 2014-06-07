@@ -20,6 +20,15 @@ namespace MimryUnitTests.Controllers
         }
 
         [TestMethod]
+        public void MimSeqCreate_WithSession_NoRedirect()
+        {
+            string returnUrl = String.Empty;
+            MimSeqIntegrationTest.Login();
+            App.NavigateTo<MimSeqsController>(c => c.Create(returnUrl));
+            BaseIntegrationTest.TestRouteMatch(App.Route, "MimSeqs", "Create");
+        }
+
+        [TestMethod]
         public void MimSeqIndex_WithoutSession_NoRedirect()
         {
             App.NavigateTo<MimSeqsController>(c => c.Index(0));
@@ -31,15 +40,6 @@ namespace MimryUnitTests.Controllers
         {
             App.NavigateTo<MimSeqsController>(c => c.About());
             BaseIntegrationTest.TestRouteMatch(App.Route, "MimSeqs", "About");
-        }
-        
-        [TestMethod]
-        public void MimSeqCreate_WithSession_NoRedirect()
-        {
-            string returnUrl = String.Empty;
-            MimSeqIntegrationTest.Login();
-            App.NavigateTo<MimSeqsController>(c => c.Create(returnUrl));
-            BaseIntegrationTest.TestRouteMatch(App.Route, "MimSeqs", "Create");
         }
 
         [TestMethod]
