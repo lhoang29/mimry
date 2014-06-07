@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SpecsFor;
-using SpecsFor.Mvc;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mimry.Controllers;
 
 namespace MimryUnitTests.Controllers
@@ -12,6 +9,7 @@ namespace MimryUnitTests.Controllers
         [TestMethod]
         public void AccountManage_WithoutSession_RedirectsToLogin()
         {
+            BaseIntegrationTest.Logoff();
             AccountController.ManageMessageId? messageId = null;
             App.NavigateTo<AccountController>(c => c.Manage(messageId));
 

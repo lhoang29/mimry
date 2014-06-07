@@ -1,6 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mimry;
+using Mimry.Controllers;
+using Mimry.Models;
+using OpenQA.Selenium;
 using SpecsFor.Mvc;
+using System;
 
 namespace MimryUnitTests.Controllers
 {
@@ -26,7 +30,7 @@ namespace MimryUnitTests.Controllers
 
             config.BuildRoutesUsing(r => RouteConfig.RegisterRoutes(r));
 
-            config.UseBrowser(BrowserDriver.Chrome);
+            config.UseBrowser(BrowserDriver.InternetExplorer);
 
             s_IntegrationHost = new SpecsForIntegrationHost(config);
             s_IntegrationHost.Start();
@@ -45,6 +49,28 @@ namespace MimryUnitTests.Controllers
             Assert.IsNotNull(route);
             Assert.AreEqual(expectedController, (string)route.Values[MVCConstants.Controller], true);
             Assert.AreEqual(expectedAction, (string)route.Values[MVCConstants.Action], true);
+        }
+
+        public static void Login()
+        {
+            App.NavigateTo<AccountController>(c => c.Login(String.Empty));
+            App.FindFormFor<LoginViewModel>()
+                .Field(m => m.UserName).SetValueTo(MVCConstants.ImpersonateUserName)
+                .Field(m => m.Password).SetValueTo(MVCConstants.ImpersonatePassword)
+                .Submit();
+        }
+
+        public static void Logoff()
+        {
+            App.NavigateTo<MimSeqsController>(c => c.Index(0));
+            try
+            {
+                App.Browser.FindElement(By.Id("logoutForm")).Submit();
+            }
+            catch (Exception)
+            {
+                // Exception means not logged in.
+            }
         }
     }
 }
