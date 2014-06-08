@@ -16,5 +16,9 @@ namespace MimryUnitTests
         public static readonly string MimryEditClass = "acc_mimry_edit";
         public static readonly string MimryAddLinkClass = "acc_mimry_add_link";
         public static readonly string MimryAddBoxClass = "acc_mimry_add_box";
+
+        public static readonly string MimDetailsClass = "acc_mim_details";
+        public static readonly string MimEditClass = "acc_mim_edit";
+        public static readonly string MimDeleteClass = "acc_mim_delete";
     }
 }

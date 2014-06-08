@@ -27,9 +27,9 @@
         {
             if (Model.IsEditable)
             {
-                @Html.ActionLink("Edit", "Edit", new { id = Model.MimID }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Edit", "Edit", new { id = Model.MimID }, new { @class = "btn btn-primary acc_mim_edit" })
                 @: &nbsp;
-                <button class="btn btn-danger bbDelete">Delete</button>
+                <button class="btn btn-danger bbDelete acc_mim_delete">Delete</button>
             }
             else
             {

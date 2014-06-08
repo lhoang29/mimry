@@ -98,6 +98,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="TestIntegration\Controllers\AccountIntegrationTest.cs" />
+    <Compile Include="TestIntegration\Controllers\MimIntegrationTest.cs" />
     <Compile Include="TestIntegration\Controllers\MimSeqIntegrationTest.cs" />
     <Compile Include="TestIntegration\BaseIntegrationTest.cs" />
     <Compile Include="TestUnit\Controllers\MimSeqUnitTest.cs" />

@@ -72,5 +72,16 @@ namespace MimryUnitTests.Controllers
                 // Exception means not logged in.
             }
         }
+
+        public static IWebElement FindElement(By by)
+        {
+            IWebElement element = null;
+            try
+            {
+                element = App.Browser.FindElement(by);
+            }
+            catch (NoSuchElementException) { }
+            return element;
+        }
     }
 }

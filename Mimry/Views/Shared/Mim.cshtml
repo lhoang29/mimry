@@ -35,7 +35,7 @@
         var mimDetailUrl = Url.Action("Details", "Mims", new { id = Model.MimID });
         <div class="mim-container" style="width:@containerWidthStyle;">
             <div class="mim">
-                <a href="@mimDetailUrl">
+                <a class="acc_mim_details" href="@mimDetailUrl">
                     <img class="@mimClass" @imageStyle @imageSource="/Mims/Mimage/@Model.MimID?caption=true&mode=@Model.ViewMode"/>
                 </a>
                 <div class="ml-pin">
