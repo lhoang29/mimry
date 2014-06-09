@@ -2,8 +2,24 @@
 
 @{
     ViewBag.Title = "Error";
+    string headerMessage = "Error.";
+    string genericMessage = "An error occurred while processing your request.";
+    string detailsMessage = String.Empty;
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+@if (Model.Exception is HttpRequestValidationException)
+{
+    headerMessage = "Uh oh, looks like your new value is too fancy! Just text please.";
+    genericMessage = String.Empty;
+    detailsMessage = Model.Exception.Message;
+    int idxStartMessage = detailsMessage.IndexOf('(') + 1;
+    int idxEndMessage = detailsMessage.IndexOf(')');
+    if (idxStartMessage > 0 && idxEndMessage > idxStartMessage)
+    {
+        detailsMessage = detailsMessage.Substring(idxStartMessage, idxEndMessage - idxStartMessage);
+    }
+}
 
+<h1 class="text-danger">@headerMessage</h1>
+<h2 class="text-danger">@genericMessage</h2>
+<h4 class="text-danger">@detailsMessage</h4>
