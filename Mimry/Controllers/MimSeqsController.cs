@@ -43,7 +43,7 @@ namespace Mimry.Controllers
             {
                 string currentUserName = User.Identity.GetUserName();
                 var data = m_UOW.MimSeqRepository.GetQuery()
-                    .OrderBy(ms => ms.CreatedDate)
+                    .OrderByDescending(ms => ms.CreatedDate)
                     .Skip(page * c_PageSize).Take(c_PageSize)
                     .Select(ms => new
                 {
