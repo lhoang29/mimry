@@ -36,10 +36,10 @@
         });
     }
 
-    $('.ml-pin').on('click', '.ajVoteUp', function () {
+    $('#mrMainView').on('click', '.ajVoteUp', function () {
         voteMim.call(this, $(this).siblings('[name="MimID"]').val(), 1);
     });
-    $('.ml-pin').on('click', '.ajVoteDown', function () {
+    $('#mrMainView').on('click', '.ajVoteDown', function () {
         voteMim.call(this, $(this).siblings('[name="MimID"]').val(), -1);
     });
 
@@ -63,7 +63,7 @@
             }
         });
     }
-    $('.mr-header-actions').on('click', '.ajLike', function () {
+    $('#mrMainView').on('click', '.ajLike', function () {
         likeMimry.call(this, $(this).siblings('[name="MimSeqID"]').val());
     });
 
