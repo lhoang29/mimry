@@ -4,28 +4,28 @@
 @if (Model != null && Model.MimSeqViews != null)
 {
     var nextPageUrl = Url.Action("Index", new { page = Model.PageIndex });
-    foreach (var it in Model.MimSeqViews)
+    foreach (var msv in Model.MimSeqViews)
     {
         var mimryHeader = new Mimry.ViewModels.MimryHeader()
         {
-            MimSeqID = it.MimSeqID,
-            Title = it.Title,
-            ReturnUrl = Url.Action("Details", "MimSeqs", new { id = it.MimSeqID }),
-            IsLiked = it.IsLiked,
-            IsOwner = it.IsOwner,
-            LikeCount = it.LikeCount,
-            CommentCount = it.CommentCount
+            MimSeqID = msv.MimSeqID,
+            Title = msv.Title,
+            ReturnUrl = Url.Action("Details", "MimSeqs", new { id = msv.MimSeqID }),
+            IsLiked = msv.IsLiked,
+            IsOwner = msv.IsOwner,
+            LikeCount = msv.LikeCount,
+            CommentCount = msv.CommentCount
         };
         @Html.Partial("MimryHeader", mimryHeader)
 
         var viewMode = MimViewMode.Thumbnail;
-        foreach (var mimView in it.MimViews)
+        foreach (var mimView in msv.MimViews)
         {
             viewMode = mimView.ViewMode;
             @Html.Partial("Mim", mimView)
         }
-        @Html.Partial("Mim", new MimView() { 
-            MimSeqID = it.MimSeqID,
+        @Html.Partial("Mim", new MimView() {
+            MimSeqID = msv.MimSeqID,
             MimID = Guid.Empty,
             ViewMode = MimViewMode.Thumbnail,
         })
