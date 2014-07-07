@@ -3,9 +3,6 @@
 
 @{
     int maxSize = MimView.GetMaxMimSize(Model.ViewMode);
-    double scale = Math.Min(1, (double)maxSize / Math.Max(Model.Width, Model.Height));
-    double width = Model.Width * scale;
-    double height = Model.Height * scale;
     double containerWidth = maxSize + MimView.ContainerPadding;
 
     var mimClass = String.Empty;
@@ -16,6 +13,9 @@
     switch (Model.ViewMode)
     {
         case Mimry.ViewModels.MimViewMode.Thumbnail:
+            double scale = (double)maxSize / Math.Max(Model.Width, Model.Height);
+            double width = Model.Width * scale;
+            double height = Model.Height * scale;
             mimClass = "img-rounded mim";
             imageStyle = "width=" + width + " height=" + height;
             imageSource = "data-original";
