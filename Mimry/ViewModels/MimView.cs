@@ -38,5 +38,10 @@ namespace Mimry.ViewModels
             }
             return maxSize;
         }
+
+        public static int GetContainerSize(MimViewMode mode)
+        {
+            return MimView.GetMaxMimSize(mode) + MimView.ContainerPadding;
+        }
     }
 }

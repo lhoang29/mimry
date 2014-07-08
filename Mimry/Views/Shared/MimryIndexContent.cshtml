@@ -6,6 +6,7 @@
     var nextPageUrl = Url.Action("Index", new { page = Model.PageIndex });
     foreach (var msv in Model.MimSeqViews)
     {
+        @:<div class="mimry-container">
         var mimryHeader = new Mimry.ViewModels.MimryHeader()
         {
             MimSeqID = msv.MimSeqID,
@@ -14,14 +15,13 @@
             IsLiked = msv.IsLiked,
             IsOwner = msv.IsOwner,
             LikeCount = msv.LikeCount,
-            CommentCount = msv.CommentCount
+            CommentCount = msv.CommentCount,
+            ViewMode = msv.MimViews.ElementAt(0).ViewMode
         };
         @Html.Partial("MimryHeader", mimryHeader)
 
-        var viewMode = MimViewMode.Thumbnail;
         foreach (var mimView in msv.MimViews)
         {
-            viewMode = mimView.ViewMode;
             @Html.Partial("Mim", mimView)
         }
         @Html.Partial("Mim", new MimView() {
@@ -29,7 +29,7 @@
             MimID = Guid.Empty,
             ViewMode = MimViewMode.Thumbnail,
         })
-        <hr />
+        @:</div>
     }
 
     <a class="infinite-more-link" href="@nextPageUrl"></a>

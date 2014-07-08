@@ -7,6 +7,7 @@
 
 @if (Model != null)
 {
+    MimViewMode viewMode = Model.MimViews.ElementAt(0).ViewMode;
     <div>
         @{
             var mimryHeader = new Mimry.ViewModels.MimryHeader() 
@@ -17,7 +18,8 @@
                 IsLiked = Model.IsLiked,
                 IsOwner = Model.IsOwner,
                 LikeCount = Model.LikeCount,
-                CommentCount = Model.CommentCount
+                CommentCount = Model.CommentCount,
+                ViewMode = viewMode
             };
         }
         @Html.Partial("MimryHeader", mimryHeader)
@@ -26,10 +28,8 @@
             <div class="row">
                 <div class="col-md-6">
                     @{
-                        var viewMode = MimViewMode.Thumbnail;
                         foreach (var mim in Model.MimViews)
                         {
-                            viewMode = mim.ViewMode;
                             <div style="text-align:center">
                                 @Html.Partial("Mim", mim)
                             </div>

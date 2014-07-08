@@ -1,7 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background: url(/Images/cream_dust.png) repeat 0 0;
+    background-color:#F5F6F7;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -50,7 +50,7 @@ input[type="checkbox"].input-validation-error {
 }
 
 div.mr-header {
-    font-size:30px;
+    font-size:20px;
     margin-top:10px;
     margin-bottom:10px;
 }
@@ -103,11 +103,19 @@ button.ml-liked {
     top:5px;
 }
 
+div.mimry-container {
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding:5px;
+    position:absolute;
+    background-color:white;
+    border: 1px solid darkgray;
+}
+
 div.mim-container {
     text-align:center;
     padding-top:10px;
     padding-bottom:10px;
-    display:inline-block;
 }
 
 div.mim {
@@ -118,10 +126,12 @@ div.mim {
 
 div.mim-add {
     border-width:1px;
-    border-color:gainsboro;
+    border-color:darkgray;
     border-style:solid;
     -moz-border-radius: 10px;
     border-radius: 10px;
+    padding:10px;
+    background-color:gainsboro;
 }
 
 img.mim-full {
@@ -130,5 +140,9 @@ img.mim-full {
 }
 
 .jumbotron {
-  background: url(/Images/cream_dust.png) repeat 0 0;
+  background-color:#F5F6F7;
+}
+
+#mrMainView {
+    position:relative;
 }

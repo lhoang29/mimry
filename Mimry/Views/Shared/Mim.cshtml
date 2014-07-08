@@ -3,7 +3,7 @@
 
 @{
     int maxSize = MimView.GetMaxMimSize(Model.ViewMode);
-    double containerWidth = maxSize + MimView.ContainerPadding;
+    double containerWidth = MimView.GetContainerSize(Model.ViewMode);
 
     var mimClass = String.Empty;
     var imageStyle = String.Empty;
@@ -47,11 +47,11 @@
     else
     {
         string addUrl = Url.Action("Add", "MimSeqs", new { id = Model.MimSeqID });
-        string addSizeStyle = MimView.AddViewSize + "px";
+        string addSizeStyle = maxSize + "px";
         <div class="mim-container" style="width:@containerWidthStyle;">
             <a class="ml acc_mimry_add_box" href="@addUrl">
-                <div class="mim mim-add" style="width:@addSizeStyle; line-height:@addSizeStyle">
-                    <span style="font-size:larger;">ADD NEW</span>
+                <div class="mim mim-add" style="width:@addSizeStyle;">
+                    <span style="font-size:larger;"><i class="fa fa-plus"></i> Add New</span>
                 </div>
             </a>
         </div>

@@ -162,12 +162,77 @@
         });
     });
 
+    var highestBottom = -1; // the highest of the mimry bottom locations
+    rearrange = function () {
+        var horSpace = 20;
+        var verSpace = 20;
+
+        var mimryContainers = $('.mimry-container');
+        if (mimryContainers == null || mimryContainers.length == 0) {
+            return;
+        }
+
+        var columnWidth = $(mimryContainers[0]).width() + horSpace;
+        var windowWidth = $(window).width();
+
+        var numColumns = Math.floor(windowWidth / columnWidth);
+        if (numColumns == 0) {
+            return;
+        }
+
+        var cBottoms = new Array(numColumns);
+        var cLefts = new Array(numColumns);
+        for (var i = 0; i < numColumns; i++) {
+            cBottoms[i] = 0;
+            cLefts[i] = i * columnWidth;
+        }
+
+        var iFreeColumn = 0;
+        for (var i = 0; i < mimryContainers.length; i++) {
+            var currentContainer = $(mimryContainers[i]);
+
+            var left = cLefts[iFreeColumn];
+            var top = cBottoms[iFreeColumn] + verSpace;
+
+            currentContainer.css('left', left + 'px');
+            currentContainer.css('top', top + 'px');
+
+            cBottoms[iFreeColumn] = top + currentContainer.height();
+
+            highestBottom = cBottoms[0];
+            iFreeColumn = 0;
+            for (var j = 0; j < numColumns; j++) {
+                if (cBottoms[j] < highestBottom) {
+                    highestBottom = cBottoms[j];
+                    iFreeColumn = j;
+                }
+            }
+        }
+
+        var bottomMost = Math.max.apply(null, cBottoms);
+        $('#footerDiv').css('top', (bottomMost + 20) + 'px');
+    };
+
     $window = $(window);
+    $window.resize(function () {
+        rearrange();
+    });
+
     $window.load(function () {
+
+        // Rearrange the layout
+        rearrange();
+
         var load = true;
         $window.scroll(function () {
             if (load) {
-                if ($window.height() + $window.scrollTop() == $(document).height()) {
+                if ((
+                    highestBottom > -1 &&
+                    highestBottom >= $window.scrollTop() &&
+                    highestBottom <= $window.scrollTop() + $window.height()
+                    ) ||
+                    $window.height() + $window.scrollTop() == $(document).height()) {
+
                     load = false;
                     $anchorMore = $('.infinite-more-link');
                     var getUrl = $anchorMore.attr('href');
@@ -180,6 +245,7 @@
                             success: function (data) {
                                 $anchorMore.remove();
                                 $('#mrMainView').append(data);
+                                rearrange();
                                 load = true;
                             }
                         });

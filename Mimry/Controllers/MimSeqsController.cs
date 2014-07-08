@@ -19,7 +19,7 @@ namespace Mimry.Controllers
     public class MimSeqsController : Controller
     {
         private IUnitOfWork m_UOW;
-        private const int c_PageSize = 3; // # of mimries to load
+        private const int c_PageSize = 6; // # of mimries to load
 
         public MimSeqsController() : this(UnitOfWork.Current) { }
 

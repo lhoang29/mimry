@@ -1,7 +1,15 @@
 ﻿@using Mimry.ViewModels
 @model MimryHeader
 
-<div class="mr-header">
+@{
+    string divContainerStyle = String.Empty;
+    if (Model.ViewMode == MimViewMode.Thumbnail)
+    {
+        divContainerStyle = "width:" + MimView.GetContainerSize(Model.ViewMode) + "px;";
+    }
+}
+
+<div class="mr-header" style="@divContainerStyle">
     <a class="ml" href="/MimSeqs/Details/@Model.MimSeqID" title="View">
         @Model.Title
     </a>

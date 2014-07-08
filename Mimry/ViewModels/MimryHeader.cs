@@ -17,5 +17,6 @@ namespace Mimry.ViewModels
         public bool IsOwner { get; set; }
         public int CommentCount { get; set; }
         public int LikeCount { get; set; }
+        public MimViewMode ViewMode { get; set; }
     }
 }
