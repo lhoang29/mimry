@@ -13,7 +13,7 @@
     switch (Model.ViewMode)
     {
         case Mimry.ViewModels.MimViewMode.Thumbnail:
-            double scale = (double)maxSize / Math.Max(Model.Width, Model.Height);
+            double scale = (double)maxSize / Model.Width;
             double width = Model.Width * scale;
             double height = Model.Height * scale;
             mimClass = "img-rounded mim";
