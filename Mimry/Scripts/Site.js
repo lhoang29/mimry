@@ -1,6 +1,7 @@
 ﻿$(function () {
     lazyLoadMims = function () {
         $("img.mim").lazyload({
+            failure_limit: 30,
             effect: "fadeIn"
         }).removeClass("mim");
     };
@@ -164,8 +165,8 @@
 
     var highestBottom = -1; // the highest of the mimry bottom locations
     rearrange = function () {
-        var horSpace = 20;
-        var verSpace = 20;
+        var horSpace = 25;
+        var verSpace = 25;
 
         var mimryContainers = $('.mimry-container');
         if (mimryContainers == null || mimryContainers.length == 0) {
