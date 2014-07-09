@@ -64,7 +64,7 @@
             }
         });
     }
-    $('#mrMainView').on('click', '.ajLike', function () {
+    $('body').on('click', '.ajLike', function () {
         likeMimry.call(this, $(this).siblings('[name="MimSeqID"]').val());
     });
 
