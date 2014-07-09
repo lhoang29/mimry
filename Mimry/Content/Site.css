@@ -1,14 +1,13 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color:#F5F6F7;
+    background-color: lightgray;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-    background-color: lightgray;
 }
 
 h1, h2, h3, h4, h5, h6 {
