@@ -37,10 +37,10 @@
         });
     }
 
-    $('#mrMainView').on('click', '.ajVoteUp', function () {
+    $('body').on('click', '.ajVoteUp', function () {
         voteMim.call(this, $(this).siblings('[name="MimID"]').val(), 1);
     });
-    $('#mrMainView').on('click', '.ajVoteDown', function () {
+    $('body').on('click', '.ajVoteDown', function () {
         voteMim.call(this, $(this).siblings('[name="MimID"]').val(), -1);
     });
 
