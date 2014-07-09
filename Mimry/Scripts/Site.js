@@ -37,6 +37,21 @@
         });
     }
 
+    toggleMimreePopover = function () {
+        var popoverTriggerControl = $("#mimreePopoverButton");
+        var popoverForm = $('#mimreePopover');
+        var rect = popoverTriggerControl[0].getBoundingClientRect();
+        var center = (rect.left + rect.right) / 2;
+        var bottom = rect.bottom;
+        var popoverLeft = Math.max(0, center - popoverForm.width() / 2);
+        var popoverTop = bottom + 10;
+        popoverForm.css('left', popoverLeft + 'px');
+        popoverForm.css('top', popoverTop + 'px');
+        popoverForm.fadeToggle();
+    };
+
+    $("#mimreePopoverButton").hover(toggleMimreePopover);
+
     $('body').on('click', '.ajVoteUp', function () {
         voteMim.call(this, $(this).siblings('[name="MimID"]').val(), 1);
     });

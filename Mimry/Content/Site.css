@@ -141,3 +141,14 @@ img.mim-full {
 #mrMainView {
     position:relative;
 }
+
+#mimreePopover {
+    display: none;
+    position: absolute;
+    background-color: whitesmoke;
+    border: 1px solid darkgray;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1;
+}
