@@ -3,12 +3,15 @@
 
 @{
     int maxSize = MimView.GetMaxMimSize(Model.ViewMode);
+    int minSize = MimView.MinimumSize;
     double containerWidth = MimView.GetContainerSize(Model.ViewMode);
 
     var mimClass = String.Empty;
     var imageStyle = String.Empty;
     var imageSource = String.Empty;
     var containerWidthStyle = String.Empty;
+    var holderWidthStyle = String.Empty;
+    string addSizeStyle = String.Empty;
     
     switch (Model.ViewMode)
     {
@@ -20,8 +23,16 @@
             imageStyle = "width=" + width + " height=" + height;
             imageSource = "data-original";
             containerWidthStyle = containerWidth + "px";
+            addSizeStyle = "width:" + maxSize + "px";
             break;
         case Mimry.ViewModels.MimViewMode.Medium:
+            mimClass = String.Empty;
+            imageStyle = " width=100% ";
+            imageSource = "src";
+            containerWidthStyle = "100%";
+            holderWidthStyle = String.Format("width:100%; max-width:{0}px; min-width:{1}px;", maxSize, minSize);
+            addSizeStyle = holderWidthStyle;
+            break;
         case Mimry.ViewModels.MimViewMode.Full:
             mimClass = "mim-full";
             imageStyle = String.Empty;
@@ -34,7 +45,7 @@
     {
         var mimDetailUrl = Url.Action("Details", "Mims", new { id = Model.MimID });
         <div class="mim-container" style="width:@containerWidthStyle;">
-            <div class="mim">
+            <div class="mim" style="@holderWidthStyle">
                 <a class="acc_mim_details" href="@mimDetailUrl">
                     <img class="@mimClass" @imageStyle @imageSource="/Mims/Mimage/@Model.MimID?caption=true&mode=@Model.ViewMode"/>
                 </a>
@@ -47,10 +58,9 @@
     else
     {
         string addUrl = Url.Action("Add", "MimSeqs", new { id = Model.MimSeqID });
-        string addSizeStyle = maxSize + "px";
         <div class="mim-container" style="width:@containerWidthStyle;">
             <a class="ml acc_mimry_add_box" href="@addUrl">
-                <div class="mim mim-add" style="width:@addSizeStyle;">
+                <div class="mim mim-add" style="@addSizeStyle;">
                     <span style="font-size:larger;"><i class="fa fa-plus"></i> Add New</span>
                 </div>
             </a>

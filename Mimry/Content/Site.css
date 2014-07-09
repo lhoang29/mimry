@@ -121,7 +121,6 @@ div.mim-container {
 div.mim {
     position:relative;
     display:inline-block;
-    max-width:100%;
 }
 
 div.mim-add {
