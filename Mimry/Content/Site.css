@@ -103,6 +103,29 @@ button.ml-liked {
     top:5px;
 }
 
+.ml-pin .ml, .ml-pin .ml-liked {
+    color: #eee;
+    padding:10px;
+    -moz-border-radius: 4px;
+    border-radius:4px;
+}
+
+.ml-pin .ml {
+    background-color: rgba(34,34,34,0.2);
+}
+
+.ml-pin .ml:hover {
+    background-color: rgba(34,34,34,1);
+}
+
+.ml-pin .ml-liked.ajVoteUp {
+    background-color: #347f7f;
+}
+
+.ml-pin .ml-liked.ajVoteDown {
+    background-color: #cd535f;
+}
+
 div.mimry-container {
     -moz-border-radius: 5px;
     border-radius: 5px;
