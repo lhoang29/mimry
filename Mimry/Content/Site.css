@@ -123,6 +123,17 @@ div.mim {
     display:inline-block;
 }
 
+.mim .ml-pin {
+    opacity: 0;
+    transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
+}
+
+.mim:hover .ml-pin {
+    opacity: 1;
+}
+
 div.mim-add {
     border-width:1px;
     border-color:darkgray;
