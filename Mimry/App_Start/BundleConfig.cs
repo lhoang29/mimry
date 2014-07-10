@@ -10,7 +10,8 @@ namespace Mimry
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery.lazyload*"));
+                        "~/Scripts/jquery.lazyload*",
+                        "~/Scripts/moment.*"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryunobtrusive").Include(
                         "~/Scripts/jquery.unobtrusive*"));

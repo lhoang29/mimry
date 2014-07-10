@@ -8,6 +8,11 @@
     lazyLoadMims();
     $(document).ajaxStop(lazyLoadMims);
 
+    $('.datetime').each(function () {
+        var date = new Date(this.innerHTML + ' UTC');
+        console.log(moment(date.toISOString()).fromNow());
+    });
+
     AddAntiForgeryToken = function (data) {
         data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
         return data;
