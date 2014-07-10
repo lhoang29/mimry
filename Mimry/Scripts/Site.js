@@ -8,10 +8,20 @@
     lazyLoadMims();
     $(document).ajaxStop(lazyLoadMims);
 
-    $('.datetime').each(function () {
-        var date = new Date(this.innerHTML + ' UTC');
-        console.log(moment(date.toISOString()).fromNow());
-    });
+    createMoments = function () {
+        $('.datetime').each(function () {
+            var date = new Date(this.innerHTML + ' UTC');
+            this.innerHTML = moment(date.toISOString()).fromNow();
+            $(this).removeClass('datetime');
+        })
+    };
+
+    createMoments();
+
+    commentSuccess = function () {
+        $('#txtComment').val('');
+        createMoments();
+    }
 
     AddAntiForgeryToken = function (data) {
         data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
@@ -276,7 +286,3 @@
         });
     })
 });
-
-function clearComment() {
-    $('#txtComment').val('');
-}
