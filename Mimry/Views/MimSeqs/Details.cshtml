@@ -2,7 +2,8 @@
 @model MimSeqView
 
 @{
-    ViewBag.Title = "Details";
+    string title = (Model != null) ? Model.Title : "<No Title>";
+    ViewBag.Title = title;
 }
 
 @if (Model != null)
@@ -13,7 +14,7 @@
             var mimryHeader = new Mimry.ViewModels.MimryHeader() 
             {
                 MimSeqID = Model.MimSeqID,
-                Title = Model.Title,
+                Title = title,
                 ReturnUrl = Url.Action("Details", "MimSeqs", new { id = Model.MimSeqID }),
                 IsLiked = Model.IsLiked,
                 IsOwner = Model.IsOwner,
