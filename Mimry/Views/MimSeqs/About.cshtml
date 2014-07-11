@@ -2,6 +2,54 @@
     ViewBag.Title = "About Mimry";
 }
 
+@section styles{
+<style>
+    .ab-title {
+        text-align:center;
+        padding: 20px;
+    }
+
+    .ab-step {
+        width:280px; 
+        height:200px; 
+    }
+
+    .ab-meme {
+        width:180px;
+        height:180px;
+        margin:10px;
+        background-size:contain;
+    }
+
+    .ab-btn-container {
+        margin-top:25px;
+        margin-bottom:25px;
+        text-align:center;
+    }
+
+    .ab-btn {
+        padding:20px;
+        font-size:20px;
+    }
+
+    .ab-step, .ab-meme {
+        display:inline-block; 
+        border: 1px solid #333;
+        border-radius:6px;
+        text-align:center;
+    }
+
+    .ab-step-txt-lg {
+        font-size:75px; 
+        line-height:200px;
+    }
+
+    .ab-step-txt-sm {
+        font-size:35px; 
+    }
+</style>    
+}
+
 <div class="container-fluid">
     <div id="mimreePopover">
         <h2>Mim·ree</h2>
@@ -22,61 +70,118 @@
             </tr>
         </table>
     </div>
-    <div style="text-align:center; padding: 20px;">
+    <div class="ab-title">
         <h2>Tell stories through <label id="mimreePopoverButton"><u>Mimrees</u></label> with your friends</h2>
-        <div class="bg-primary" style="font-size:20px; display:inline-block; border-radius: 5px; padding:20px; margin-top:50px;">Here is how</div>
+        <div style="font-size:24px; display:inline-block; border:2px dashed #333; border-radius: 5px; padding:20px; margin-top:50px;">Here is how</div>
         <div class="row" style="margin-top:50px;">
-            <div class="col-md-3">
+            <div class="col-lg-3 col-md-6">
                 <h3>Step 1</h3> <br />
                 <p>Create a meme</p>
-                <div style="display:inline-block; border: 1px solid gainsboro; border-radius:5px; width:200px; height:200px; background-color:darkgray;"></div>
+                <div class="ab-step">
+                    <table style="width:100%;">
+                        <tr>
+                            <td>
+                                <i class="fa fa-lightbulb-o ab-step-txt-lg"></i>
+                            </td>
+                            <td>
+                                <i class="fa fa-long-arrow-right ab-step-txt-sm"></i>
+                            </td>
+                            <td>
+                                <i class="fa fa-plus ab-step-txt-lg"></i>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-lg-3 col-md-6">
                 <h3>Step 2</h3> <br />
                 <p>Pass to your friends</p>
-                <div style="display:inline-block; border: 1px solid gainsboro; border-radius:5px; width:200px; height:200px; background-color:maroon;"></div>
+                <div class="ab-step">
+                    <table style="width:100%;">
+                        <tr>
+                            <td>
+                                <i class="fa fa-picture-o ab-step-txt-lg"></i>
+                            </td>
+                            <td>
+                                <i class="fa fa-exchange ab-step-txt-sm"></i>
+                            </td>
+                            <td>
+                                <i class="fa fa-users ab-step-txt-lg"></i>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-lg-3 col-md-6">
                 <h3>Step 3</h3> <br />
                 <p>Your friends add new ones</p>
-                <div style="display:inline-block; border: 1px solid gainsboro; border-radius:5px; width:200px; height:200px; background-color:darkorange;"></div>
+                <div class="ab-step">
+                    <table style="width:100%;">
+                        <tr>
+                            <td>
+                                <i class="fa fa-users ab-step-txt-lg"></i>
+                            </td>
+                            <td>
+                                <i class="fa fa-long-arrow-right ab-step-txt-sm"></i>
+                            </td>
+                            <td>
+                                <i class="fa fa-plus ab-step-txt-lg"></i>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-lg-3 col-md-6">
                 <h3>Step 4</h3> <br />
                 <p>Laugh together</p>
-                <div style="display:inline-block; border: 1px solid gainsboro; border-radius:5px; width:200px; height:200px; background-color:aquamarine;"></div>
+                <div class="ab-step">
+                    <table style="width:100%;">
+                        <tr>
+                            <td>
+                                <i class="fa fa-users ab-step-txt-lg"></i>
+                            </td>
+                            <td>
+                                <i class="fa fa-long-arrow-right ab-step-txt-sm"></i>
+                            </td>
+                            <td>
+                                <i class="fa fa-smile-o ab-step-txt-lg"></i>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
+    <div class="ab-btn-container">
+        <a class="btn btn-success ab-btn" href="@Url.Action("Create", "MimSeqs")"><i class="fa fa-plus"></i> Create a new mimree</a>
+    </div>
     <hr />
-    <div style="text-align:center;">
-        <h2>... Or browse a mimry to see what others laugh about</h2>
+    <div class="ab-title">
+        <h2>... Or browse an existing mimree to see what others are laughing at</h2>
         <div class="row" style="margin-top:50px;">
-            <div class="col-md-2">
-                <div style="display:inline-block; border: 1px solid gainsboro; border-radius:5px; width:200px; height:200px; background-color:lightblue;"></div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="ab-meme" style="background-image:url('../../Images/about_grumpy.jpg');"></div>
             </div>
-            <div class="col-md-2">
-                <div style="display:inline-block; border: 1px solid gainsboro; border-radius:5px; width:200px; height:200px; background-color:lightblue;"></div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="ab-meme" style="background-image:url('../../Images/about_brian.jpg');"></div>
             </div>
-            <div class="col-md-2">
-                <div style="display:inline-block; border: 1px solid gainsboro; border-radius:5px; width:200px; height:200px; background-color:lightblue;"></div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="ab-meme" style="background-image:url('../../Images/about_dosequis.jpg');"></div>
             </div>
-            <div class="col-md-2">
-                <div style="display:inline-block; border: 1px solid gainsboro; border-radius:5px; width:200px; height:200px; background-color:lightblue;"></div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="ab-meme" style="background-image:url('../../Images/about_brace.jpg');"></div>
             </div>
-            <div class="col-md-2">
-                <div style="display:inline-block; border: 1px solid gainsboro; border-radius:5px; width:200px; height:200px; background-color:lightblue;"></div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="ab-meme" style="background-image:url('../../Images/about_penguin.jpg');"></div>
             </div>
-            <div class="col-md-2">
-                <div style="display:inline-block; border: 1px solid gainsboro; border-radius:5px; width:200px; height:200px; background-color:lightblue;"></div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="ab-meme" style="border:none; font-size:24px;">
+                    <span style="line-height:200px;">.&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;.</span>
+                </div>
             </div>
         </div>
     </div>
-    <hr />
-    <div style="text-align:center;">
-        <h2>Get started now!</h2>
-        <div style="margin-top:50px;">
-            <a class="btn btn-warning btn-lg" href="@Url.Action("Create", "MimSeqs")">+ Create a new Mimry</a>
-        </div>
+    <div class="ab-btn-container">
+        <a class="btn btn-success ab-btn" href="@Url.Action("Index", "MimSeqs")"><i class="fa fa-eye"></i> Get started now!</a>
     </div>
 </div>
