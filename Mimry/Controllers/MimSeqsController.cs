@@ -29,6 +29,19 @@ namespace Mimry.Controllers
         }
 
         [AllowAnonymous]
+        public ActionResult Welcome()
+        {
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("About");
+            }
+        }
+
+        [AllowAnonymous]
         public ActionResult About()
         {
             return View();
