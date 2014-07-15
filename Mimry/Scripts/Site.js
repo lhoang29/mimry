@@ -195,8 +195,8 @@
 
     var highestBottom = -1; // the highest of the mimry bottom locations
     rearrange = function () {
-        var horSpace = 25;
-        var verSpace = 25;
+        var horSpace = 30;
+        var verSpace = 30;
 
         var mimryContainers = $('.mimry-container');
         if (mimryContainers == null || mimryContainers.length == 0) {
@@ -241,7 +241,7 @@
         }
 
         var bottomMost = Math.max.apply(null, cBottoms);
-        $('#footerDiv').css('top', (bottomMost + 20) + 'px');
+        $('#footerDiv').css('top', (bottomMost + verSpace) + 'px');
     };
 
     $window = $(window);
