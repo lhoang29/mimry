@@ -9,15 +9,16 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <h3>What should we call this Mimry?</h3>
-    @Html.TextBoxFor(model => model.MimryTitle, new { @class = "form-control" })
-    @Html.ValidationMessageFor(model => model.MimryTitle)
-    
-    <h3>Enter image URL:</h3>
+    <h3>Already have an image? Enter URL here:</h3>
     @Html.TextBoxFor(model => model.ImageUrl, new { @class = "form-control" })
     @Html.ValidationMessageFor(model => model.ImageUrl)
+
+    <h3>Choose a title for this Mimree</h3>
+    @Html.TextBoxFor(model => model.MimryTitle, new { @class = "form-control" })
+    @Html.ValidationMessageFor(model => model.MimryTitle)
+   
     
-    <h3>Choose a Mim title (optional):</h3>
+    <h3>Choose a title for this image (optional):</h3>
     @Html.TextBoxFor(model => model.MimTitle, new { @class = "form-control" })
     @Html.ValidationMessageFor(model => model.MimTitle)
 
