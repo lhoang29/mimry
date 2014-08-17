@@ -4,28 +4,48 @@
     ViewBag.Title = "Create";
 }
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <h3>Already have an image? Enter URL here:</h3>
-    @Html.TextBoxFor(model => model.ImageUrl, new { @class = "form-control" })
-    @Html.ValidationMessageFor(model => model.ImageUrl)
+    <div class="container-fluid" style="text-align:center;">
+        <h2>Creating a new Mimree</h2>
+        <br />
+        <h4>Step 1. Choose a funny title:</h4>
+        @Html.TextBoxFor(model => model.MimryTitle, new
+            {
+                @class = "form-control",
+                @style = "display:inline-block; max-width:500px; min-width:300px;",
+                @placeholder = "ex: Cats are kings"
+            })
+        <br />
+        @Html.ValidationMessageFor(model => model.MimryTitle)
+        <br />
+        <div style="display:inline-block; width:50%; border-top:1px solid gray;"></div>
+        <br /><br />
+        <h4>Step 2. Add memes by clicking on the buttons below and follow instructions (recommended for new users):</h4>
 
-    <h3>Choose a title for this Mimree</h3>
-    @Html.TextBoxFor(model => model.MimryTitle, new { @class = "form-control" })
-    @Html.ValidationMessageFor(model => model.MimryTitle)
-   
-    
-    <h3>Choose a title for this image (optional):</h3>
-    @Html.TextBoxFor(model => model.MimTitle, new { @class = "form-control" })
-    @Html.ValidationMessageFor(model => model.MimTitle)
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" style="width:150px;height:150px;margin:10px;border-color:#333;"><i class="fa fa-plus" style="font-size:40px;"></i></button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" style="width:150px;height:150px;margin:10px;" disabled="disabled"><i class="fa fa-plus" style="font-size:40px;"></i></button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" style="width:150px;height:150px;margin:10px;" disabled="disabled"><i class="fa fa-plus" style="font-size:40px;"></i></button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" style="width:150px;height:150px;margin:10px;" disabled="disabled"><i class="fa fa-plus" style="font-size:40px;"></i></button>
+        </div>
+        <br /><br />
 
-    <br /><br />
-    
-    <input type="submit" value="Create" class="btn btn-primary" />
-    <a href="@Url.Action("Index", "MimSeqs")" class="btn btn-default">Cancel</a>
+        <h4>Or by copy/paste:</h4>
+        <br />
+        <textarea class="form-control" style="display:inline-block; max-width:500px; min-width:300px; height:150px;" placeholder="Enter meme URLs separated by spaces or commas here, e.g.: http://mysite.com/meme1.jpg, http://mysite.com/meme2.jpg, http://mysite.com/meme3.jpg"></textarea>
+        <br /><br />
+        <input type="submit" value="Create" class="btn btn-success btn-lg" />
+    </div>
 }
 
 @section Scripts {
