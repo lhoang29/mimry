@@ -1,0 +1,60 @@
+﻿@using Mimry.ViewModels;
+@{
+    ViewBag.Title = "Mimree Studio";
+}
+@section styles{
+<style>
+    .canvas-container {
+        margin: 0 auto;
+    }
+</style>
+}
+
+<h2 style="text-align:center;">Mimree Studio: Create memes fast & easy</h2>
+<br />
+<div class="container" style="padding:10px; text-align:center;">
+    <input id="memeUrl" type="text" class="form-control" style="max-width:500px; display:inline-block;" placeholder="Enter URL here..." />
+    <br /><br />
+    <canvas id="cvPreview" width="@MimView.GetMaxMimSize(MimViewMode.Medium)" height="800" style="border:1px solid #888; border-radius:10px;"></canvas>
+</div>
+
+@section scripts{
+<script src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.0/fabric.min.js"></script>
+<script>
+    $(function () {
+        var canvas = new fabric.Canvas('cvPreview');
+        var images = [];
+        $('#memeUrl').on('input', function (e) {
+            $("<img>", {
+                src: $(this).val(),
+                load: function () {
+                    var scale = canvas.width / Math.max(this.width, this.height);
+                    var imgInstance = new fabric.Image(this);
+                    imgInstance.scale(scale);
+                    
+                    var controls = canvas.getObjects();
+
+                    var bottom = 0;
+                    var totalHeight = 0;
+                    for (var i = 0; i < controls.length; i++) {
+                        if (controls[i] instanceof fabric.Image) {
+                            if (bottom < controls[i].top + controls[i].currentHeight) {
+                                bottom = controls[i].top + controls[i].currentHeight;
+                            }
+                            totalHeight += controls[i].currentHeight;
+                        }
+                    }
+                    imgInstance.top = bottom;
+
+                    canvas.add(imgInstance);
+
+                    var newImageHeight = this.height * scale;
+                    canvas.setHeight(totalHeight + newImageHeight);
+
+                    images.push(imgInstance);
+                }
+            });
+        });
+    });
+</script>
+}

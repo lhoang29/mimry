@@ -320,6 +320,7 @@
     <Content Include="Views\Shared\MimryCommentActions.cshtml" />
     <Content Include="Views\Shared\MimryIndexContent.cshtml" />
     <Content Include="Views\MimSeqs\About.cshtml" />
+    <Content Include="Views\Mims\Studio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

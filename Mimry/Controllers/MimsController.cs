@@ -64,6 +64,11 @@ namespace Mimry.Controllers
             return View(md);
         }
 
+        public ActionResult Studio()
+        {
+            return View();
+        }
+
         [AllowAnonymous]
         public ActionResult Mimage(Guid? id, bool caption = false, MimViewMode mode = MimViewMode.Thumbnail)
         {
