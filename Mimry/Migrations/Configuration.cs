@@ -1,5 +1,6 @@
 namespace Mimry.Migrations
 {
+    using Mimry.DAL;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -27,6 +28,11 @@ namespace Mimry.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            if (false) // Only run this locally on dev code
+            {
+                MimDBInitializer.SeedData(context);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using Mimry.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Drawing;
 using System.IO;
 
 namespace Mimry.DAL
@@ -10,6 +11,12 @@ namespace Mimry.DAL
     public class MimDBInitializer : CreateDatabaseIfNotExists<MimDBContext>
     {
         protected override void Seed(MimDBContext context)
+        {
+            MimDBInitializer.SeedData(context);
+            base.Seed(context);
+        }
+
+        public static void SeedData(MimDBContext context)
         {
             int numMimries = 15;
             int numUsers = 8;
@@ -73,6 +80,14 @@ namespace Mimry.DAL
                     int randImageIdx = rand.Next(imageData.Count);
                     m.Title = imageData[randImageIdx].Item1;
                     m.Image = Convert.ToBase64String(imageData[randImageIdx].Item2);
+                    using (MemoryStream memStream = new MemoryStream(imageData[randImageIdx].Item2))
+                    {
+                        using (Bitmap bm = new Bitmap(memStream))
+                        {
+                            m.Width = bm.Width;
+                            m.Height = bm.Height;
+                        }
+                    }
                     m.MimSeq = ms;
                     context.Mims.Add(m);
                     context.SaveChanges();
@@ -85,7 +100,6 @@ namespace Mimry.DAL
                 }
             }
             context.SaveChanges();
-            base.Seed(context);
         }
     }
 }
