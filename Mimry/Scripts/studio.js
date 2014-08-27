@@ -1,6 +1,85 @@
 ﻿$(function () {
     var canvas = new fabric.Canvas('cvPreview');
 
+    wrapCanvasText = function (text, fontSize, fontFamily, maxW, maxH) {
+
+        if (typeof maxH === "undefined") { maxH = 0; }
+        var words = text.split(" ");
+        var formatted = '';
+
+        // calc line height
+        var lineHeight = new fabric.Text(text, {
+            fontFamily: fontFamily,
+            fontSize: fontSize
+        }).height;
+
+        // adjust for vertical offset
+        var maxHAdjusted = maxH > 0 ? maxH - lineHeight : 0;
+        var context = canvas.getContext("2d");
+
+        context.font = fontSize + "px " + fontFamily;
+        var currentLine = '';
+        var breakLineCount = 0;
+
+        n = 0;
+        while (n < words.length) {
+            var isNewLine = currentLine == "";
+            var testOverlap = currentLine + ' ' + words[n];
+
+            // are we over width?
+            var w = context.measureText(testOverlap).width;
+
+            if (w < maxW) {  // if not, keep adding words
+                if (currentLine != '') {
+                    currentLine += ' ';
+                }
+                currentLine += words[n];
+            }
+            else {
+                // if this hits, we got a word that need to be hypenated
+                if (isNewLine) {
+                    var wordOverlap = "";
+
+                    // test word length until its over maxW
+                    for (var i = 0; i < words[n].length; ++i) {
+
+                        wordOverlap += words[n].charAt(i);
+                        var withHypeh = wordOverlap + "-";
+
+                        if (context.measureText(withHypeh).width >= maxW) {
+                            // add hyphen when splitting a word
+                            withHypeh = wordOverlap.substr(0, wordOverlap.length - 2) + "-";
+                            // update current word with remainder
+                            words[n] = words[n].substr(wordOverlap.length - 1, words[n].length);
+                            formatted += withHypeh; // add hypenated word
+                            break;
+                        }
+                    }
+                }
+
+                formatted += currentLine + '\n';
+                breakLineCount++;
+                currentLine = "";
+
+                continue; // restart cycle
+            }
+            if (maxHAdjusted > 0 && (breakLineCount * lineHeight) > maxHAdjusted) {
+                // reduce font size if whole text does not fit in the specified window
+                return wrapCanvasText(text, fontSize - 5, fontFamily, maxW, maxH);
+            }
+            n++;
+        }
+
+        if (currentLine != '') {
+            formatted += currentLine + '\n';
+            breakLineCount++;
+            currentLine = "";
+        }
+
+        // get rid of empy newline at the end
+        return [formatted.substr(0, formatted.length - 1), fontSize];
+    }
+
     $('#memeUrl').on('input', function (e) {
         $("<img>", {
             src: $(this).val(),
@@ -27,5 +106,35 @@
                 canvas.setHeight(bottom + imgInstance.currentHeight);
             }
         });
+    });
+    $('#memeText').keypress(function (event) {
+        var keyCode = (event.which ? event.which : event.keyCode);
+        if (keyCode === 10 || keyCode == 13) {
+
+            var initialFontSize = 80;
+            var fontFamily = 'Impact';
+
+            var wrappedTextData = wrapCanvasText(
+                $(this).val(),
+                initialFontSize,
+                fontFamily,
+                canvas.width - 50,
+                canvas.height / 2
+            );
+
+            var text = new fabric.Text(wrappedTextData[0], {
+                stroke: '#000',
+                fill: '#fff',
+                strokeWidth: 2,
+                fontSize: wrappedTextData[1],
+                fontWeight: 'bold',
+                fontFamily: fontFamily
+            });
+
+            canvas.add(text);
+
+            text.centerH();
+            text.setCoords();
+        }
     });
 });
