@@ -15,7 +15,9 @@
 <div class="container" style="padding:10px; text-align:center;">
     <input id="memeUrl" type="text" class="form-control" style="max-width:500px; display:inline-block;" placeholder="Enter URL here..." />
     <br /><br />
-    <input id="memeText" type="text" class="form-control" style="max-width:500px; display:inline-block;" placeholder="Enter caption here..." />
+    <input type="text" class="form-control memeCaption topCaption" style="max-width:500px; display:inline-block;" placeholder="Top caption..." /><br />
+    <input type="text" class="form-control memeCaption genericCaption" style="max-width:500px; display:inline-block;" placeholder="Generic text..." /><br />
+    <input type="text" class="form-control memeCaption bottomCaption" style="max-width:500px; display:inline-block;" placeholder="Bottom caption..." /><br />
     <br /><br />
     <canvas id="cvPreview" width="@MimView.GetMaxMimSize(MimViewMode.Medium)" height="800" style="border:1px solid #888; border-radius:10px;"></canvas>
 </div>

@@ -102,24 +102,31 @@
                 
                 canvas.add(imgInstance);
 
+                imgInstance.sendToBack();
                 // Adjust canvas height
                 canvas.setHeight(bottom + imgInstance.currentHeight);
             }
         });
     });
-    $('#memeText').keypress(function (event) {
+    $('.memeCaption').keypress(function (event) {
         var keyCode = (event.which ? event.which : event.keyCode);
         if (keyCode === 10 || keyCode == 13) {
 
+            if ($.trim($(this).val()).length == 0) {
+                return;
+            }
+
             var initialFontSize = 80;
             var fontFamily = 'Impact';
+            var maxWidth = canvas.width - 50;
+            var maxHeight = canvas.height / 3;
 
             var wrappedTextData = wrapCanvasText(
                 $(this).val(),
                 initialFontSize,
                 fontFamily,
-                canvas.width - 50,
-                canvas.height / 2
+                maxWidth,
+                maxHeight
             );
 
             var text = new fabric.Text(wrappedTextData[0], {
@@ -132,6 +139,17 @@
             });
 
             canvas.add(text);
+
+
+            if ($(this).hasClass('topCaption')) {
+                text.top = 0;
+            }
+            else if ($(this).hasClass('bottomCaption')) {
+                text.top = canvas.height - text.currentHeight;
+            }
+            else if ($(this).hasClass('genericCaption')) {
+                text.top = (canvas.height - text.currentHeight) / 2;
+            }
 
             text.centerH();
             text.setCoords();
