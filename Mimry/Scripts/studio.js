@@ -156,7 +156,7 @@
         }
     });
 
-    $('.canvas-container').keydown(function (event) {
+    $('#canvasWrapper').keydown(function (event) {
         var keyCode = (event.which ? event.which : event.keyCode);
         if (keyCode === 46) {
             var activeObject = canvas.getActiveObject();

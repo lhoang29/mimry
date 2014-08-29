@@ -19,7 +19,9 @@
     <input type="text" class="form-control memeCaption genericCaption" style="max-width:500px; display:inline-block;" placeholder="Generic text..." /><br />
     <input type="text" class="form-control memeCaption bottomCaption" style="max-width:500px; display:inline-block;" placeholder="Bottom caption..." /><br />
     <br /><br />
-    <canvas id="cvPreview" width="@MimView.GetMaxMimSize(MimViewMode.Medium)" height="800" style="border:1px solid #888; border-radius:10px;"></canvas>
+    <div id="canvasWrapper" tabindex="0" style="outline:none;">
+        <canvas id="cvPreview" width="@MimView.GetMaxMimSize(MimViewMode.Medium)" height="800" style="border:1px solid #888; border-radius:10px;"></canvas>
+    </div>
 </div>
 
 @section scripts{
