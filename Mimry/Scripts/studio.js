@@ -155,4 +155,23 @@
             text.setCoords();
         }
     });
+
+    $('.canvas-container').keydown(function (event) {
+        var keyCode = (event.which ? event.which : event.keyCode);
+        if (keyCode === 46) {
+            var activeObject = canvas.getActiveObject();
+            var activeGroup = canvas.getActiveGroup();
+
+            if (activeGroup) {
+                var objectsInGroup = activeGroup.getObjects();
+                canvas.discardActiveGroup();
+                objectsInGroup.forEach(function (object) {
+                    canvas.remove(object);
+                });
+            }
+            else if (activeObject) {
+                canvas.remove(activeObject);
+            }
+        }
+    });
 });
